@@ -14,10 +14,11 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 func Configure(protocol, proxy *string) (*http.Transport, error) {
-	proxyUrl, err := url.Parse(fmt.Sprintf("%s://%s",*protocol ,*proxy))
+	proxyUrl, err := url.Parse(fmt.Sprintf("%s://%s",*protocol ,strings.TrimSpace(*proxy)))
 	if err != nil {
 		return nil, err
 	}
