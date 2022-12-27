@@ -13,12 +13,12 @@ Proxy Beast is a extreme precisely accurate and fast proxy checker supporting HT
 
 `HTTPS, HTTP, SOCKS4, SOCKS5`
 
-# Usage
-
-### Formant
+# Format
 **Important**<br>
 Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://``, ``socks4://`` etc on your proxy file!
 
+
+# Usage
 <a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
 `./proxy-checker.exe <protocol> <file.txt> <timeoutSecond>`
 
