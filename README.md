@@ -15,7 +15,7 @@ Proxy Beast is a extreme precisely accurate and fast proxy checker supporting HT
 
 # Usage
 
-<a href="https://www.youtube.com/watch?v=wuYibCOgoCA&feature=youtu.be">How to compile (build) instructions</a><br>
+<a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
 `./proxy-checker.exe <protocol> <file.txt> <timeoutSecond>`
 
 Important here is that `file.txt` has always to be `*.txt`!<br>
