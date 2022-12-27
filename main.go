@@ -20,7 +20,8 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-
+	"runtime"
+	
 	"golang.org/x/sync/errgroup"
 )
 
@@ -69,7 +70,9 @@ func main() {
 	max_worker_count := runtime.NumCPU()
 	free_cores := 3
 	
-	group.SetLimit(10000 * (max_worker_count - free_cores))
+	runtime.GOMAXPROCS((max_worker_count-free_cores))
+	group.SetLimit(10000)
+	
 	
 	validity := checkArgs(&args); if !validity {
 		handlers.Err("Invalid command line arguments. Example usage: ./proxy-checker.exe <protocol> <proxyFile.txt> <timeout>")
