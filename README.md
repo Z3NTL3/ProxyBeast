@@ -48,7 +48,7 @@ Now your installation is done, just run the executable and there u go
 
 Install Go `minimum Go version: 1.19`
 
-Navigate to `https://go.dev/dl/` install the one you need compabitle with your OS.
+Navigate to `https://go.dev/dl/` install the one you need compabitle with your OS.<br>
 ``If you are on Windows you do not need to follow the instructions bellow.``
 
 ```
