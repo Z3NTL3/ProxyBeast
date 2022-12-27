@@ -70,7 +70,7 @@ func main() {
 	free_cores := 3
 	
 	runtime.GOMAXPROCS((max_worker_count-free_cores))
-	group.SetLimit(10000)
+	group.SetLimit(-1)
 	
 	
 	validity := checkArgs(&args); if !validity {
