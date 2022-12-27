@@ -1,6 +1,6 @@
 # ProxyBeast
 
-Proxy Beast is a extremely precisely accurate and fast proxy checker supporting HTTP, HTTPS, SOCK4, SOCKS5.
+Proxy Beast is a extreme precisely accurate and fast proxy checker supporting HTTP, HTTPS, SOCK4, SOCKS5.
 
 <table><tr><th>Organisation</th><th>Application</th><th>Developer</th></tr><tr><td><img src="https://media.discordapp.net/attachments/956310840464773200/968964843333877830/logopix4.png" width="20">PIX4</td><td>Proxy Beast</td><td>Z3NTL3</td></tr></table>
 
