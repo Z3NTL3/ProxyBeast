@@ -72,7 +72,7 @@ func main() {
 	group.SetLimit(10000 * (max_worker_count - free_cores))
 	
 	validity := checkArgs(&args); if !validity {
-		handlers.Err("Invalid command line arguments. Example usage: file.exe <protocol> <proxyFile.txt> <timeout>")
+		handlers.Err("Invalid command line arguments. Example usage: ./proxy-checker.exe <protocol> <proxyFile.txt> <timeout>")
 		os.Exit(-1)
 	}
 	path := args[1]
