@@ -20,6 +20,7 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
 
 # Usage
 <a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
+`chmod 755 proxy-checker.exe`<br>
 `./proxy-checker.exe <protocol> <file.txt> <timeoutSecond>`
 
 Important here is that `file.txt` has always to be `*.txt`!<br>
