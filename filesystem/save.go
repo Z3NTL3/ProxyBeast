@@ -11,29 +11,34 @@ package filesystem
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 )
 
-func WriteToSaveFile(data string) (error){
-	data = strings.ReplaceAll(data, "\n","")
-	data = strings.ReplaceAll(data, "\r","")
+func WriteToSaveFile(data string) error {
+	data = strings.ReplaceAll(data, "\n", "")
+	data = strings.ReplaceAll(data, "\r", "")
 
-	cwd, err := os.Getwd(); if err != nil {
+	cwd, err := os.Getwd()
+	if err != nil {
 		return err
 	}
-	basePath ,err := filepath.Abs(cwd);  if err != nil {
+	basePath, err := filepath.Abs(cwd)
+	if err != nil {
 		return err
 	}
-	file,err := os.OpenFile(path.Join(basePath,"saves","goods.txt"),os.O_CREATE|os.O_APPEND, 0644); if err != nil {
+	file, err := os.OpenFile(path.Join(basePath, "saves", "goods.txt"), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	if err != nil {
+		return err
+	}
+	_, err = file.WriteString(fmt.Sprintf("%s\n", data))
+	if err != nil {
+		log.Fatal(err)
 		return err
 	}
 	defer file.Close()
-	_, err = file.WriteString(fmt.Sprintf("%s\r\n",data)); if err != nil {
-		return err
-	}
-
 	return nil
 }
