@@ -26,9 +26,8 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
 Important here is that `file.txt` has always to be `*.txt`!<br>
 `<protocol>` can only be one of `https,socks4, socks5, http`<br>
 `<timeoutSecond>` is the timeout in seconds<br>
-`<retries>` <p>is the number of thimes a proxy is rechecked before it is decided dead.
-higher number of retries can get u more proxy but it will take more time.
-</p><br>
+`<retries>` is the number of thimes a proxy is rechecked before it is decided dead.
+higher number of retries can get u more proxy but it will take more time.<br>
 
 #### Example
 
