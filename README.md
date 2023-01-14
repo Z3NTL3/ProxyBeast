@@ -21,19 +21,22 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
 # Usage
 <a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
 `chmod 755 proxy-checker.exe`<br>
-`./proxy-checker.exe <protocol> <file.txt> <timeoutSecond>`
+`./proxy-checker.exe <protocol> <file.txt> <timeoutSecond> <retries>`
 
 Important here is that `file.txt` has always to be `*.txt`!<br>
 `<protocol>` can only be one of `https,socks4, socks5, http`<br>
 `<timeoutSecond>` is the timeout in seconds<br>
+`<retries>` <p>is the number of thimes a proxy is rechecked before it is decided dead.
+higher number of retries can get u more proxy but it will take more time.
+</p><br>
 
 #### Example
 
-`./proxy-checker.exe socks5 proxies.txt 10`
+`./proxy-checker.exe socks5 proxies.txt 10 2`
 
 # Saves
 
-Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `goods.txt` corresponding for the newly checked proxies.
+Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `working.txt` corresponding for the newly checked proxies.
 
 ### How to compile
 

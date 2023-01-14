@@ -24,7 +24,7 @@ func TruncateAtStart() error {
 	if err != nil {
 		return err
 	}
-	file, err := os.OpenFile(path.Join(basePath, "saves", "goods.txt"), os.O_TRUNC | os.O_CREATE, 0644)
+	file, err := os.OpenFile(path.Join(basePath, "saves", "goods.txt"), os.O_TRUNC|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
