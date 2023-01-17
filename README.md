@@ -7,7 +7,7 @@ Proxy Beast is a high-performance proxy checker that offers precise and rapid te
 # Proof
 
 **Accuracy and speed proof**: <br>
-<a href="https://www.youtube.com/watch?v=wuYibCOgoCA&feature=youtu.be"> Proof</a>
+<a href="https://www.youtube.com/watch?v=RGzfBHpASZ8"> Proof</a>
 
 # Protocols Supported
 
