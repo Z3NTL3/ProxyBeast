@@ -33,6 +33,7 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
   -timeout string
         Set custom timeout in seconds (default "5")
 ```
+`./proxy-checker.exe -h` to see all options
 #### Example
 
 `./proxy-checker.exe -timeout 4 -retry 2 -protocol http`
