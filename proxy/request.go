@@ -13,7 +13,6 @@ import (
 	"Z3NTL3/proxy-checker/builder"
 	"Z3NTL3/proxy-checker/config"
 	"Z3NTL3/proxy-checker/filesystem"
-	"Z3NTL3/proxy-checker/globals"
 	"Z3NTL3/proxy-checker/typedefs"
 	"encoding/json"
 	"fmt"
@@ -27,21 +26,16 @@ type host struct {
 	Origin string `json:"origin"`
 }
 
-func CheckProxy(
-	proxy string,
-) error {
-	proc := globals.Protocol
-	retries := globals.Retries
+func CheckProxy(proxy *string, timeout *int, protocol *string, retries *int) error {
 	var retryTimes int
 	workingProxy := false
-
-	transport, err := config.Configure(&proc, &proxy)
+	transport, err := config.Configure(protocol, proxy)
 	if err != nil {
-		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
+		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", *proxy), "\n")
 		return nil
 	}
 
-	seconds := time.Duration(globals.Timeout) * time.Second
+	seconds := time.Duration(*timeout) * time.Second
 	client := http.Client{
 		Transport: transport,
 		Timeout:   seconds,
@@ -51,8 +45,8 @@ func CheckProxy(
 	var Req *http.Request
 	var Resp *http.Response
 
-	for i := 0; i < retries; i++ {
-		if retryTimes > retries || workingProxy {
+	for i := 0; i < *retries; i++ {
+		if retryTimes > *retries || workingProxy {
 			break
 		}
 		req, err := http.NewRequest("GET", "https://httpbin.org/ip", reader)
@@ -66,7 +60,7 @@ func CheckProxy(
 
 		resp, err := client.Do(req)
 		if err != nil {
-			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mDIDNT RESPOND RETRYING! \033[1m\033[38;5;127m[\033[0m%d\033[1m\033[38;5;196m/\033[0m%d\033[1m\033[38;5;127m]\033[0m", proxy, retryTimes, retries), "\n")
+			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mDIDNT RESPOND RETRYING! \033[1m\033[38;5;127m[\033[0m%d\033[1m\033[38;5;196m/\033[0m%d\033[1m\033[38;5;127m]\033[0m", *proxy, retryTimes, *retries), "\n")
 
 			retryTimes++
 			continue
@@ -79,21 +73,21 @@ func CheckProxy(
 		break
 	}
 
-	if retryTimes > retries || !workingProxy {
-		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID \033[1m\033[38;5;127m[\033[0m%d\033[1m\033[38;5;196m/\033[0m%d\033[1m\033[38;5;127m]\033[0m", proxy, retryTimes, retries), "\n")
+	if retryTimes > *retries || !workingProxy {
+		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID \033[1m\033[38;5;127m[\033[0m%d\033[1m\033[38;5;196m/\033[0m%d\033[1m\033[38;5;127m]\033[0m", *proxy, retryTimes, *retries), "\n")
 		return nil
 	}
 
 	var jsonData host
 	err = json.NewDecoder(Resp.Body).Decode(&jsonData)
 	if err != nil {
-		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
+		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", *proxy), "\n")
 		return nil
 	}
 
 	proxyUrl, err := transport.Proxy(Req)
 	if err != nil {
-		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
+		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", *proxy), "\n")
 		return nil
 	}
 

@@ -12,7 +12,6 @@ package main
 import (
 	"Z3NTL3/proxy-checker/builder"
 	"Z3NTL3/proxy-checker/filesystem"
-	"Z3NTL3/proxy-checker/globals"
 	"Z3NTL3/proxy-checker/handlers"
 	"Z3NTL3/proxy-checker/proxy"
 	"flag"
@@ -26,68 +25,52 @@ import (
 )
 
 var (
-	Timeout   = flag.String("timeout", "5", "Set custom timeout in seconds")
-	Protocol  = flag.String("protocol", "", "Required flag, can be one of http, https, socks4 or socks5")
-	ProxyFile = flag.String("file", "proxies.txt", "Determines your proxy file name requires to be *.txt matching")
-	Retry     = flag.Int("retry", 1, "The amount of tries to retry to connect to a failure proxy")
+	timeout   = flag.Int("timeout", 5, "Set the timeout in seconds using a custom value")
+	protocol  = flag.String("protocol", "", "Specify a required protocol, options include: http, https, socks4, and socks5")
+	proxyFile = flag.String("file", "proxies.txt", "Determine the name of the file containing proxies, must be in .txt format")
+	retries   = flag.Int("retry", 1, "Specify the number of attempts to reconnect to a failed proxy")
+	threads   = flag.Int("threads", runtime.NumCPU(), "Choose the number of threads to use for checking proxies, default is the number of CPU cores available")
 )
 
-func checkArgs(timeout, protocol, proxyfile *string) (validity bool) {
-	file_regex := regexp.MustCompile(`^.*\.txt$`)
-	number_regex := regexp.MustCompile(`^[0-9]+$`)
-	validity = true
+func areArgsValid(timeout *int, protocol, proxyfile *string, threads *int) (areValid bool) {
+	fileRegex := regexp.MustCompile(`^.*\.txt$`)
+	numberRegex := regexp.MustCompile(`^[0-9]+$`)
+	areValid = true
 
-	if !file_regex.MatchString((*proxyfile)) {
-		validity = false
+	if !fileRegex.MatchString((*proxyfile)) {
+		areValid = false
 	}
-
-	switch strings.ToLower(*protocol) {
-	case "http":
-		globals.Protocol = "http"
-	case "https":
-		globals.Protocol = "https"
-	case "socks4":
-		globals.Protocol = "socks4"
-	case "socks5":
-		globals.Protocol = "socks5"
-	default:
-		validity = false
+	if !numberRegex.MatchString(strconv.Itoa(*timeout)) {
+		areValid = false
 	}
-
-	if !number_regex.MatchString(*timeout) {
-		delay, err := strconv.Atoi(*timeout)
-		if err != nil {
-			handlers.Err("Cannot process -timeout delay option")
-			validity = false
-			return
+	if !numberRegex.MatchString(strconv.Itoa(*threads)) {
+		areValid = false
+	}
+	if *protocol != "" {
+		if !(strings.EqualFold(*protocol, "http") || strings.EqualFold(*protocol, "https") || strings.EqualFold(*protocol, "socks4") || strings.EqualFold(*protocol, "socks5")) {
+			areValid = false
 		}
-		globals.Timeout = delay
-		validity = false
 	}
 
 	return
 }
 
 func main() {
-	builder.Logo()
 	flag.Parse()
-	globals.Retries = *Retry
+
+	builder.Logo()
 
 	group := new(errgroup.Group)
-	max_worker_count := runtime.NumCPU()
-	free_cores := 3
 
-	runtime.GOMAXPROCS((max_worker_count - free_cores))
+	runtime.GOMAXPROCS((*threads))
 	group.SetLimit(-1)
 
-	validity := checkArgs(Timeout, Protocol, ProxyFile)
-	if !validity {
-		handlers.Err("Invalid command line arguments. Get usage info by passing -h flag!")
+	if !areArgsValid(timeout, protocol, proxyFile, threads) {
+		handlers.Err("Invalid arguments. Get usage info by passing -h flag!")
 		os.Exit(-1)
 	}
-	path := *ProxyFile
 
-	scanner, err := filesystem.LineByLine_Scanner(&path)
+	scanner, err := filesystem.LineByLine_Scanner(proxyFile)
 	if err != nil {
 		handlers.Err(err.Error())
 		os.Exit(-1)
@@ -100,11 +83,12 @@ func main() {
 	}
 
 	for scanner.Scan() {
-		text := scanner.Text()
+		proxyToCheck := scanner.Text()
 		group.Go(func() error {
-			return proxy.CheckProxy(text)
+			return proxy.CheckProxy(&proxyToCheck, timeout, protocol, retries)
 		})
 	}
+
 	err = group.Wait()
 	if err != nil {
 		handlers.Err(err.Error())
