@@ -21,15 +21,21 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
 # Usage
 <a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
 `chmod 755 proxy-checker.exe`<br>
-`./proxy-checker.exe <protocol> <file.txt> <timeoutSecond>`
-
-Important here is that `file.txt` has always to be `*.txt`!<br>
-`<protocol>` can only be one of `https,socks4, socks5, http`<br>
-`<timeoutSecond>` is the timeout in seconds<br>
-
+ 
+ #### Usage:
+ ```
+  -file string
+        Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
+  -protocol string
+        Required flag, can be one of http, https, socks4 or socks5
+  -retry int
+        The amount of tries to retry to connect to a failure proxy (default 1)
+  -timeout string
+        Set custom timeout in seconds (default "5")
+```
 #### Example
 
-`./proxy-checker.exe socks5 proxies.txt 10`
+`./proxy-checker.exe -timeout 4 -retry 2 -protocol http`
 
 # Saves
 
