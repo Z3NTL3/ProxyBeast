@@ -47,7 +47,10 @@ func areArgsValid(timeout *int, protocol, proxyfile *string, threads *int) (areV
 		areValid = false
 	}
 	if *protocol != "" {
-		if !(strings.EqualFold(*protocol, "http") || strings.EqualFold(*protocol, "https") || strings.EqualFold(*protocol, "socks4") || strings.EqualFold(*protocol, "socks5")) {
+		if !(strings.EqualFold(*protocol, "http") ||
+			strings.EqualFold(*protocol, "https") ||
+			strings.EqualFold(*protocol, "socks4") ||
+			strings.EqualFold(*protocol, "socks5")) {
 			areValid = false
 		}
 	}
