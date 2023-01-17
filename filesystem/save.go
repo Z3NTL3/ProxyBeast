@@ -17,21 +17,26 @@ import (
 	"strings"
 )
 
-func WriteToSaveFile(data string) (error){
-	data = strings.ReplaceAll(data, "\n","")
-	data = strings.ReplaceAll(data, "\r","")
+func WriteToSaveFile(data string) error {
+	data = strings.ReplaceAll(data, "\n", "")
+	data = strings.ReplaceAll(data, "\r", "")
 
-	cwd, err := os.Getwd(); if err != nil {
+	cwd, err := os.Getwd()
+	if err != nil {
 		return err
 	}
-	basePath ,err := filepath.Abs(cwd);  if err != nil {
+	basePath, err := filepath.Abs(cwd)
+	if err != nil {
 		return err
 	}
-	file,err := os.OpenFile(path.Join(basePath,"saves","goods.txt"),os.O_CREATE|os.O_APPEND, 0644); if err != nil {
-		return err
-	}
+	file, err := os.OpenFile(path.Join(basePath, "saves", "goods.txt"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0755)
 	defer file.Close()
-	_, err = file.WriteString(fmt.Sprintf("%s\r\n",data)); if err != nil {
+	if err != nil {
+		return err
+	}
+	_, err = file.WriteString(fmt.Sprintf("%s\r\n", data))
+	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
