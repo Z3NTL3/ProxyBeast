@@ -28,7 +28,7 @@ var (
 	timeout   = flag.Int("timeout", 5, "Set the timeout in seconds using a custom value")
 	protocol  = flag.String("protocol", "", "Specify a required protocol, options include: http, https, socks4, and socks5")
 	proxyFile = flag.String("file", "proxies.txt", "Determine the name of the file containing proxies, must be in .txt format")
-	retries   = flag.Int("retry", 1, "Specify the number of attempts to reconnect to a failed proxy")
+	retries   = flag.Int("retries", 1, "Specify the number of attempts to reconnect to a failed proxy")
 	threads   = flag.Int("threads", runtime.NumCPU(), "Choose the number of threads to use for checking proxies, default is the number of CPU cores available")
 )
 
@@ -97,5 +97,4 @@ func main() {
 		handlers.Err(err.Error())
 		os.Exit(-1)
 	}
-
 }
