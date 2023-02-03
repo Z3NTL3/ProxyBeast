@@ -5,7 +5,7 @@ Proxy Beast is a high-performance proxy checker that offers precise and rapid te
 **Accuracy and speed proof**: <br>
 <a href="https://www.youtube.com/watch?v=RGzfBHpASZ8"> Proof</a>
 
-<img src="https://media.discordapp.net/attachments/1038836040095502459/1064840171989778462/thumb.jpg?width=1089&height=585">
+<img src="https://media.discordapp.net/attachments/1071042419560296478/1071042467153068032/photo_2023-02-03_13-07-54.jpg?width=953&height=559">
 <table><tr><th>Organisation</th><th>Application</th><th>Developer</th></tr><tr><td><img src="https://media.discordapp.net/attachments/956310840464773200/968964843333877830/logopix4.png" width="20">PIX4</td><td>Proxy Beast</td><td>Z3NTL3</td></tr></table>
 
 # Protocols Supported
@@ -87,4 +87,4 @@ go version // if you get output it works. Do not forget to follow the last 2 ste
 # Update Log
 
 - Arg flags and retry option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/pull/2`
-- Multi option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5`
+- Multi option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5` ``Preview: https://www.youtube.com/watch?v=_7J9u3EvA7k``
