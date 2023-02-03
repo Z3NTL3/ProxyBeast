@@ -20,7 +20,6 @@ Only use `ip:port` format do not include `http://`. `socks5://`,`https://`, `soc
 # Usage
 
 **Important**<br>
-`Do not put in more proxies than 1.3k in proxies.txt, because the more proxies, the more goroutines (the more network usage). if your network is bad thats your problem`<br>
 
 ```
 -multi option will consume alot of network. If your own network cannot respond by the load,
