@@ -13,36 +13,43 @@ Proxy Beast is a high-performance proxy checker that offers precise and rapid te
 `HTTPS, HTTP, SOCKS4, SOCKS5`
 
 # Format
-**Important**<br>
-Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://``, ``socks4://`` etc on your proxy file!
 
+**Important**<br>
+Only use `ip:port` format do not include `http://`. `socks5://`,`https://`, `socks4://` etc on your proxy file!
 
 # Usage
-**Important**
+
+**Important**<br>
+`Do not put in more proxies than 1.3k in proxies.txt, because the more proxies, the more goroutines (the more network usage). if your network is bad thats your problem`<br>
+
 ```
--multi option will consume alot of network. If your own network cannot respond by the load, 
+-multi option will consume alot of network. If your own network cannot respond by the load,
 the proxy will be marked invalid! It requires high internet speed as this option is heavily trying all proxy protocols.
 ```
+
 <a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
 `chmod 755 proxy-checker.exe`<br>
- 
- #### Usage:
- ```
-  -file string
-        Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
-  -multi
-        If passed as arg, it will check for all protocols
-  -protocol string
-        Required flag, can be one of http, https, socks4 or socks5
-  -retry int
-        The amount of tries to retry to connect to a failure proxy (default 1)
-  -timeout string
-        Set custom timeout in seconds (default "5")
+
+#### Usage:
+
 ```
+ -file string
+       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
+ -multi
+       If passed as arg, it will check for all protocols
+ -protocol string
+       Required flag, can be one of http, https, socks4 or socks5
+ -retry int
+       The amount of tries to retry to connect to a failure proxy (default 1)
+ -timeout string
+       Set custom timeout in seconds (default "5")
+```
+
 `./proxy-checker.exe -h` to see all options
+
 #### Example
 
-`./proxy-checker.exe -timeout 4 -retry 2 -protocol http`
+`./proxy-checker.exe -timeout 4 -retry 2 -protocol http`<br>
 `./proxy-checker.exe -multi -retry 2`
 
 # Saves
@@ -64,7 +71,7 @@ Now your installation is done, just run the executable and there u go
 Install Go `minimum Go version: 1.19`
 
 Navigate to `https://go.dev/dl/` install the one you need compabitle with your OS.<br>
-``If you are on Windows you do not need to follow the instructions bellow.``
+`If you are on Windows you do not need to follow the instructions bellow.`
 
 ```
 # Installation
@@ -79,5 +86,6 @@ go version // if you get output it works. Do not forget to follow the last 2 ste
 ```
 
 # Update Log
-- Arg flags and retry option added (``23 jan 2023``) -> ``https://github.com/Z3NTL3/ProxyBeast/pull/2``
-- Multi option added (``23 jan 2023``) -> ``https://github.com/Z3NTL3/ProxyBeast/issues/5``
+
+- Arg flags and retry option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/pull/2`
+- Multi option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5`

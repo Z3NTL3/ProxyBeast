@@ -26,7 +26,7 @@ func Configure(protocol, proxy *string) (*http.Transport, error) {
 		Proxy:             http.ProxyURL(proxyUrl),
 		ForceAttemptHTTP2: true,
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
+			InsecureSkipVerify: false,
 		},
 	}
 

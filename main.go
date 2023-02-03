@@ -21,6 +21,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -107,6 +108,7 @@ func main() {
 
 	for scanner.Scan() {
 		text := scanner.Text()
+		time.Sleep(100 * time.Millisecond)
 		group.Go(func() error {
 			return proxy.CheckProxy(text)
 		})
