@@ -87,4 +87,4 @@ go version // if you get output it works. Do not forget to follow the last 2 ste
 # Update Log
 
 - Arg flags and retry option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/pull/2`
-- Multi option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5` ``Preview: https://www.youtube.com/watch?v=_7J9u3EvA7k``
+- Multi option added (`3 feb 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5` ``Preview: https://www.youtube.com/watch?v=_7J9u3EvA7k``
