@@ -17,7 +17,7 @@ import (
 	"strings"
 )
 
-func WriteToSaveFile(data string) error {
+func WriteToSaveFile(data, loc string) error {
 	data = strings.ReplaceAll(data, "\n", "")
 	data = strings.ReplaceAll(data, "\r", "")
 
@@ -29,11 +29,12 @@ func WriteToSaveFile(data string) error {
 	if err != nil {
 		return err
 	}
-	file, err := os.OpenFile(path.Join(basePath, "saves", "goods.txt"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0755)
-	defer file.Close()
+	file, err := os.OpenFile(path.Join(basePath, "saves", loc), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
 		return err
 	}
+	defer file.Close()
+
 	_, err = file.WriteString(fmt.Sprintf("%s\r\n", data))
 	if err != nil {
 		fmt.Println(err)

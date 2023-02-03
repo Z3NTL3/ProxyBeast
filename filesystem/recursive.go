@@ -15,7 +15,16 @@ import (
 	"path/filepath"
 )
 
-func TruncateAtStart() error {
+var (
+	loc = [...]string{
+		"goods-http.txt",
+		"goods-https.txt",
+		"goods-socks4.txt",
+		"goods-socks5.txt",
+	}
+)
+
+func RecursiveInit() error {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return err
@@ -24,10 +33,13 @@ func TruncateAtStart() error {
 	if err != nil {
 		return err
 	}
-	file, err := os.OpenFile(path.Join(basePath, "saves", "goods.txt"), os.O_TRUNC | os.O_CREATE, 0644)
-	if err != nil {
-		return err
+
+	for _, v := range loc {
+		file, err := os.OpenFile(path.Join(basePath, "saves", v), os.O_TRUNC|os.O_CREATE, 0644)
+		if err != nil {
+			return err
+		}
+		file.Close()
 	}
-	defer file.Close()
 	return nil
 }

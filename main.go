@@ -30,6 +30,7 @@ var (
 	Protocol  = flag.String("protocol", "", "Required flag, can be one of http, https, socks4 or socks5")
 	ProxyFile = flag.String("file", "proxies.txt", "Determines your proxy file name requires to be *.txt matching")
 	Retry     = flag.Int("retry", 1, "The amount of tries to retry to connect to a failure proxy")
+	Multi     = flag.Bool("multi", false, "If passed as arg, it will check for all protocols")
 )
 
 func checkArgs(timeout, protocol, proxyfile *string) (validity bool) {
@@ -42,6 +43,10 @@ func checkArgs(timeout, protocol, proxyfile *string) (validity bool) {
 	}
 
 	switch strings.ToLower(*protocol) {
+	case "":
+		if !*Multi {
+			validity = false
+		}
 	case "http":
 		globals.Protocol = "http"
 	case "https":
@@ -72,6 +77,7 @@ func main() {
 	builder.Logo()
 	flag.Parse()
 	globals.Retries = *Retry
+	globals.Multi = *Multi
 
 	group := new(errgroup.Group)
 	max_worker_count := runtime.NumCPU()
@@ -93,7 +99,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	err = filesystem.TruncateAtStart()
+	err = filesystem.RecursiveInit()
 	if err != nil {
 		handlers.Err(err.Error())
 		os.Exit(-1)
