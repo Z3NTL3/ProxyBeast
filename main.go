@@ -108,7 +108,7 @@ func main() {
 
 	for scanner.Scan() {
 		text := scanner.Text()
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 		group.Go(func() error {
 			return proxy.CheckProxy(text)
 		})
