@@ -18,6 +18,11 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
 
 
 # Usage
+**Important**
+```
+-multi option will consume alot of network. If your own network cannot respond by the load, 
+the proxy will be marked invalid! It requires high internet speed as this option is heavily trying all proxy protocols.
+```
 <a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
 `chmod 755 proxy-checker.exe`<br>
  
@@ -25,6 +30,8 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
  ```
   -file string
         Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
+  -multi
+        If passed as arg, it will check for all protocols
   -protocol string
         Required flag, can be one of http, https, socks4 or socks5
   -retry int
@@ -36,6 +43,7 @@ Only use ``ip:port`` format do not include ``http://``. ``socks5://``,``https://
 #### Example
 
 `./proxy-checker.exe -timeout 4 -retry 2 -protocol http`
+`./proxy-checker.exe -multi -retry 2`
 
 # Saves
 
@@ -69,3 +77,7 @@ source $HOME/.profile
 
 go version // if you get output it works. Do not forget to follow the last 2 steps on differents users on your machine
 ```
+
+# Update Log
+- Arg flags and retry option added (``23 jan 2023``) -> ``https://github.com/Z3NTL3/ProxyBeast/pull/2``
+- Multi option added (``23 jan 2023``) -> ``https://github.com/Z3NTL3/ProxyBeast/issues/5``
