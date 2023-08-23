@@ -1,4 +1,5 @@
 # ProxyBeast
+**soon it will be updated, and socks4/socks5 proxy check will be fixed**
 
 Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
 
