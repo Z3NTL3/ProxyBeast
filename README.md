@@ -89,7 +89,7 @@ go version // if you get output it works. Do not forget to follow the last 2 ste
 
 # Update Log
 
-- Enhanceda and fixed many bugs. SOCKS version 4 and 5 have been fixed and the check is now very precise and accurate (28-10-2023)
+- Enhanced and fixed many bugs. SOCKS version 4 and 5 have been fixed and the check is now very precise and accurate (28-10-2023)
 
 - Arg flags and retry option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/pull/2`
 - Multi option added (`3 feb 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5` ``Preview: https://www.youtube.com/watch?v=_7J9u3EvA7k``
