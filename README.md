@@ -51,7 +51,9 @@ the proxy will be marked invalid! It requires high internet speed as this option
 #### Example
 
 `./proxy-checker.exe -timeout 4 -retry 2 -protocol http`<br>
-`./proxy-checker.exe -multi -retry 2`
+`./proxy-checker.exe -timeout 4 -retry 2 -protocol socks4`<br>
+`./proxy-checker.exe -timeout 4 -retry 2 -protocol socks5`<br>
+`./proxy-checker.exe -multi -retry 2` -> this option tears down the accuracy so prefer using specific ``-protocol`` flag instead
 
 # Saves
 
