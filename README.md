@@ -1,17 +1,19 @@
 # ProxyBeast
-**soon it will be updated, and socks4/socks5 proxy check will be fixed**
+
 
 Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
 
-**Accuracy and speed proof**: <br>
-<a href="https://www.youtube.com/watch?v=RGzfBHpASZ8"> Proof</a>
 
-<img src="https://media.discordapp.net/attachments/1071042419560296478/1071042467153068032/photo_2023-02-03_13-07-54.jpg?width=953&height=559">
+
+
 <table><tr><th>Organisation</th><th>Application</th><th>Developer</th></tr><tr><td><img src="https://media.discordapp.net/attachments/956310840464773200/968964843333877830/logopix4.png" width="20">PIX4</td><td>Proxy Beast</td><td>Z3NTL3</td></tr></table>
 
 # Protocols Supported
-
 `HTTPS, HTTP, SOCKS4, SOCKS5`
+
+> **Update note:**<br>
+> In the previous version there were many bugs and socks4/socks5 check was dirty,
+with this new version we have enhanced these things and now it is precise and accurate in checking all protocols!
 
 # Format
 
@@ -86,6 +88,8 @@ go version // if you get output it works. Do not forget to follow the last 2 ste
 ```
 
 # Update Log
+
+- Enhanceda and fixed many bugs. SOCKS version 4 and 5 have been fixed and the check is now very precise and accurate (28-10-2023)
 
 - Arg flags and retry option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/pull/2`
 - Multi option added (`3 feb 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5` ``Preview: https://www.youtube.com/watch?v=_7J9u3EvA7k``

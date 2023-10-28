@@ -10,11 +10,6 @@ package main
  */
 
 import (
-	"Z3NTL3/proxy-checker/builder"
-	"Z3NTL3/proxy-checker/filesystem"
-	"Z3NTL3/proxy-checker/globals"
-	"Z3NTL3/proxy-checker/handlers"
-	"Z3NTL3/proxy-checker/proxy"
 	"flag"
 	"os"
 	"regexp"
@@ -22,6 +17,12 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"Z3NTL3/proxy-checker/builder"
+	"Z3NTL3/proxy-checker/filesystem"
+	"Z3NTL3/proxy-checker/globals"
+	"Z3NTL3/proxy-checker/handlers"
+	"Z3NTL3/proxy-checker/proxy"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -118,5 +119,4 @@ func main() {
 		handlers.Err(err.Error())
 		os.Exit(-1)
 	}
-
 }

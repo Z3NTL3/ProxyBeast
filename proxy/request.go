@@ -10,17 +10,19 @@ package proxy
  */
 
 import (
-	"Z3NTL3/proxy-checker/builder"
-	"Z3NTL3/proxy-checker/config"
-	"Z3NTL3/proxy-checker/filesystem"
-	"Z3NTL3/proxy-checker/globals"
-	"Z3NTL3/proxy-checker/typedefs"
 	"encoding/json"
 	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
+
+	"Z3NTL3/proxy-checker/builder"
+	"Z3NTL3/proxy-checker/config"
+	"Z3NTL3/proxy-checker/filesystem"
+	"Z3NTL3/proxy-checker/globals"
+	"Z3NTL3/proxy-checker/typedefs"
 )
 
 type host struct {
@@ -30,12 +32,12 @@ type host struct {
 func CheckProxy(
 	proxy string,
 ) error {
-	proc := globals.Protocol
+	proc := (&globals.Protocol)
 	retries := globals.Retries
 	var retryTimes int
 	workingProxy := false
 
-	transport, err := config.Configure(&proc, &proxy)
+	transport, err := config.Configure(proc, &proxy)
 	if err != nil {
 		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
 		return nil
@@ -48,10 +50,10 @@ func CheckProxy(
 	}
 
 	var reader io.ReadCloser // auto close
-	var Req *http.Request
-	var Resp *http.Response
+	Req := new(http.Request)
+	Resp := new(http.Response)
 
-	all := []string{proc}
+	all := []string{*proc}
 	if globals.Multi {
 		for k := range globals.Locations {
 			if k == "http" {
@@ -104,23 +106,20 @@ func CheckProxy(
 
 		var jsonData host
 		err = json.NewDecoder(Resp.Body).Decode(&jsonData)
-		if err != nil {
+		if err != nil && err != io.EOF {
 			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
 			continue
 		}
-
-		proxyUrl, err := transport.Proxy(Req)
-		if err != nil {
-			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
-			continue
+		if Req == nil {
+			return nil
 		}
 
-		if fmt.Sprintf("%s:%s", jsonData.Origin, proxyUrl.Port()) == proxyUrl.Host {
-			filesystem.WriteToSaveFile(proxyUrl.Host, globals.Locations[v])
-			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;118mVALID\033[0m ", proxyUrl.Host), "\n")
+		if jsonData.Origin == strings.Split(proxy, ":")[0] {
+			filesystem.WriteToSaveFile(proxy, globals.Locations[v])
+			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;118mVALID\033[0m ", proxy), "\n")
 		} else {
-			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxyUrl.Host), "\n")
-
+			fmt.Println("hi")
+			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
 		}
 	}
 
