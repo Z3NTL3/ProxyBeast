@@ -10,15 +10,16 @@ package main
  */
 
 import (
-	"flag"
+	"log"
 	"os"
 	"regexp"
 	"runtime"
-	"strconv"
+	"slices"
 	"strings"
 	"time"
 
 	"Z3NTL3/proxy-checker/builder"
+	"Z3NTL3/proxy-checker/cmd"
 	"Z3NTL3/proxy-checker/filesystem"
 	"Z3NTL3/proxy-checker/globals"
 	"Z3NTL3/proxy-checker/handlers"
@@ -27,28 +28,15 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-var (
-	Timeout   = flag.String("timeout", "5", "Set custom timeout in seconds")
-	Protocol  = flag.String("protocol", "", "Required flag, can be one of http, https, socks4 or socks5")
-	ProxyFile = flag.String("file", "proxies.txt", "Determines your proxy file name requires to be *.txt matching")
-	Retry     = flag.Int("retry", 1, "The amount of tries to retry to connect to a failure proxy")
-	Multi     = flag.Bool("multi", false, "If passed as arg, it will check for all protocols")
-)
-
-func checkArgs(timeout, protocol, proxyfile *string) (validity bool) {
+func checkArgs(timeout int, protocol, proxyfile string) (validity bool) {
 	file_regex := regexp.MustCompile(`^.*\.txt$`)
-	number_regex := regexp.MustCompile(`^[0-9]+$`)
 	validity = true
 
-	if !file_regex.MatchString((*proxyfile)) {
+	if !file_regex.MatchString(proxyfile) {
 		validity = false
 	}
 
-	switch strings.ToLower(*protocol) {
-	case "":
-		if !*Multi {
-			validity = false
-		}
+	switch strings.ToLower(protocol) {
 	case "http":
 		globals.Protocol = "http"
 	case "https":
@@ -61,14 +49,8 @@ func checkArgs(timeout, protocol, proxyfile *string) (validity bool) {
 		validity = false
 	}
 
-	if !number_regex.MatchString(*timeout) {
-		delay, err := strconv.Atoi(*timeout)
-		if err != nil {
-			handlers.Err("Cannot process -timeout delay option")
-			validity = false
-			return
-		}
-		globals.Timeout = delay
+	if timeout <= 0 {
+		log.Fatal("timeout cannot be 0 or a negative value")
 		validity = false
 	}
 
@@ -77,9 +59,16 @@ func checkArgs(timeout, protocol, proxyfile *string) (validity bool) {
 
 func main() {
 	builder.Logo()
-	flag.Parse()
-	globals.Retries = *Retry
-	globals.Multi = *Multi
+	cmd.Init()
+
+	if err := cmd.RootCmd.Execute(); err != nil {
+		log.Fatal(err)
+	}
+
+	if slices.Contains(os.Args, "--help") ||
+		slices.Contains(os.Args, "-h") {
+		os.Exit(0)
+	}
 
 	group := new(errgroup.Group)
 	max_worker_count := runtime.NumCPU()
@@ -88,12 +77,12 @@ func main() {
 	runtime.GOMAXPROCS((max_worker_count - free_cores))
 	group.SetLimit(-1)
 
-	validity := checkArgs(Timeout, Protocol, ProxyFile)
+	validity := checkArgs(globals.Timeout, globals.Protocol, globals.ProxyFile)
 	if !validity {
 		handlers.Err("Invalid command line arguments. Get usage info by passing -h flag!")
 		os.Exit(-1)
 	}
-	path := *ProxyFile
+	path := *&globals.ProxyFile
 
 	scanner, err := filesystem.LineByLine_Scanner(&path)
 	if err != nil {

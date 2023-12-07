@@ -34,26 +34,33 @@ the proxy will be marked invalid! It requires high internet speed as this option
 #### Usage:
 
 ```
- -file string
-       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
- -multi
-       If passed as arg, it will check for all protocols
- -protocol string
-       Required flag, can be one of http, https, socks4 or socks5
- -retry int
-       The amount of tries to retry to connect to a failure proxy (default 1)
- -timeout string
-       Set custom timeout in seconds (default "5")
+ .-,--.                   ,-,---.             . 
+  '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
+  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. | 
+  `'    '   `-' ' ` `-|   `-^---' `-' `-^ `-' `'
+                     /|
+                    `-'
+
+        Tool by: @z3ntl3
+        Studios: https://pix4.dev 
+
+Usage:
+   [flags]
+
+Flags:
+      --file string       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
+  -h, --help              help for this command
+      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy       
+      --protocol string   The proxy protocol to check against (default "http")
+      --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
+      --timeout int       Sets custom timeout in seconds (default 5)
 ```
 
-`./proxy-checker.exe -h` to see all options
+`<bin> -h` to see all options
 
 #### Example
 
-`./proxy-checker.exe -timeout 4 -retry 2 -protocol http`<br>
-`./proxy-checker.exe -timeout 4 -retry 2 -protocol socks4`<br>
-`./proxy-checker.exe -timeout 4 -retry 2 -protocol socks5`<br>
-`./proxy-checker.exe -multi -retry 2` -> this option tears down the accuracy so prefer using specific ``-protocol`` flag instead
+`./proxy-checker.exe --timeout 15 --retry 2 --protocol socks4`<br>
 
 # Saves
 
@@ -89,7 +96,7 @@ go version // if you get output it works. Do not forget to follow the last 2 ste
 ```
 
 # Update Log
-
+- Small improvements
 - Enhanced and fixed many bugs. SOCKS version 4 and 5 have been fixed and the check is now very precise and accurate (28-10-2023)
 
 - Arg flags and retry option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/pull/2`
