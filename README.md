@@ -20,15 +20,7 @@ with this new version we have enhanced these things and now it is precise and ac
 Only use `ip:port` format do not include `http://`. `socks5://`,`https://`, `socks4://` etc on your proxy file!
 
 # Usage
-
-**Important**<br>
-
-```
--multi option will consume alot of network. If your own network cannot respond by the load,
-the proxy will be marked invalid! It requires high internet speed as this option is heavily trying all proxy protocols.
-```
-
-<a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
+<a href="[https://github.com/Z3NTL3/ProxyBeast#saves](https://github.com/Z3NTL3/ProxyBeast?tab=readme-ov-file#how-to-compile)">How to compile (build) instructions</a><br>
 `chmod 755 proxy-checker.exe`<br>
 
 #### Usage:
@@ -66,7 +58,7 @@ Flags:
 
 Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `goods.txt` corresponding for the newly checked proxies.
 
-### How to compile
+# How to compile
 
 One-time run:
 `go run .`
