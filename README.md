@@ -2,7 +2,28 @@
 
 
 Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
-> **Note:**<br>Using the ``multi`` flag tears down the accuracy
+```
+ .-,--.                   ,-,---.             . 
+  '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
+  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. | 
+  `'    '   `-' ' ` `-|   `-^---' `-' `-^ `-' `'
+                     /|
+                    `-'
+
+        Tool by: @z3ntl3
+        Studios: https://pix4.dev 
+
+Usage:
+   [flags]
+
+Flags:
+      --file string       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
+  -h, --help              help for this command
+      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy       
+      --protocol string   The proxy protocol to check against (default "http")
+      --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
+      --timeout int       Sets custom timeout in seconds (default 5)
+```
 
 <a href="https://www.youtube.com/watch?v=Me-kgUIcb84"> Proof</a> 
 <table><tr><th>Organisation</th><th>Application</th><th>Developer</th></tr><tr><td><img src="https://media.discordapp.net/attachments/956310840464773200/968964843333877830/logopix4.png" width="20">PIX4</td><td>Proxy Beast</td><td>Z3NTL3</td></tr></table>
