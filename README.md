@@ -77,7 +77,7 @@ Flags:
 
 # Saves
 
-Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `goods.txt` corresponding for the newly checked proxies.
+Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `goods.txt` corresponding for the recently checked proxies.
 
 # How to compile
 
