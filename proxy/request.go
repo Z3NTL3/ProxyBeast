@@ -114,12 +114,18 @@ func CheckProxy(
 			return nil
 		}
 
-		if jsonData.Origin == strings.Split(proxy, ":")[0] {
+		if *&globals.Rotating && jsonData.Origin != *&globals.LocalIP {
+			filesystem.WriteToSaveFile(proxy, globals.Locations[v])
+			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s [%s] \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;118mVALID [ROTATING]\033[0m ", proxy, jsonData.Origin), "\n")
+			return nil
+		} else if jsonData.Origin == strings.Split(proxy, ":")[0] {
 			filesystem.WriteToSaveFile(proxy, globals.Locations[v])
 			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;118mVALID\033[0m ", proxy), "\n")
-		} else {
-			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
+			return nil
 		}
+
+		builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;196mINVALID\033[0m", proxy), "\n")
+
 	}
 
 	return nil

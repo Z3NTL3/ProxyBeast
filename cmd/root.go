@@ -37,4 +37,9 @@ func Init() {
 		&globals.Multi, "multi",
 		false, "If passed as arg, it will check for all protocols, will tear down the accuracy",
 	)
+
+	RootCmd.Flags().BoolVar(
+		&globals.Rotating, "rotating",
+		false, "If passed, you are checking for rotating proxy mechanism",
+	)
 }

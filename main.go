@@ -10,7 +10,11 @@ package main
  */
 
 import (
+	"encoding/json"
+	"errors"
+	"io"
 	"log"
+	"net/http"
 	"os"
 	"regexp"
 	"runtime"
@@ -57,12 +61,50 @@ func checkArgs(timeout int, protocol, proxyfile string) (validity bool) {
 	return
 }
 
+/*
+ONLY USED WHEN rotating option is set;
+
+used for rotating proxy mechanism checking, to determine if the rotating proxy endpoint assigned you a proxy ip,
+or if your machine is using its local ip [to determine]
+*/
+func getip() error {
+	res, err := http.Get("http://ip-api.com/json")
+	if err != nil {
+		return err
+	}
+
+	b, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	data := struct {
+		Query string `json:"query"`
+	}{}
+	if err := json.Unmarshal(b, &data); err != nil {
+		return err
+	}
+
+	if len(data.Query) <= 1 {
+		return errors.New("Could not obtain local IP")
+	}
+
+	*(&globals.LocalIP) = data.Query
+	return nil
+}
+
 func main() {
 	builder.Logo()
 	cmd.Init()
 
 	if err := cmd.RootCmd.Execute(); err != nil {
 		log.Fatal(err)
+	}
+
+	if *&globals.Rotating {
+		if err := getip(); err != nil {
+			log.Fatalf("[COULD NOT OBTAIN LOCAL IP]: %s", err)
+		}
 	}
 
 	if slices.Contains(os.Args, "--help") ||
