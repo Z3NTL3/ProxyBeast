@@ -114,6 +114,7 @@ func CheckProxy(
 			return nil
 		}
 
+		// backbone proxy support
 		if *&globals.Rotating && jsonData.Origin != *&globals.LocalIP {
 			filesystem.WriteToSaveFile(proxy, globals.Locations[v])
 			builder.Log("INFO", "\033[38;5;127m", fmt.Sprintf("\033[38;5;126m\033[1mProxy\033[0m\033[1m\033[38;5;127m[\033[38;5;147m %s [%s] \033[0m\033[1m\033[38;5;127m] \033[1m\033[38;5;118mVALID [ROTATING]\033[0m ", proxy, jsonData.Origin), "\n")

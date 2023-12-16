@@ -40,6 +40,6 @@ func Init() {
 
 	RootCmd.Flags().BoolVar(
 		&globals.Rotating, "rotating",
-		false, "If passed, you are checking for rotating proxy mechanism",
+		false, "If passed, it ill use backbone check mechanism",
 	)
 }

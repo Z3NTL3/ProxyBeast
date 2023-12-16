@@ -22,7 +22,7 @@ Flags:
       --multi             If passed as arg, it will check for all protocols, will tear down the accuracy
       --protocol string   The proxy protocol to check against (default "http")
       --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
-      --rotating          If passed, you are checking for rotating proxy mechanism
+      --rotating          If passed, it ill use backbone check mechanism
       --timeout int       Sets custom timeout in seconds (default 5)
 ```
 
@@ -67,7 +67,7 @@ Flags:
       --multi             If passed as arg, it will check for all protocols, will tear down the accuracy
       --protocol string   The proxy protocol to check against (default "http")
       --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
-      --rotating          If passed, you are checking for rotating proxy mechanism
+      --rotating          If passed, it ill use backbone check mechanism
       --timeout int       Sets custom timeout in seconds (default 5)
 ```
 

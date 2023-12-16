@@ -64,8 +64,7 @@ func checkArgs(timeout int, protocol, proxyfile string) (validity bool) {
 /*
 ONLY USED WHEN rotating option is set;
 
-used for rotating proxy mechanism checking, to determine if the rotating proxy endpoint assigned you a proxy ip,
-or if your machine is using its local ip [to determine]
+used for backbone proxy checking
 */
 func getip() error {
 	res, err := http.Get("http://ip-api.com/json")
