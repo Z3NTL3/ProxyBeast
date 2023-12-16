@@ -2,7 +2,28 @@
 
 
 Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
-> **Note:**<br>Using the ``multi`` flag tears down the accuracy
+```
+ .-,--.                   ,-,---.             . 
+  '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
+  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. | 
+  `'    '   `-' ' ` `-|   `-^---' `-' `-^ `-' `'
+                     /|
+                    `-'
+
+        Tool by: @z3ntl3
+        Studios: https://pix4.dev 
+
+Usage:
+   [flags]
+
+Flags:
+      --file string       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
+  -h, --help              help for this command
+      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy       
+      --protocol string   The proxy protocol to check against (default "http")
+      --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
+      --timeout int       Sets custom timeout in seconds (default 5)
+```
 
 <a href="https://www.youtube.com/watch?v=Me-kgUIcb84"> Proof</a> 
 <table><tr><th>Organisation</th><th>Application</th><th>Developer</th></tr><tr><td><img src="https://media.discordapp.net/attachments/956310840464773200/968964843333877830/logopix4.png" width="20">PIX4</td><td>Proxy Beast</td><td>Z3NTL3</td></tr></table>
@@ -20,15 +41,7 @@ with this new version we have enhanced these things and now it is precise and ac
 Only use `ip:port` format do not include `http://`. `socks5://`,`https://`, `socks4://` etc on your proxy file!
 
 # Usage
-
-**Important**<br>
-
-```
--multi option will consume alot of network. If your own network cannot respond by the load,
-the proxy will be marked invalid! It requires high internet speed as this option is heavily trying all proxy protocols.
-```
-
-<a href="https://github.com/Z3NTL3/ProxyBeast#saves">How to compile (build) instructions</a><br>
+<a href="[https://github.com/Z3NTL3/ProxyBeast#saves](https://github.com/Z3NTL3/ProxyBeast?tab=readme-ov-file#how-to-compile)">How to compile (build) instructions</a><br>
 `chmod 755 proxy-checker.exe`<br>
 
 #### Usage:
@@ -64,9 +77,9 @@ Flags:
 
 # Saves
 
-Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `goods.txt` corresponding for the newly checked proxies.
+Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `goods.txt` corresponding for the recently checked proxies.
 
-### How to compile
+# How to compile
 
 One-time run:
 `go run .`
