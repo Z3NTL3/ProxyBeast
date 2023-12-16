@@ -3,9 +3,9 @@
 
 Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
 ```
- .-,--.                   ,-,---.             . 
+ .-,--.                   ,-,---.             .
   '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
-  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. | 
+  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. |
   `'    '   `-' ' ` `-|   `-^---' `-' `-^ `-' `'
                      /|
                     `-'
@@ -19,9 +19,10 @@ Usage:
 Flags:
       --file string       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
   -h, --help              help for this command
-      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy       
+      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy
       --protocol string   The proxy protocol to check against (default "http")
       --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
+      --rotating          If passed, you are checking for rotating proxy mechanism
       --timeout int       Sets custom timeout in seconds (default 5)
 ```
 
@@ -47,9 +48,9 @@ Only use `ip:port` format do not include `http://`. `socks5://`,`https://`, `soc
 #### Usage:
 
 ```
- .-,--.                   ,-,---.             . 
+ .-,--.                   ,-,---.             .
   '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
-  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. | 
+  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. |
   `'    '   `-' ' ` `-|   `-^---' `-' `-^ `-' `'
                      /|
                     `-'
@@ -63,9 +64,10 @@ Usage:
 Flags:
       --file string       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
   -h, --help              help for this command
-      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy       
+      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy
       --protocol string   The proxy protocol to check against (default "http")
       --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
+      --rotating          If passed, you are checking for rotating proxy mechanism
       --timeout int       Sets custom timeout in seconds (default 5)
 ```
 
