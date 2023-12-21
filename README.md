@@ -26,7 +26,7 @@ Flags:
       --timeout int       Sets custom timeout in seconds (default 5)
 ```
 
-[Proof](https://www.youtube.com/shorts/PTqeEZV3ao0)
+[Proof](https://www.youtube.com/shorts/TaDn6wtKqSk)
 <table><tr><th>Organisation</th><th>Application</th><th>Developer</th></tr><tr><td><img src="https://media.discordapp.net/attachments/956310840464773200/968964843333877830/logopix4.png" width="20">PIX4</td><td>Proxy Beast</td><td>Z3NTL3</td></tr></table>
 
 # Protocols Supported
