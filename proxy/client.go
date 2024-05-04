@@ -3,6 +3,9 @@ package proxy
 import "os"
 
 type (
+	/*
+		not final
+	*/
 	Anonimity string
 	Proxy     string
 
