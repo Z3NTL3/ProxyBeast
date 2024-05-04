@@ -1,17 +1,22 @@
 # ProxyBeast
+ Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
+
+## Upcoming update [ IMPORTANT ]
+This tool is getting a very huge revamp that would bring back its legacy. ProxyBeast started two years ago as a side-project and it strived to be a high-performance and reliable proxy checker.
+Since then, and now, my knowledge in computer science has been increased magnificently and for that reason I'd like to revise, which will make ProxyBeast great again.
+
+#### Whats changing?
+ProxyBeast is getting a revamp to be fined tuned in terms of speed, reliability, accuracy and efficiency. With additional features such as latency, anominity reporting and standardized multi protocol checking and the ability of providing complete PROXY URIs.
+The core is completely changing to be very efficient and work in a parallel model, that is, lightweight and event-driven.
+##### Native protocol checking
+We built libraries that are native and have zero-dependencies, which will be ported with ProxyBeast. Meaning that ProxyBeast will be more low-level and for that reason it can improve accuracy as there is more deep-control.
+
+**You can read more at:**
+> https://proxy.pix4.dev
+<br>
+<br>
 
 
-Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
-
-> When looking back add ProxyBeast I'd say it is ugly and misses many stuff for that reason it is going to be revised!
-> 
-> Please note that ProxyBeast will be revised very soon. Between 29-04 to 05-05 2024.
-> 
-> **What is going to change?**
->
-> Performance, efficiency and reliability will be maximized with this upcoming patch. As it will not require the use of ``net/http`` (with third party libs), but a low-level client for quality proxy checking and reporting.
-> You can expect additional features such as anonimity and latency reporting. This patch also does introduce a full optimization to efficiency, reliability and performance. The whole core of the tool will change.
-> In the end it will be finalized as a enterpise-ready easy to use and modular tool for precisely checking proxy qualities.
 ```
  .-,--.                   ,-,---.             .
   '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
