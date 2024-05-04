@@ -19,4 +19,4 @@ Proxy Beast is a high-performance proxy checker that offers precise and rapid te
 
 # ProxyBeast Lightweight Worker Pool Concept
 
-![1714822070506](image/README/1714822070506.png)
+![1714822162724](image/README/1714822162724.png)
