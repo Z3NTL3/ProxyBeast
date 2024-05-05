@@ -27,8 +27,10 @@ package proxy
 */
 
 type Controller struct {
-	Current uint64 // current
-	Total uint64 // total work
+	current uint64 // current
+	total uint64 // total work
+	wpool Workers // worker pool
+	fdpool FD_Pool // fd pool
 }
 
 type Workers chan struct {
