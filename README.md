@@ -1,7 +1,9 @@
 # ProxyBeast
  Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
 
-## Upcoming update [ IMPORTANT ]
+# Update
+![image](https://github.com/Z3NTL3/ProxyBeast/assets/48758770/a926b578-6caa-44bc-a446-cb73235a9eab)
+
 This tool is getting a very huge revamp that would bring back its legacy. ProxyBeast started two years ago as a side-project and it strived to be a high-performance and reliable proxy checker.
 Since then, and now, my knowledge in computer science has been increased magnificently and for that reason I'd like to revise, which will make ProxyBeast great again.
 
