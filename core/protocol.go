@@ -1,0 +1,33 @@
+package core
+
+import (
+	"fmt"
+	"strings"
+)
+
+const (
+	SOCKS4 string = "socks4"
+	SOCKS5 string = "socks5"
+	HTTP   string = "http"
+	HTTPS  string = "https"
+)
+
+func (p *Proxy) IsSOCKS4() bool {
+	return p.protocol(SOCKS4)
+}
+
+func (p *Proxy) IsSOCKS5() bool {
+	return p.protocol(SOCKS5)
+}
+
+func (p *Proxy) IsHTTP() bool {
+	return p.protocol(HTTP)
+}
+
+func (p *Proxy) IsHTTPS() bool {
+	return p.protocol(HTTPS)
+}
+
+func (p *Proxy) protocol(scheme string) bool {
+	return strings.Contains(string(*p), fmt.Sprintf("%s://", scheme))
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "ProxyBeast",
+  "outputfilename": "ProxyBeast",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "z3ntl3",
+    "email": "48758770+Z3NTL3@users.noreply.github.com"
+  }
+}
