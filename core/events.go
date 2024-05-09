@@ -1,12 +1,10 @@
 package core
 
 const (
-	Fire_MsgEvent        Operation = "msg"
-	Fire_ErrEvent        Operation = "error"
-	Fire_ErrSvdirEvent   Operation = "svdir_failure"
-	Fire_ProxyListLoaded Operation = "list_loaded"
-	Fire_SaveFileLoaded  Operation = "sf_loaded"
-	Fire_ProtoUnknown    Operation = "proto_unknown"
+	Fire_MsgEvent      Operation = "msg"
+	Fire_ErrEvent      Operation = "error"
+	Fire_ErrSvdirEvent Operation = "svdir_failure"
+	Fire_ProtoUnknown  Operation = "proto_unknown"
 
 	// go runtime event listeners
 	OnStartScan Operation = "scan"

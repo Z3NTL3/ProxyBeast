@@ -49,8 +49,8 @@ var (
 )
 
 const (
-	SaveFile Operation = "dialog_file_save"
-	OpenFile Operation = "dialog_open_file"
+	SaveFile Operation = "dialog_save_file"
+	InputFile Operation = "dialog_input_file"
 )
 
 func New() *App {
@@ -102,7 +102,7 @@ func (a *App) DomReady(ctx context.Context) {
 		{
 			Name: OnDialog,
 			Exec: a.dialog_exec,
-		}, {
+		},{
 			Name: OnStartScan,
 			Exec: func(data ...interface{}) {
 				defer func() {
@@ -161,27 +161,14 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 	if err != nil {
 		return
 	}
-	
+
 	f, err := OpenFileRDO(loc)
 	if err != nil {
 		return
 	}
 
-	if props == OpenFile { 
-		if ListFD != nil { 
-			if err = ListFD.Close(); err != nil {return}
-		}
+	FD[props].Close()
+	FD[props] = f
 
-		ListFD = f
-		runtime.EventsEmit(a.ctx, Fire_ProxyListLoaded, path.Base(loc)) 
-
-		return
-	}
-
-	if SaveFD != nil {
-		if err = SaveFD.Close(); err != nil {return}
-	}
-
-	SaveFD = f
-	runtime.EventsEmit(a.ctx, Fire_SaveFileLoaded, path.Base(loc)) 
+	runtime.EventsEmit(a.ctx, props, path.Base(loc))
 }

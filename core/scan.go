@@ -14,4 +14,5 @@ func (c *Controller) Scan(ctx context.Context, proto string) {
 		runtime.EventsEmit(APP.ctx, Fire_ProtoUnknown)
 		return
 	}
+
 }

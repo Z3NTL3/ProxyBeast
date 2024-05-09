@@ -20,8 +20,10 @@ type CWD = string
 
 var (
      RootDir CWD
-	SaveFD *os.File
-	ListFD *os.File
+     FD = map[string]*os.File{
+          InputFile: nil,
+          SaveFile: nil,
+     }
      MX *Controller = &Controller{}
 )
 
