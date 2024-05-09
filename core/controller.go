@@ -62,6 +62,6 @@ func (c *Controller) Cancel()  {
 	(*c.cancel)()
 }
 
-func(c *Controller) ShouldCancel() <-chan struct{}{
+func(c *Controller) ShouldStop() <-chan struct{}{
 	return c.done.Done()
 }
