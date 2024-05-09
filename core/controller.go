@@ -1,12 +1,31 @@
+/*
+     ProxyBeast GUI
+
+The ultimate proxy checker
+       by @z3ntl3
+
+    [proxy.pix4.dev]
+
+License: GNU
+Note: Please do give us a star on Github, if you like ProxyBeast
+
+[App core]
+*/
+
 package core
+
+import "context"
 
 type Controller struct {
 	started     bool
 	current     uint64  // current
 	total       uint64  // total work
+	
 	worker_pool Workers // worker pool
 	fd_pool     FD_Pool // fd pool
-	done        chan int
+
+	done        context.Context
+	cancel 		*context.CancelFunc
 }
 
 type Workers chan struct {
