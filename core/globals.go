@@ -15,6 +15,7 @@ Note: Please do give us a star on Github, if you like ProxyBeast
 package core
 
 import "os"
+
 type CWD = string
 
 var (
@@ -23,3 +24,5 @@ var (
 	ListFD *os.File
      MX *Controller = &Controller{}
 )
+
+const JUDGE = "https://pool.proxyspace.pro/judge.php"

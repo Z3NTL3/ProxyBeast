@@ -16,10 +16,6 @@ package core
 
 import "context"
 
-var (
-	JUDGE string = "https://pool.proxyspace.pro/"
-)
-
 type Controller struct {
 	started     bool
 	current     uint64  // current

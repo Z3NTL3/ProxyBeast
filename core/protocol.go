@@ -16,6 +16,7 @@ package core
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -25,6 +26,13 @@ const (
 	HTTP   string = "http"
 	HTTPS  string = "https"
 )
+
+func(p *Proxy) IsValid() bool {
+	return slices.Contains(
+		[]string{SOCKS4, SOCKS5, HTTP, HTTPS}, 
+		strings.ToLower(string(*p)),
+	)
+}
 
 func (p *Proxy) IsSOCKS4() bool {
 	return p.protocol(SOCKS4)

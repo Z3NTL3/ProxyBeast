@@ -162,12 +162,12 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 		return
 	}
 	
-	f, err := ReadFromFile(loc)
+	f, err := OpenFileRDO(loc)
 	if err != nil {
 		return
 	}
 
-	if props != SaveFile { 
+	if props == OpenFile { 
 		if ListFD != nil { 
 			if err = ListFD.Close(); err != nil {return}
 		}
