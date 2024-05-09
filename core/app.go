@@ -17,9 +17,7 @@ Note: Please do give us a star on Github, if you like ProxyBeast
 package core
 
 import (
-	"ProxyBeast/globals"
 	"context"
-	"fmt"
 	"os"
 	"path"
 
@@ -46,7 +44,9 @@ type (
 	EventGroup []*EventListeners
 )
 
-var APP = New()
+var (
+	APP = New()
+)
 
 const (
 	SaveFile Operation = "dialog_file_save"
@@ -71,10 +71,10 @@ func (a *App) Startup(ctx context.Context) {
 	}
 	
 	// Alias CWD
-	globals.RootDir = cwd
+	RootDir = cwd
 
 	// If <cwd>/saves is not resolvable, then mkdir.
-	if _, err := os.Stat(path.Join(cwd,"saves")); err != nil || os.IsNotExist(err) {
+	if _, err := os.Stat(path.Join(cwd,"saves")); err != nil || os.IsNotExist(err){
 		if err = os.Mkdir(path.Join(cwd,"saves"), os.ModeDir); err != nil {
 			println(err)
 		}
@@ -86,42 +86,36 @@ func (a *App) Startup(ctx context.Context) {
 func (a *App) DomReady(ctx context.Context) {
 	a.ctx = ctx
 
+	if _, err := os.Stat(
+		path.Join(RootDir, "saves"),
+	); err != nil || os.IsNotExist(err) || RootDir == ""{
+		runtime.EventsEmit(a.ctx, Fire_ErrSvdirEvent)
+		return
+	}
+	
+	MX.Register(context.WithCancel(context.Background()))
+		
+	MX.fd_pool = make(FD_Pool, 20)
+	MX.worker_pool = make(Workers, 2000)
+
 	var events *EventGroup = &EventGroup{
 		{
-			Name: "dialog",
-			Exec: func(optionalData ...interface{}) {
-				props, ok := optionalData[0].(string)
-				if !ok {
-					runtime.LogError(a.ctx, ErrPropsInvalid.Error())
-					return
-				}
-
-				opts := runtime.OpenDialogOptions{
-					DefaultDirectory: path.Join(globals.RootDir),
-					Title: "ProxyBeast - File dialog",
-					Filters: []runtime.FileFilter{
-						{
-							DisplayName: "Select file (.txt)",
-							Pattern: "*.txt",
-						},
-					},
-				}
-				if props == SaveFile {
-					opts.DefaultDirectory = path.Join(opts.DefaultDirectory, "saves")
-				}
-				
-				loc, err := a.dialog(opts)
-				if err != nil {
-					runtime.EventsEmit(a.ctx, "error", err)
-				}
-				fmt.Println(loc)
+			Name: OnDialog,
+			Exec: a.dialog_exec,
+		}, {
+			Name: OnStartScan,
+			Exec: func(data ...interface{}) {
+				defer func() {
+					err := recover()
+					if err != nil {
+						runtime.EventsEmit(a.ctx, Fire_ErrEvent, err.(error).Error())
+					}
+				}()
+				MX.Scan(a.ctx, data[0].(string))
 			},
 		},
 	}
 	events.register_eventListeners(a.ctx)
-	if _, err := os.Stat(path.Join(globals.RootDir, "saves")); err != nil || os.IsNotExist(err) {
-		runtime.EventsEmit(a.ctx, "svdir_failure")
-	}
 }
 
 func(a *App) dialog(opts runtime.OpenDialogOptions) (string, error){
@@ -133,4 +127,61 @@ func (g *EventGroup) register_eventListeners(ctx context.Context) {
 	for _, event := range *g {
 		event.Cancel = runtime.EventsOn(ctx, event.Name, event.Exec)
 	}
+}
+
+func (a *App) dialog_exec(optionalData ...interface{}) {
+	var err error
+	defer func(err_ *error){
+		if *err_ != nil {
+			runtime.EventsEmit(a.ctx, Fire_ErrEvent, (*err_).Error())
+		}
+	}(&err)
+	
+	props, ok := optionalData[0].(string)
+	if !ok {
+		err = ErrPropsInvalid
+		return
+	}
+
+	opts := runtime.OpenDialogOptions{
+		DefaultDirectory: path.Join(RootDir),
+		Title: "ProxyBeast - File dialog",
+		Filters: []runtime.FileFilter{
+			{
+				DisplayName: "Select file (.txt)",
+				Pattern: "*.txt",
+			},
+		},
+	}
+	if props == SaveFile {
+		opts.DefaultDirectory = path.Join(opts.DefaultDirectory, "saves")
+	}
+	
+	loc, err := a.dialog(opts)
+	if err != nil {
+		return
+	}
+	
+	f, err := ReadFromFile(loc)
+	if err != nil {
+		return
+	}
+
+	if props != SaveFile { 
+		if ListFD != nil { 
+			if err = ListFD.Close(); err != nil {return}
+		}
+
+		ListFD = f
+		runtime.EventsEmit(a.ctx, Fire_ProxyListLoaded, path.Base(loc)) 
+
+		return
+	}
+
+	if SaveFD != nil {
+		if err = SaveFD.Close(); err != nil {return}
+	}
+
+	SaveFD = f
+	runtime.EventsEmit(a.ctx, Fire_SaveFileLoaded, path.Base(loc)) 
 }

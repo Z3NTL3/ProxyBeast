@@ -15,7 +15,11 @@ Note: Please do give us a star on Github, if you like ProxyBeast
 package core
 
 import "os"
+type CWD = string
 
 var (
+     RootDir CWD
 	SaveFD *os.File
+	ListFD *os.File
+     MX *Controller = &Controller{}
 )

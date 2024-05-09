@@ -16,11 +16,14 @@ package core
 
 import "context"
 
+var (
+	JUDGE string = "https://pool.proxyspace.pro/"
+)
+
 type Controller struct {
 	started     bool
 	current     uint64  // current
-	total       uint64  // total work
-	
+
 	worker_pool Workers // worker pool
 	fd_pool     FD_Pool // fd pool
 
@@ -38,6 +41,11 @@ type FD_Pool chan struct {
 	anonimity Anonimity
 }
 
+func(c *Controller) Register(ctx context.Context, cancel context.CancelFunc){
+	c.done = ctx
+	c.cancel = &cancel
+}
+
 func (c *Controller) Add(n uint64) {
 	c.current += n
 }
@@ -52,4 +60,12 @@ func (c *Controller) Current() uint64 {
 
 func (c *Controller) DidStart() bool {
 	return c.started
+}
+
+func (c *Controller) Cancel()  {
+	(*c.cancel)()
+}
+
+func(c *Controller) ShouldCancel() <-chan struct{}{
+	return c.done.Done()
 }
