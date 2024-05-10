@@ -63,6 +63,12 @@ func (a *App) GetCtx() context.Context {
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+
+	MX.Register(context.WithCancel(context.Background()))
+		
+	MX.fd_pool = make(chan FD_Pool, 20)
+	MX.worker_pool = make(chan Workers, 2000)
+
 	runtime.WindowCenter(ctx)
 
 	// Obtain current working directory
@@ -93,11 +99,6 @@ func (a *App) DomReady(ctx context.Context) {
 		runtime.EventsEmit(a.ctx, Fire_ErrSvdirEvent)
 		return
 	}
-	
-	MX.Register(context.WithCancel(context.Background()))
-		
-	MX.fd_pool = make(FD_Pool, 20)
-	MX.worker_pool = make(Workers, 2000)
 
 	var events *EventGroup = &EventGroup{
 		{

@@ -22,4 +22,5 @@ var (
      ErrFileNotProvided = errors.New("Save and/or input file not provided")
      ErrFDNil = errors.New("FD seems to be nil")
      ErrInvalidProxyURI = errors.New("FILE:FORMAT -> Invalid proxy URI was found")
+     ErrOngoingCheck = errors.New("There's already an ongoing check")
 )
