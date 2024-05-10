@@ -63,6 +63,7 @@ func (a *App) GetCtx() context.Context {
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+	runtime.WindowCenter(ctx)
 
 	// Obtain current working directory
 	cwd, err := os.Getwd()
@@ -111,7 +112,7 @@ func (a *App) DomReady(ctx context.Context) {
 						runtime.EventsEmit(a.ctx, Fire_ErrEvent, err.(error).Error())
 					}
 				}()
-				MX.Scan(a.ctx, data[0].(string))
+				MX.StartChecking(a.ctx, data[0].(string))
 			},
 		},
 	}

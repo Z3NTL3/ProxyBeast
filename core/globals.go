@@ -14,16 +14,10 @@ Note: Please do give us a star on Github, if you like ProxyBeast
 
 package core
 
-import "os"
-
 type CWD = string
 
 var (
      RootDir CWD
-     FD = map[string]*os.File{
-          InputFile: nil,
-          SaveFile: nil,
-     }
      MX *Controller = &Controller{}
 )
 

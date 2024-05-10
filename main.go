@@ -24,6 +24,8 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/mac"
+	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
 //go:embed all:frontend/dist
@@ -44,6 +46,12 @@ func main() {
 		DisableResize: true, // Do not allow shrink/expanding window
 		OnDomReady: core.APP.DomReady,
 		OnStartup: core.APP.Startup, 
+		Windows: &windows.Options{
+			Theme: windows.Dark,
+		},
+		Mac: &mac.Options{
+			Appearance: mac.NSAppearanceNameDarkAqua,
+		},	
 	}); err != nil {
 		log.Fatalf("[Error]: %s", err)
 	}
