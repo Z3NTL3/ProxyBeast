@@ -19,6 +19,10 @@ const (
 	Fire_ErrEvent      Operation = "error"
 	Fire_ErrSvdirEvent Operation = "svdir_failure"
 	Fire_ProtoUnknown  Operation = "proto_unknown"
+	Fire_CheckerTotalLoad Operation = "checker_load"
+	Fire_CheckerStart Operation = "checker_start"
+	Fire_CheckerEnd Operation = "checker_end"
+	Fire_CurrentThread Operation = "current_thread"
 
 	// go runtime event listeners
 	OnStartScan Operation = "scan"

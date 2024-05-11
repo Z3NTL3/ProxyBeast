@@ -28,7 +28,7 @@ var FD Filesystem = map[string]*os.File{
 }
 
 func OpenFileRDO(loc string) (*os.File, error) {
-	return os.Open(loc)
+	return os.OpenFile(loc, os.O_APPEND, os.ModeAppend)
 }
 
 func (fs *Filesystem) Validate(scheme bool) (err error) {
@@ -44,12 +44,21 @@ func (fs *Filesystem) Validate(scheme bool) (err error) {
 
 	buff := bufio.NewScanner((*fs)[InputFile])
 
+	load := 0
 	for buff.Scan() {
 		proxy := Proxy(buff.Text())
 		if !(&proxy).IsValid(scheme) {
 			err = ErrInvalidProxyURI
 			break
 		}
+		load++
 	}
+
+	if load < 1 {
+		err = ErrNoProxiesFound
+		return
+	}
+
+	MX.SetLoad(uint32(load))
 	return
 }

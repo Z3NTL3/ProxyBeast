@@ -21,6 +21,10 @@ import (
 	"strings"
 )
 
+type (
+	Proxy     string
+)
+
 const (
 	SOCKS4 string = "socks4"
 	SOCKS5 string = "socks5"
@@ -34,13 +38,13 @@ var (
 	IP_PORT = regexp.MustCompile(`^\b(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}\b$`)
 )
 
-func(p *Proxy) IsValid(isScheme bool) bool {
-	if !isScheme {
+func(p *Proxy) IsValid(hasScheme bool) bool {
+	if !hasScheme {
 		return IP_PORT.MatchString(string(*p))
 	}
 
 	return slices.Contains(
-		[]string{SOCKS4, SOCKS5, HTTP, HTTPS}, 
+		[]string{SOCKS4}, 
 		strings.ToLower(strings.Split(string(*p), "://")[0]),
 	)
 }

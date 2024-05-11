@@ -21,4 +21,4 @@ var (
      MX *Controller = &Controller{}
 )
 
-const JUDGE = "https://pool.proxyspace.pro/judge.php"
+const JUDGE = "pool.proxyspace.pro"

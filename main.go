@@ -31,7 +31,6 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
-
 func main() {
 	// App configuration
 	if err := wails.Run(&options.App{

@@ -18,6 +18,7 @@ package core
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path"
 
@@ -67,7 +68,7 @@ func (a *App) Startup(ctx context.Context) {
 	MX.Register(context.WithCancel(context.Background()))
 		
 	MX.fd_pool = make(chan FD_Pool, 20)
-	MX.worker_pool = make(chan Workers, 2000)
+	MX.worker_pool = make(chan Workers, 20000)
 
 	runtime.WindowCenter(ctx)
 
@@ -113,7 +114,7 @@ func (a *App) DomReady(ctx context.Context) {
 						runtime.EventsEmit(a.ctx, Fire_ErrEvent, err.(error).Error())
 					}
 				}()
-				MX.StartChecking(a.ctx, data[0].(string))
+				MX.StartScan(a.ctx, data[0].(string))
 			},
 		},
 	}
@@ -135,6 +136,7 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 	var err error
 	defer func(err_ *error){
 		if *err_ != nil {
+			fmt.Println((*err_).Error())
 			runtime.EventsEmit(a.ctx, Fire_ErrEvent, (*err_).Error())
 		}
 	}(&err)
@@ -172,5 +174,6 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 	FD[props].Close()
 	FD[props] = f
 
+	fmt.Println("emit", props)
 	runtime.EventsEmit(a.ctx, props, path.Base(loc))
 }

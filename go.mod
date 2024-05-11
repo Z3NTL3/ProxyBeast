@@ -1,10 +1,11 @@
 module ProxyBeast
 
-go 1.22
+go 1.22.2
 
-toolchain go1.22.2
-
-require github.com/wailsapp/wails/v2 v2.8.1
+require (
+	github.com/wailsapp/wails/v2 v2.8.1
+	github.com/z3ntl3/socks v1.0.0
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect

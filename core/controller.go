@@ -17,11 +17,16 @@ package core
 import (
 	"context"
 	"sync"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Controller struct {
 	started     bool
 	current     uint64  // current
+
+	cntr_current uint32
+	cntr_load		uint32 // total amount of load
 
 	worker_pool chan Workers // worker pool
 	fd_pool     chan FD_Pool // fd pool
@@ -37,9 +42,16 @@ type Workers  struct {
 }
 
 type FD_Pool struct {
-	proxy     Proxy
-	latency   uint32
-	anonimity Anonimity
+	Proxy     Proxy `json:"proxy"`
+	Latency   string `json:"latency"`
+	Anonimity string `json:"anonimity"`
+}
+
+func(c *Controller) SetLoad(n uint32) {
+	c.mx.Lock()
+	defer c.mx.Unlock()
+
+	c.cntr_load = n
 }
 
 func(c *Controller) Start() {
@@ -68,7 +80,11 @@ func (c *Controller) Done(n uint64) {
 	if c.current -n < 0 {
 		return
 	}
+
 	c.current -= n
+	c.cntr_current += 1
+
+	runtime.EventsEmit(APP.ctx, Fire_CurrentThread, c.cntr_current)
 }
 
 func (c *Controller) Current() uint64 {
@@ -98,6 +114,8 @@ func(c *Controller) Reset() {
 	c.worker_pool = make(chan Workers, 2000)
 	c.started = false
 	c.current = 0
+	c.cntr_load = 0
+	c.cntr_current = 0
 
 	c.Register(context.WithCancel(context.Background()))
 }
