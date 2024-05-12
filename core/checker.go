@@ -18,7 +18,7 @@ type Checker struct {
 	Multi  bool
 }
 
-// todo
+// todo nothing final here
 func (c *Checker) SOCKS4(proxy Proxy) (anonimity string, err error) {
 	if !c.Multi  || c.Scheme == "socks4" {
 		proxy = Proxy(fmt.Sprintf("socks4://%s", proxy))
@@ -48,7 +48,7 @@ func (c *Checker) SOCKS4(proxy Proxy) (anonimity string, err error) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	ctx, cancel := context.WithTimeout(context.Background(), DefaultTimeout)
 	defer cancel()
 
 	if err = socks.Connect(client, ctx); err != nil {
@@ -61,6 +61,8 @@ func (c *Checker) SOCKS4(proxy Proxy) (anonimity string, err error) {
 	tlsConn := tls.Client(client, &tls.Config{
 		InsecureSkipVerify: true,
 	})
+
+	tlsConn.SetDeadline(time.Now().Add(DefaultTimeout))
 
 	if _, err = tlsConn.Write(
 		[]byte(

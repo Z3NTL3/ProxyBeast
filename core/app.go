@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"time"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -68,7 +69,7 @@ func (a *App) Startup(ctx context.Context) {
 	MX.Register(context.WithCancel(context.Background()))
 		
 	MX.fd_pool = make(chan FD_Pool, 20)
-	MX.worker_pool = make(chan Workers, 20000)
+	MX.worker_pool = make(chan Workers, DefaultPoolSize)
 
 	runtime.WindowCenter(ctx)
 
@@ -102,6 +103,14 @@ func (a *App) DomReady(ctx context.Context) {
 	}
 
 	var events *EventGroup = &EventGroup{
+		{
+			Name: OnCancelScan,
+			Exec: a.cancel_scan,
+		},
+		{
+			Name: OnSettingsModifyTimeout,
+			Exec: a.modify_default_timeout,
+		},
 		{
 			Name: OnDialog,
 			Exec: a.dialog_exec,
@@ -176,4 +185,25 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 
 	fmt.Println("emit", props)
 	runtime.EventsEmit(a.ctx, props, path.Base(loc))
+}
+
+func(a *App) cancel_scan(...interface{}){
+	fmt.Println("cancel")
+	MX.Cancel()
+}
+
+func(a *App) modify_default_timeout(data ...interface{}) {
+	timeout, ok := data[0].(string)
+	if !ok {
+		runtime.EventsEmit(APP.ctx, Fire_ErrEvent, ErrTimeoutString)
+		return
+	}
+
+	time, err := time.ParseDuration(timeout)
+	if err != nil {
+		runtime.EventsEmit(APP.ctx, Fire_ErrEvent, err.Error())
+		return
+	}
+
+	DefaultTimeout = time
 }

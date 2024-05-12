@@ -23,9 +23,9 @@ import (
 
 type Controller struct {
 	started     bool
-	current     uint64  // current
+	current     uint64  // smart counter, 0 means work has finished
 
-	cntr_current uint32
+	cntr_current 	uint32  // progress counter, points to current 
 	cntr_load		uint32 // total amount of load
 
 	worker_pool chan Workers // worker pool
@@ -34,7 +34,7 @@ type Controller struct {
 	done        context.Context
 	cancel 		*context.CancelFunc
 
-	mx sync.Mutex
+	mx sync.RWMutex
 }
 
 type Workers  struct {
@@ -61,6 +61,14 @@ func(c *Controller) Start() {
 	c.started = true
 }
 
+func (c *Controller) Cancel()  {
+	(*c.cancel)()
+}
+
+func(c *Controller) ShouldStop() <-chan struct{}{
+	return c.done.Done()
+}
+
 func(c *Controller) Register(ctx context.Context, cancel context.CancelFunc){
 	c.done = ctx
 	c.cancel = &cancel
@@ -74,12 +82,10 @@ func (c *Controller) Add(n uint64) {
 }
 
 func (c *Controller) Done(n uint64) {
-	c.mx.Lock()
 	defer c.mx.Unlock()
+	c.mx.Lock()
 
-	if c.current -n < 0 {
-		return
-	}
+	if c.current - n < 0 || c.cntr_current +1 > c.cntr_load { return }
 
 	c.current -= n
 	c.cntr_current += 1
@@ -88,34 +94,43 @@ func (c *Controller) Done(n uint64) {
 }
 
 func (c *Controller) Current() uint64 {
-	c.mx.Lock()
-	defer c.mx.Unlock()
-	
+	c.mx.RLock()
+	defer c.mx.RUnlock()
+
 	return c.current
 }
 
 func (c *Controller) DidStart() bool {
-	c.mx.Lock()
-	defer c.mx.Unlock()
-
+	c.mx.RLock()
+	defer c.mx.RUnlock()
+	
 	return c.started
-}
-
-func (c *Controller) Cancel()  {
-	(*c.cancel)()
-}
-
-func(c *Controller) ShouldStop() <-chan struct{}{
-	return c.done.Done()
 }
 
 func(c *Controller) Reset() {
 	c.fd_pool = make(chan FD_Pool, 20)
-	c.worker_pool = make(chan Workers, 2000)
+	c.worker_pool = make(chan Workers, DefaultPoolSize)
 	c.started = false
 	c.current = 0
 	c.cntr_load = 0
 	c.cntr_current = 0
 
 	c.Register(context.WithCancel(context.Background()))
+}
+
+func (c *Controller) CanExit() {
+	exit := make(chan int)
+
+	go func(){
+		for {
+			if c.Current() == 0 {
+				exit <- 1
+			}
+		}
+	}()
+
+	select {
+		case <-exit:
+			return
+	}
 }

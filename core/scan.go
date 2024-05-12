@@ -25,6 +25,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+// todo nothing final here
 func (c *Controller) StartScan(ctx context.Context, proto string) {
 	var err error
 
@@ -72,10 +73,13 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 			for {
 				select {
 					// Working proxy waiting to be saved
-					case data := <-MX.fd_pool:
-						MX.Done(1)
+					case data, ok  := <-MX.fd_pool:
+						if !ok {
+							MX.Done(1)
+						}
 						raw, err := json.Marshal(&data)
 						if err != nil {
+							MX.Done(1)
 							runtime.LogError(APP.ctx, err.Error())
 							return
 						}
@@ -84,8 +88,10 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 						if err != nil {
 							runtime.LogError(APP.ctx, err.Error())
 						}
+						MX.Done(1)
 					// Stop signal
 					case <-MX.ShouldStop():
+						MX.Done(1)
 						return // kill goroutine
 				}
 			}
@@ -98,7 +104,10 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 			init := false
 			for {
 				select {
-					case msg := <-MX.worker_pool:
+					case msg,ok := <-MX.worker_pool:
+						if !ok {
+							MX.Done(1)
+						}
 						if !init {
 							MX.Start()
 							init = true
@@ -125,6 +134,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 
 						
 					case <-MX.ShouldStop():
+						MX.Done(1)
 						return // kill goroutine
 				}
 			}	
@@ -135,25 +145,31 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 	buff := bufio.NewScanner(FD[InputFile])
 	defer FD[InputFile].Seek(0, io.SeekStart)
 
-	go func(){
+	go func (){
 		for {
+			time.Sleep(time.Millisecond * 100)
 			if MX.Current() == 0 && MX.DidStart() {
 				MX.Cancel()
-				return
 			}
 		}
 	}()
 
 
-	for buff.Scan() {
-		MX.Add(1)
-
-		MX.worker_pool <- struct{proxy Proxy}{
-			proxy: Proxy(buff.Text()),
+	go func (){
+		for buff.Scan() {
+			MX.Add(1)
+	
+			MX.worker_pool <- struct{proxy Proxy}{
+				proxy: Proxy(buff.Text()),
+			}
 		}
-	}
+	}()
+	
+
 
 	<-MX.ShouldStop()
 	runtime.LogDebug(APP.ctx, "SHOULD STOP")
+	MX.CanExit()
+	runtime.LogDebug(APP.ctx, "CAN EXIT")
 	runtime.EventsEmit(APP.ctx, Fire_CheckerEnd)
 }
