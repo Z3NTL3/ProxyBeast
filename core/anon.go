@@ -16,7 +16,7 @@ const (
 
 func (a *Anonimity) GetAnonimity() string {
 	*a = Anonimity(strings.ToLower(string(*a)))
-	
+
 	if  a.IsElite() {return Elite}
 	if a.IsAnonymous() {return Anonymous}
 
@@ -50,4 +50,4 @@ func (a *Anonimity) Contains(header ...string) bool {
 		}
 	}
 	return false
-} 
+}

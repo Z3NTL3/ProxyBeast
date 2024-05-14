@@ -45,13 +45,13 @@ func main() {
 		},
 		DisableResize: true, // Do not allow shrink/expanding window
 		OnDomReady: core.APP.DomReady,
-		OnStartup: core.APP.Startup, 
+		OnStartup: core.APP.Startup,
 		Windows: &windows.Options{
 			Theme: windows.Dark,
 		},
 		Mac: &mac.Options{
 			Appearance: mac.NSAppearanceNameDarkAqua,
-		},	
+		},
 	}); err != nil {
 		log.Fatalf("[Error]: %s", err)
 	}

@@ -16,121 +16,109 @@ package core
 
 import (
 	"context"
-	"sync"
+	"sync/atomic"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-type Controller struct {
-	started     bool
-	current     uint64  // smart counter, 0 means work has finished
-
-	cntr_current 	uint32  // progress counter, points to current 
-	cntr_load		uint32 // total amount of load
-
-	worker_pool chan Workers // worker pool
-	fd_pool     chan FD_Pool // fd pool
-
-	done        context.Context
-	cancel 		*context.CancelFunc
-
-	mx sync.RWMutex
-}
-
-type Workers  struct {
+// worker pool
+// its size can be customized on the settings
+// page
+type Workers struct {
 	proxy Proxy
 }
 
+// file descriptor pool
+// which is always a size of 20 concurrent
+// goroutines
 type FD_Pool struct {
-	Proxy     Proxy `json:"proxy"`
+	Proxy     Proxy  `json:"proxy"`
 	Latency   string `json:"latency"`
 	Anonimity string `json:"anonimity"`
 }
 
-func(c *Controller) SetLoad(n uint32) {
-	c.mx.Lock()
-	defer c.mx.Unlock()
 
-	c.cntr_load = n
+// controller for the cooperative pools
+type Controller struct {
+	current uint32
+	load uint32
+
+	cthread int32
+	
+
+	capacity int32
+	worker_pool chan Workers // worker pool
+	fd_pool     chan FD_Pool // fd pool
+
+	done   context.Context     // signal context to know when to exit/cancel
+	cancel *context.CancelFunc // cancel helper for the context, intended for exit, gets invoked explicitly or when task completes
 }
 
-func(c *Controller) Start() {
-	c.mx.Lock()
-	defer c.mx.Unlock()
-
-	c.started = true
+func (c *Controller) ThreadCompletion() {
+	atomic.AddInt32(&c.cthread, 1)
 }
 
-func (c *Controller) Cancel()  {
-	(*c.cancel)()
+func (c *Controller) CurrentThread() int32 {
+	return atomic.LoadInt32(&c.cthread)
 }
 
-func(c *Controller) ShouldStop() <-chan struct{}{
+func (c *Controller) Done() {
+	atomic.AddUint32(&c.current, 1)
+	go runtime.EventsEmit(APP.ctx, Fire_CurrentThread, c.Current())
+}
+
+func (c *Controller) Current() uint32 {
+	return atomic.LoadUint32(&c.current)
+}
+
+func (c *Controller) SetLoad(n uint32) {
+	atomic.StoreUint32(&c.load, n)
+}
+
+func (c *Controller) GetLoad() uint32 {
+	return atomic.LoadUint32(&c.load)
+}
+
+func (c *Controller) ShouldStop() <- chan struct{} {
 	return c.done.Done()
 }
 
-func(c *Controller) Register(ctx context.Context, cancel context.CancelFunc){
-	c.done = ctx
-	c.cancel = &cancel
-}
-
-func (c *Controller) Add(n uint64) {
-	c.mx.Lock()
-	defer c.mx.Unlock()
-
-	c.current += n
-}
-
-func (c *Controller) Done(n uint64) {
-	defer c.mx.Unlock()
-	c.mx.Lock()
-
-	if c.current - n < 0 || c.cntr_current +1 > c.cntr_load { return }
-
-	c.current -= n
-	c.cntr_current += 1
-
-	runtime.EventsEmit(APP.ctx, Fire_CurrentThread, c.cntr_current)
-}
-
-func (c *Controller) Current() uint64 {
-	c.mx.RLock()
-	defer c.mx.RUnlock()
-
-	return c.current
-}
-
-func (c *Controller) DidStart() bool {
-	c.mx.RLock()
-	defer c.mx.RUnlock()
-	
-	return c.started
-}
-
-func(c *Controller) Reset() {
-	c.fd_pool = make(chan FD_Pool, 20)
-	c.worker_pool = make(chan Workers, DefaultPoolSize)
-	c.started = false
-	c.current = 0
-	c.cntr_load = 0
-	c.cntr_current = 0
-
-	c.Register(context.WithCancel(context.Background()))
-}
-
 func (c *Controller) CanExit() {
-	exit := make(chan int)
-
+	done := make(chan int)
 	go func(){
 		for {
-			if c.Current() == 0 {
-				exit <- 1
+			if c.CurrentThread() == atomic.LoadInt32(&c.capacity) {
+				done <- 1
+				return
 			}
 		}
 	}()
 
 	select {
-		case <-exit:
+		case <-done:
 			return
 	}
+}
+
+func (c *Controller) Register(ctx context.Context, cancel context.CancelFunc) {
+	c.done = ctx
+	c.cancel = &cancel
+}
+
+// reset controller state
+func (c *Controller) Reset() {
+	close(c.fd_pool)
+	close(c.worker_pool)
+
+	c.fd_pool = make(chan FD_Pool, 20)
+	c.worker_pool = make(chan Workers, DefaultPoolSize)
+	c.current = 0
+	c.cthread = 0
+
+	// clear fd
+	// FD[InputFile] = nil
+	// FD[SaveFile] = nil
+
+	// register new context and cancel func
+	c.Register(context.WithCancel(context.Background()))
 }

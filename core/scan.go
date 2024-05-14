@@ -17,7 +17,6 @@ package core
 import (
 	"bufio"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"time"
@@ -36,8 +35,6 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 		}
 	}(&err)
 
-
-
 	selection := Proxy(proto)
 
 	// check if given proto is known
@@ -46,130 +43,90 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 		return
 	}
 
-	if MX.DidStart() || MX.Current() != 0  {
+	if MX.CurrentThread() != 0 {
+		fmt.Println("current", MX.cthread)
 		err = ErrOngoingCheck
 		return
 	}
 
 	// Determine if multi protocol scan
 	isMulti := Scheme
-	if proto != "" { isMulti = NoScheme }
+	if proto != "" {
+		isMulti = NoScheme
+	}
 
 	// All proxy files are valid
 	err = FD.Validate(isMulti)
-	if err != nil {return}
-
-	runtime.EventsEmit(APP.ctx, Fire_CheckerTotalLoad, MX.cntr_load)
-	defer MX.Reset()
-
-	checker := &Checker{
-		Scheme: proto,
-		Multi: isMulti,
+	if err != nil {
+		return
 	}
 
+	runtime.EventsEmit(APP.ctx, Fire_CheckerTotalLoad, MX.load)
+
+	MX.Reset()
+	MX.capacity = int32(cap(MX.fd_pool) + cap(MX.worker_pool))
+
+	defer MX.Reset()
+
+
 	// Spawn goroutines for FD pool
-	for range cap(MX.fd_pool) {
-		go func(){
+	for range cap(MX.fd_pool){
+		go func() {
+			defer MX.ThreadCompletion()
+
 			for {
 				select {
-					// Working proxy waiting to be saved
-					case data, ok  := <-MX.fd_pool:
-						if !ok {
-							MX.Done(1)
-						}
-						raw, err := json.Marshal(&data)
-						if err != nil {
-							MX.Done(1)
-							runtime.LogError(APP.ctx, err.Error())
-							return
-						}
-
-						_, err = FD[SaveFile].WriteString(string(raw)+"\n")
-						if err != nil {
-							runtime.LogError(APP.ctx, err.Error())
-						}
-						MX.Done(1)
+				// Working proxy waiting to be saved
+					case <-MX.fd_pool:
+						time.Sleep(time.Second * 1)
+						MX.Done()
 					// Stop signal
 					case <-MX.ShouldStop():
-						MX.Done(1)
 						return // kill goroutine
+					}
+			}
+		}()
+	}
+
+	// Spawn worker pool
+	for range cap(MX.worker_pool) {
+		go func() {
+			defer MX.ThreadCompletion()
+
+			for {
+				select {
+					case <-MX.worker_pool:
+						time.Sleep(time.Second * 1)
+						MX.fd_pool <- FD_Pool{
+							Proxy: Proxy("test"),
+						}
+
+				case <-MX.ShouldStop():
+					return // kill goroutine
 				}
 			}
 		}()
 	}
 
-	// Spawn worker pool 
-	for range cap(MX.worker_pool) {
-		go func ()  {
-			init := false
-			for {
-				select {
-					case msg,ok := <-MX.worker_pool:
-						if !ok {
-							MX.Done(1)
-						}
-						if !init {
-							MX.Start()
-							init = true
-							runtime.EventsEmit(APP.ctx, Fire_CheckerStart)
-						}
 
-						data := FD_Pool{
-							Proxy: msg.proxy,
-						}
-						start := time.Now().UnixMilli()
-						if checker.Scheme == SOCKS4{
-							anon, err := checker.SOCKS4(msg.proxy)
-							if err != nil { 
-								MX.Done(1)
-							} else {
-								data.Anonimity = anon
-								end := time.Now().UnixMilli()
-								latency := fmt.Sprintf("%dms", end - start)
-	
-								data.Latency = latency
-								MX.fd_pool <- data
-							}
-						}
-
-						
-					case <-MX.ShouldStop():
-						MX.Done(1)
-						return // kill goroutine
-				}
-			}	
-		}()
-	}
-	
-	// Push proxies that needs checking
+	// Push proxies that need checking
 	buff := bufio.NewScanner(FD[InputFile])
 	defer FD[InputFile].Seek(0, io.SeekStart)
 
-	go func (){
-		for {
-			time.Sleep(time.Millisecond * 100)
-			if MX.Current() == 0 && MX.DidStart() {
-				MX.Cancel()
-			}
+	for buff.Scan() {
+		MX.worker_pool <- struct{ proxy Proxy }{
+			proxy: Proxy(buff.Text()),
 		}
-	}()
-
-
-	go func (){
-		for buff.Scan() {
-			MX.Add(1)
-	
-			MX.worker_pool <- struct{proxy Proxy}{
-				proxy: Proxy(buff.Text()),
-			}
-		}
-	}()
+	}
 	
 
+
+	time.Sleep(time.Millisecond * 100)
+	runtime.EventsEmit(APP.ctx, Fire_CheckerStart)
 
 	<-MX.ShouldStop()
-	runtime.LogDebug(APP.ctx, "SHOULD STOP")
+	fmt.Println("SHOULD STOP")
 	MX.CanExit()
-	runtime.LogDebug(APP.ctx, "CAN EXIT")
+	fmt.Println("CAN EXIT")
 	runtime.EventsEmit(APP.ctx, Fire_CheckerEnd)
 }

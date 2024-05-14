@@ -75,7 +75,7 @@ func (c *Checker) SOCKS4(proxy Proxy) (anonimity string, err error) {
 	data, err := io.ReadAll(tlsConn)
 	if err != nil {return}
 
-	fmt.Println(string(data))
+	// fmt.Println(string(data))
 	anon := Anonimity(string(data))
 	anonimity = (&anon).GetAnonimity()
 

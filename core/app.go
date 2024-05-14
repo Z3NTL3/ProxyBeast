@@ -37,8 +37,8 @@ type (
 
 	// Event listeners
 	EventListeners struct {
-		Name string
-		Exec func(optionalData ...interface{})
+		Name   string
+		Exec   func(optionalData ...interface{})
 		Cancel func()
 	}
 
@@ -47,11 +47,12 @@ type (
 )
 
 var (
+	// main app instance, global
 	APP = New()
 )
 
 const (
-	SaveFile Operation = "dialog_save_file"
+	SaveFile  Operation = "dialog_save_file"
 	InputFile Operation = "dialog_input_file"
 )
 
@@ -67,7 +68,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
 	MX.Register(context.WithCancel(context.Background()))
-		
+
 	MX.fd_pool = make(chan FD_Pool, 20)
 	MX.worker_pool = make(chan Workers, DefaultPoolSize)
 
@@ -78,16 +79,16 @@ func (a *App) Startup(ctx context.Context) {
 	if err != nil {
 		return
 	}
-	
+
 	// Alias CWD
 	RootDir = cwd
 
 	// If <cwd>/saves is not resolvable, then mkdir.
-	if _, err := os.Stat(path.Join(cwd,"saves")); err != nil || os.IsNotExist(err){
-		if err = os.Mkdir(path.Join(cwd,"saves"), os.ModeDir); err != nil {
+	if _, err := os.Stat(path.Join(cwd, "saves")); err != nil || os.IsNotExist(err) {
+		if err = os.Mkdir(path.Join(cwd, "saves"), os.ModeDir); err != nil {
 			println(err)
 		}
-	} 
+	}
 
 }
 
@@ -97,7 +98,7 @@ func (a *App) DomReady(ctx context.Context) {
 
 	if _, err := os.Stat(
 		path.Join(RootDir, "saves"),
-	); err != nil || os.IsNotExist(err) || RootDir == ""{
+	); err != nil || os.IsNotExist(err) || RootDir == "" {
 		runtime.EventsEmit(a.ctx, Fire_ErrSvdirEvent)
 		return
 	}
@@ -114,7 +115,7 @@ func (a *App) DomReady(ctx context.Context) {
 		{
 			Name: OnDialog,
 			Exec: a.dialog_exec,
-		},{
+		}, {
 			Name: OnStartScan,
 			Exec: func(data ...interface{}) {
 				defer func() {
@@ -130,7 +131,7 @@ func (a *App) DomReady(ctx context.Context) {
 	events.register_eventListeners(a.ctx)
 }
 
-func(a *App) dialog(opts runtime.OpenDialogOptions) (string, error){
+func (a *App) dialog(opts runtime.OpenDialogOptions) (string, error) {
 	return runtime.OpenFileDialog(a.ctx, opts)
 }
 
@@ -143,13 +144,13 @@ func (g *EventGroup) register_eventListeners(ctx context.Context) {
 
 func (a *App) dialog_exec(optionalData ...interface{}) {
 	var err error
-	defer func(err_ *error){
+	defer func(err_ *error) {
 		if *err_ != nil {
 			fmt.Println((*err_).Error())
 			runtime.EventsEmit(a.ctx, Fire_ErrEvent, (*err_).Error())
 		}
 	}(&err)
-	
+
 	props, ok := optionalData[0].(string)
 	if !ok {
 		err = ErrPropsInvalid
@@ -158,18 +159,18 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 
 	opts := runtime.OpenDialogOptions{
 		DefaultDirectory: path.Join(RootDir),
-		Title: "ProxyBeast - File dialog",
+		Title:            "ProxyBeast - File dialog",
 		Filters: []runtime.FileFilter{
 			{
 				DisplayName: "Select file (.txt)",
-				Pattern: "*.txt",
+				Pattern:     "*.txt",
 			},
 		},
 	}
 	if props == SaveFile {
 		opts.DefaultDirectory = path.Join(opts.DefaultDirectory, "saves")
 	}
-	
+
 	loc, err := a.dialog(opts)
 	if err != nil {
 		return
@@ -183,16 +184,14 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 	FD[props].Close()
 	FD[props] = f
 
-	fmt.Println("emit", props)
 	runtime.EventsEmit(a.ctx, props, path.Base(loc))
 }
 
-func(a *App) cancel_scan(...interface{}){
-	fmt.Println("cancel")
-	MX.Cancel()
+func (a *App) cancel_scan(...interface{}) {
+	(*MX.cancel)()
 }
 
-func(a *App) modify_default_timeout(data ...interface{}) {
+func (a *App) modify_default_timeout(data ...interface{}) {
 	timeout, ok := data[0].(string)
 	if !ok {
 		runtime.EventsEmit(APP.ctx, Fire_ErrEvent, ErrTimeoutString)
