@@ -108,6 +108,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 					case proxy := <-c.worker_pool:
 						start := time.Now().UnixMilli()
 
+						//todo
 						level, err := checker.SOCKS4(proxy.proxy)
 						if err != nil { 
 							c.Done()
