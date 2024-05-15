@@ -24,7 +24,7 @@ import (
 // Worker pool
 // Distributed workers that consume their duties from a channel.
 // They check proxies concurrently and when a proxy is valid, it is further sent
-// to the FD_Pool, which is a pool that basically swaves working proxies in the associated
+// to the FD_Pool, which is a pool that basically saves working proxies in the associated
 // FD[SaveFile].
 type Workers struct {
 	proxy Proxy
@@ -33,7 +33,7 @@ type Workers struct {
 // File descriptor pool
 // Please note that this is just a reference to output file.
 // 
-// These workers listen on a channel, which only perceives working proxies.
+// These workers listen on a channel, which only keep track of working proxies.
 // They get saved in the FD[SaveFile]	
 type FD_Pool struct {
 	Proxy     Proxy  `json:"proxy"`
