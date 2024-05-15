@@ -17,6 +17,7 @@ package core
 import (
 	"bufio"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"time"
@@ -43,45 +44,54 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 		return
 	}
 
-	if MX.CurrentThread() != 0 {
-		fmt.Println("current", MX.cthread)
+	// determine if a scan is ongoing
+	if c.CurrentThread() != 0 {
 		err = ErrOngoingCheck
 		return
 	}
 
-	// Determine if multi protocol scan
+	// determine if multi protocol scan
 	isMulti := Scheme
 	if proto != "" {
 		isMulti = NoScheme
 	}
 
-	// All proxy files are valid
+	// validity check
 	err = FD.Validate(isMulti)
 	if err != nil {
 		return
 	}
 
-	runtime.EventsEmit(APP.ctx, Fire_CheckerTotalLoad, MX.load)
+	runtime.EventsEmit(APP.ctx, Fire_CheckerTotalLoad, c.load)
+	c.threads = int32(cap(c.fd_pool) + cap(c.worker_pool))
 
-	MX.Reset()
-	MX.capacity = int32(cap(MX.fd_pool) + cap(MX.worker_pool))
+	defer c.Reset() // reset controller
 
-	defer MX.Reset()
-
+	checker := &Checker{}
 
 	// Spawn goroutines for FD pool
-	for range cap(MX.fd_pool){
+	for range cap(c.fd_pool){
 		go func() {
-			defer MX.ThreadCompletion()
+			defer c.ThreadCompletion()
 
 			for {
 				select {
-				// Working proxy waiting to be saved
-					case <-MX.fd_pool:
-						time.Sleep(time.Second * 1)
+					// Working proxy waiting to be saved
+					case proxy := <-c.fd_pool:
+						raw, err := json.Marshal(&proxy)
+						if err != nil {
+							MX.Done()
+							return
+						}
+
+						if _, err = FD[SaveFile].WriteString(string(raw) + "\n"); err != nil {
+							// TODO
+						}
+
 						MX.Done()
+
 					// Stop signal
-					case <-MX.ShouldStop():
+					case <-c.ShouldStop():
 						return // kill goroutine
 					}
 			}
@@ -89,44 +99,63 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 	}
 
 	// Spawn worker pool
-	for range cap(MX.worker_pool) {
+	for range cap(c.worker_pool) {
 		go func() {
-			defer MX.ThreadCompletion()
+			defer c.ThreadCompletion()
 
 			for {
 				select {
-					case <-MX.worker_pool:
-						time.Sleep(time.Second * 1)
-						MX.fd_pool <- FD_Pool{
-							Proxy: Proxy("test"),
+					case proxy := <-c.worker_pool:
+						start := time.Now().UnixMilli()
+
+						level, err := checker.SOCKS4(proxy.proxy)
+						if err != nil { 
+							MX.Done()
+							continue
 						}
 
-				case <-MX.ShouldStop():
-					return // kill goroutine
+						latency := fmt.Sprintf("%dms", time.Now().UnixMilli() - start)
+						go func(){
+							defer func ()  {
+								recover()	
+							}()
+							c.fd_pool <- FD_Pool{
+								Proxy: Proxy("test"),
+								Latency: latency,
+								Anonimity: level,
+							}
+						}()
+						
+					case <-c.ShouldStop():
+						return // kill goroutine
 				}
 			}
 		}()
 	}
 
+	go func(){
+		defer (*c.cancel)()
+		for {
+			if c.Current() == c.GetLoad() {
+				return
+			}
+		}
+	}()
 
 	// Push proxies that need checking
 	buff := bufio.NewScanner(FD[InputFile])
-	defer FD[InputFile].Seek(0, io.SeekStart)
+	defer FD[InputFile].Seek(0, io.SeekStart) // go back to offset 0 
 
 	for buff.Scan() {
-		MX.worker_pool <- struct{ proxy Proxy }{
+		c.worker_pool <- struct{ proxy Proxy }{
 			proxy: Proxy(buff.Text()),
 		}
 	}
-	
 
-
-	time.Sleep(time.Millisecond * 100)
 	runtime.EventsEmit(APP.ctx, Fire_CheckerStart)
 
-	<-MX.ShouldStop()
-	fmt.Println("SHOULD STOP")
-	MX.CanExit()
-	fmt.Println("CAN EXIT")
+	<-c.ShouldStop()
+	c.CanExit()
+
 	runtime.EventsEmit(APP.ctx, Fire_CheckerEnd)
 }
