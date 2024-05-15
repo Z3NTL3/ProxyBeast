@@ -80,16 +80,16 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 					case proxy := <-c.fd_pool:
 						raw, err := json.Marshal(&proxy)
 						if err != nil {
-							MX.Done()
+							c.Abort(err) // fatal
 							return
 						}
 
 						if _, err = FD[SaveFile].WriteString(string(raw) + "\n"); err != nil {
-							// TODO
+							c.Abort(err) // fatal
+							return
 						}
 
-						MX.Done()
-
+						c.Done()
 					// Stop signal
 					case <-c.ShouldStop():
 						return // kill goroutine
@@ -110,7 +110,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 
 						level, err := checker.SOCKS4(proxy.proxy)
 						if err != nil { 
-							MX.Done()
+							c.Done()
 							continue
 						}
 

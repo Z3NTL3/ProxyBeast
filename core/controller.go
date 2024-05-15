@@ -16,6 +16,7 @@ package core
 
 import (
 	"context"
+	"fmt"
 	"sync/atomic"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -48,6 +49,7 @@ type Controller struct {
 	current uint32 // progress
 	load uint32 // total work	
 	threads int32 // amount of threads active
+	abort int32 
 	
 	worker_pool chan Workers // worker pool aka the pool that consumes proxy sent to it from a distributed channel and starts checking
 	fd_pool     chan FD_Pool // fd pool aka file descriptor pool for associated files, it consumes good proxies from its channel and saves them in the FD[SaveFile]
@@ -93,6 +95,22 @@ func (c *Controller) ShouldStop() <- chan struct{} {
 	return c.done.Done()
 }
 
+
+// Signals abort due to fatal error
+func (c *Controller) Abort(err error) {
+	(*c.cancel)()
+
+	if atomic.LoadInt32(&c.abort) != 1 {
+		go runtime.EventsEmit(
+			APP.ctx, 
+			Fire_ErrEvent, 
+			fmt.Sprintf("[ERROR] Aborting due: %s", err.Error()),
+		)
+
+		atomic.StoreInt32(&c.abort, 1)
+	}
+}
+
 // Signals exit, when all goroutines are shutdown
 func (c *Controller) CanExit() {
 	done := make(chan int)
@@ -123,6 +141,7 @@ func (c *Controller) Reset() {
 	c.worker_pool = make(chan Workers, DefaultPoolSize)
 	c.current = 0
 	c.threads = 0
+	c.abort = 0
 
 	// clear fd
 	//FD[InputFile] = nil
