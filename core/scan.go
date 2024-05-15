@@ -116,9 +116,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 
 						latency := fmt.Sprintf("%dms", time.Now().UnixMilli() - start)
 						go func(){
-							defer func ()  {
-								recover()	
-							}()
+							defer recover()
 							c.fd_pool <- FD_Pool{
 								Proxy: Proxy("test"),
 								Latency: latency,
