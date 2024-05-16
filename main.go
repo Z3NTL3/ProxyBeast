@@ -41,7 +41,7 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets, // Webview2 assets
 		},
-		Bind: []any{ // Porting vanilla Go to JS
+		Bind: []any{ // Porting vanilla Go <-> JS runtimes
 			core.APP, // core app instance
 		},
 		DisableResize: true, // Do not allow shrink/expanding window

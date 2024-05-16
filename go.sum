@@ -59,6 +59,8 @@ github.com/wailsapp/wails/v2 v2.8.1 h1:KAudNjlFaiXnDfFEfSNoLoibJ1ovoutSrJ8poerTP
 github.com/wailsapp/wails/v2 v2.8.1/go.mod h1:EFUGWkUX3KofO4fmKR/GmsLy3HhPH7NbyOEaMt8lBF0=
 github.com/z3ntl3/socks v1.0.0 h1:MZdxiIxJU5ys091KW99HNqVYemRktR8CXidUcz/kMgw=
 github.com/z3ntl3/socks v1.0.0/go.mod h1:wU/njj3H8sj4CjENt4DsMccv5VZkH6c8VnPxtexIOg0=
+github.com/z3ntl3/socks v1.6.0 h1:/4Rj5/7vF3gDvmg7VX/NyM7ygB1mUAkR55vEfF46M3E=
+github.com/z3ntl3/socks v1.6.0/go.mod h1:wU/njj3H8sj4CjENt4DsMccv5VZkH6c8VnPxtexIOg0=
 golang.org/x/crypto v0.23.0 h1:dIJU/v2J8Mdglj/8rJ6UUOM3Zc9zLZxVZwwxMooUSAI=
 golang.org/x/crypto v0.23.0/go.mod h1:CKFgDieR+mRhux2Lsu27y0fO304Db0wZe70UKqHu0v8=
 golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 h1:vr/HnozRka3pE4EsMEg1lgkXJkTFJCVUX+S/ZT6wYzM=

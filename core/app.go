@@ -94,7 +94,7 @@ func (a *App) Startup(ctx context.Context) {
 	AppSettings.Init()
 
 	MX.fd_pool = make(chan FD_Pool, 20)
-	MX.worker_pool = make(chan Workers, AppSettings.Pool.Workers.Size)
+	MX.worker_pool = make(chan Workers, AppSettings.Store.Pool.Workers.Size)
 
 	MX.Register(context.WithCancel(context.Background()))
 }

@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	github.com/wailsapp/wails/v2 v2.8.1
-	github.com/z3ntl3/socks v1.0.0
+	github.com/z3ntl3/socks v1.6.0
 )
 
 require (

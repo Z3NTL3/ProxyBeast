@@ -79,16 +79,11 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 					// Working proxy waiting to be saved
 					case proxy := <-c.fd_pool:
 						raw, err := json.Marshal(&proxy)
-						if err != nil {
+						if err != nil || len(raw) == 0{
 							c.Abort(err) // fatal
 							return
 						}
-
-						if len(raw) == 0 {
-							c.Abort(err) // fatal
-							return
-						}
-
+						
 						if _, err = FD[SaveFile].WriteString(string(raw) + "\n"); err != nil {
 							c.Abort(err) // fatal
 							return

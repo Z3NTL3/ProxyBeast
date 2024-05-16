@@ -45,7 +45,7 @@ func(p *Proxy) IsValid(hasScheme bool) bool {
 	}
 
 	return slices.Contains(
-		[]string{SOCKS4}, 
+		[]string{SOCKS4, SOCKS5, HTTP, HTTPS}, 
 		strings.ToLower(strings.Split(string(*p), "://")[0]),
 	)
 }

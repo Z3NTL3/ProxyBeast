@@ -23,6 +23,7 @@ const (
 	Fire_CheckerStart Operation = "checker_start"
 	Fire_CheckerEnd Operation = "checker_end"
 	Fire_CurrentThread Operation = "current_thread"
+	Fire_FatalError Operation = "fatal_error"
 
 	// go runtime event listeners
 	OnStartScan Operation = "scan"

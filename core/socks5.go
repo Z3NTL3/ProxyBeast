@@ -22,14 +22,13 @@ import (
 	"net"
 	"net/url"
 	"strconv"
-	"time"
 
 	socks "github.com/z3ntl3/socks/client"
 )
 
-func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
-	if !c.Multi || c.Scheme == SOCKS4 {
-		proxy = Proxy(fmt.Sprintf("%s://%s", SOCKS4, proxy))
+func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
+	if !c.Multi || c.Scheme == SOCKS5 {
+		proxy = Proxy(fmt.Sprintf("%s://%s", SOCKS5, proxy))
 	}
 
 	uri, err := url.Parse(string(proxy))
@@ -49,7 +48,7 @@ func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
 
 	targetCtx := socks.Context{
 		Resolver: net.ParseIP(addr[0]),
-		Port:     443,
+		Port:     80,
 	}
 
 	proxyCtx := socks.Context{
@@ -57,9 +56,16 @@ func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
 		Port:     port,
 	}
 
-	client, err := socks.New(&socks.Socks4Client{}, targetCtx, proxyCtx)
+	client, err := socks.New(&socks.Socks5Client{}, targetCtx, proxyCtx)
 	if err != nil {
 		return
+	}
+
+	if uri.User != nil {
+		client.Auth.Username = uri.User.Username()
+		if passwd, canUse := uri.User.Password(); canUse {
+			client.Auth.Password = passwd
+		}
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), AppSettings.Store.Timeout)
@@ -75,8 +81,6 @@ func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
 	tlsConn := tls.Client(client, &tls.Config{
 		InsecureSkipVerify: true,
 	})
-
-	tlsConn.SetDeadline(time.Now().Add(DefaultTimeout))
 
 	if _, err = tlsConn.Write(
 		[]byte(
