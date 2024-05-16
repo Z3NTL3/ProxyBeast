@@ -51,7 +51,7 @@ func (fs *Filesystem) Validate(scheme bool) (err error) {
 		proxy := Proxy(buff.Text())
 		if !(&proxy).IsValid(scheme) {
 			err = ErrInvalidProxyURI
-			break
+			return
 		}
 		load++
 	}

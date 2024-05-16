@@ -67,7 +67,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 
 	defer c.Reset() // reset controller
 
-	checker := &Checker{}
+	checker := &CheckerCtx{}
 
 	// Spawn goroutines for FD pool
 	for range cap(c.fd_pool){
@@ -80,6 +80,11 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 					case proxy := <-c.fd_pool:
 						raw, err := json.Marshal(&proxy)
 						if err != nil {
+							c.Abort(err) // fatal
+							return
+						}
+
+						if len(raw) == 0 {
 							c.Abort(err) // fatal
 							return
 						}
@@ -117,9 +122,23 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 
 						latency := fmt.Sprintf("%dms", time.Now().UnixMilli() - start)
 						go func(){
-							defer recover()
+							// GODOC: If recover is called outside the deferred function it will not stop a panicking sequence.
+							// so defer recover() - doesnt work has to be wrapped around a function
+							defer func(){
+								recover()
+
+								// recover here is required, early cancellation signal
+								// will close the channel, sents to closed channel panic
+								// to perceive that state and continue from it, it is required
+								// to handle in special way
+							}()
+
+							// on shut down, sents to channels will block.
+							// on duty, sents to channel will block if the
+							// channel's buffer is full, running in goroutine
+							// ensures no blocks.
 							c.fd_pool <- FD_Pool{
-								Proxy: Proxy("test"),
+								Proxy: proxy.proxy,
 								Latency: latency,
 								Anonimity: level,
 							}
@@ -133,7 +152,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 	}
 
 	go func(){
-		defer (*c.cancel)()
+		defer c.Cancel()
 		for {
 			if c.Current() == c.GetLoad() {
 				return

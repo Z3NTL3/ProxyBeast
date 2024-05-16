@@ -188,7 +188,7 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 }
 
 func (a *App) cancel_scan(...interface{}) {
-	(*MX.cancel)()
+	MX.Cancel()
 }
 
 func (a *App) modify_default_timeout(data ...interface{}) {

@@ -13,25 +13,25 @@ import (
 	socks "github.com/z3ntl3/socks/client"
 )
 
-type Checker struct {
-	Scheme string
-	Multi  bool
-}
-
-// todo nothing final here
-func (c *Checker) SOCKS4(proxy Proxy) (anonimity string, err error) {
-	if !c.Multi  || c.Scheme == "socks4" {
+func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
+	if !c.Multi || c.Scheme == "socks4" {
 		proxy = Proxy(fmt.Sprintf("socks4://%s", proxy))
 	}
 
 	uri, err := url.Parse(string(proxy))
-	if err != nil {return}
+	if err != nil {
+		return
+	}
 
 	port, err := strconv.Atoi(uri.Port())
-	if err != nil {return}
+	if err != nil {
+		return
+	}
 
 	addr, err := socks.LookupHost(JUDGE)
-	if err != nil {return}
+	if err != nil {
+		return
+	}
 
 	targetCtx := socks.Context{
 		Resolver: net.ParseIP(addr[0]),
@@ -73,9 +73,10 @@ func (c *Checker) SOCKS4(proxy Proxy) (anonimity string, err error) {
 	}
 
 	data, err := io.ReadAll(tlsConn)
-	if err != nil {return}
+	if err != nil {
+		return
+	}
 
-	// fmt.Println(string(data))
 	anon := Anonimity(string(data))
 	anonimity = (&anon).GetAnonimity()
 

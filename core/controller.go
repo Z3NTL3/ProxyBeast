@@ -71,8 +71,12 @@ func (c *Controller) CurrentThread() int32 {
 
 // Signals completion when one operation in a thread completes
 func (c *Controller) Done() {
-	atomic.AddUint32(&c.current, 1)
-	go runtime.EventsEmit(APP.ctx, Fire_CurrentThread, c.Current())
+	current := c.Current()
+
+	if current + 1 <= c.GetLoad() {
+		atomic.AddUint32(&c.current, 1)
+		runtime.EventsEmit(APP.ctx, Fire_CurrentThread, c.Current())
+	}
 }
 
 // Current position {current/total_load}
@@ -111,7 +115,7 @@ func (c *Controller) Abort(err error) {
 	}
 }
 
-// Signals exit, when all goroutines are shutdown
+// Signals exit, when all goroutines are shut down
 func (c *Controller) CanExit() {
 	done := make(chan int)
 	go func(){
@@ -129,6 +133,17 @@ func (c *Controller) CanExit() {
 	}
 }
 
+// Cancels all threads, signals shut down
+func (c *Controller) Cancel() {
+	defer func(){
+		recover()
+	}()
+	(*c.cancel)()
+
+	close(c.fd_pool)
+	close(c.worker_pool)
+}
+
 // Initiazes new context and associated cancel
 func (c *Controller) Register(ctx context.Context, cancel context.CancelFunc) {
 	c.done = ctx
@@ -142,10 +157,6 @@ func (c *Controller) Reset() {
 	c.current = 0
 	c.threads = 0
 	c.abort = 0
-
-	// clear fd
-	//FD[InputFile] = nil
-	//FD[SaveFile] = nil
 
 	// register new context and cancel func
 	c.Register(context.WithCancel(context.Background()))

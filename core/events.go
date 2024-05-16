@@ -27,6 +27,6 @@ const (
 	// go runtime event listeners
 	OnStartScan Operation = "scan"
 	OnDialog    Operation = "dialog"
-	OnSettingsModifyTimeout Operation = "modify_timeout" //todo
-	OnCancelScan Operation = "cancel_scan" //todo
+	OnSettingsModifyTimeout Operation = "modify_timeout" 
+	OnCancelScan Operation = "cancel_scan" 
 )
