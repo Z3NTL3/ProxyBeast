@@ -1,4 +1,5 @@
 /*
+
      ProxyBeast GUI
 
 The ultimate proxy checker
@@ -7,7 +8,7 @@ The ultimate proxy checker
     [proxy.pix4.dev]
 
 License: GNU
-Note: Please do give us a star on Github, if you like ProxyBeast
+Note: If you've liked ProxyBeast, please consider starring our Github repository.
 
 [App core]
 */

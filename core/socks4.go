@@ -1,3 +1,17 @@
+/*
+	ProxyBeast GUI
+
+The ultimate proxy checker
+
+	   by @z3ntl3
+
+	[proxy.pix4.dev]
+
+License: GNU
+Note: If you've liked ProxyBeast, please consider starring our Github repository.
+
+[App core]
+*/
 package core
 
 import (
@@ -48,7 +62,7 @@ func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), DefaultTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), AppSettings.Store.Timeout)
 	defer cancel()
 
 	if err = socks.Connect(client, ctx); err != nil {

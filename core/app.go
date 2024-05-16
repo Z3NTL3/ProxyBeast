@@ -1,5 +1,4 @@
 /*
-/*
 
      ProxyBeast GUI
 
@@ -9,7 +8,7 @@ The ultimate proxy checker
     [proxy.pix4.dev]
 
 License: GNU
-Note: Please do give us a star on Github, if you like ProxyBeast
+Note: If you've liked ProxyBeast, please consider starring our Github repository.
 
 [App core]
 */
@@ -65,13 +64,15 @@ func (a *App) GetCtx() context.Context {
 }
 
 func (a *App) Startup(ctx context.Context) {
+	var err error 
+	defer func(err_ *error) {
+		// fatal
+		if *err_ != nil {
+			runtime.EventsEmit(a.ctx, Fire_FatalError, (*err_).Error())
+		}
+	}(&err)
+	
 	a.ctx = ctx
-
-	MX.Register(context.WithCancel(context.Background()))
-
-	MX.fd_pool = make(chan FD_Pool, 20)
-	MX.worker_pool = make(chan Workers, DefaultPoolSize)
-
 	runtime.WindowCenter(ctx)
 
 	// Obtain current working directory
@@ -83,13 +84,19 @@ func (a *App) Startup(ctx context.Context) {
 	// Alias CWD
 	RootDir = cwd
 
-	// If <cwd>/saves is not resolvable, then mkdir.
+	// If <cwd>/saves is not resolvable, then try to mkdir.
 	if _, err := os.Stat(path.Join(cwd, "saves")); err != nil || os.IsNotExist(err) {
 		if err = os.Mkdir(path.Join(cwd, "saves"), os.ModeDir); err != nil {
-			println(err)
+			return // fatal
 		}
 	}
 
+	AppSettings.Init()
+
+	MX.fd_pool = make(chan FD_Pool, 20)
+	MX.worker_pool = make(chan Workers, AppSettings.Pool.Workers.Size)
+
+	MX.Register(context.WithCancel(context.Background()))
 }
 
 // Triggers when all resources are loaded
