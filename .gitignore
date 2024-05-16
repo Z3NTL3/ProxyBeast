@@ -2,5 +2,3 @@ build/bin
 node_modules
 frontend/dist
 frontend
-checker.go
-backup.txt
