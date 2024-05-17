@@ -3,8 +3,8 @@ module ProxyBeast
 go 1.22.2
 
 require (
+	github.com/Z3NTL3/proxifier v1.7.0
 	github.com/wailsapp/wails/v2 v2.8.1
-	github.com/z3ntl3/socks v1.6.0
 )
 
 require (

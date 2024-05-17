@@ -15,7 +15,12 @@ Note: If you've liked ProxyBeast, please consider starring our Github repository
 
 package core
 
-import "time"
+import (
+	"fmt"
+	"net/url"
+	"os"
+	"time"
+)
 
 type Settings struct {
 	Settings ApplicationSettings
@@ -23,6 +28,7 @@ type Settings struct {
 
 type ApplicationSettings struct {
 	Store struct {
+		Judge *url.URL `json:"judge"`
 		Timeout time.Duration `json:"timeout"`
 		AllTime struct { 
 			Scans uint64 `json:"scans"`
@@ -40,7 +46,24 @@ type ApplicationSettings struct {
 
 var AppSettings *ApplicationSettings = &ApplicationSettings{}
 
-func (app *ApplicationSettings) Init() {
-	app.Store.Pool.Workers.Size = DefaultPoolSize
-	app.Store.Timeout = DefaultTimeout
+func (app *ApplicationSettings) Init() (err error) {
+	uri, err := url.Parse(DefaultJudge)
+	if err != nil { return }
+	{
+		app.Store.Judge = uri
+		app.Store.Pool.Workers.Size = DefaultPoolSize
+		app.Store.Timeout = DefaultTimeout
+	}
+
+	app, err = app.GetStore()
+	return 
+}
+
+func (app *ApplicationSettings) GetStore() (settings *ApplicationSettings, err error) {
+	cwd, err := os.Getwd()
+	if err != nil {return}
+
+	fmt.Println(cwd)
+
+	return
 }

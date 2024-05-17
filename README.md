@@ -76,7 +76,7 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 Find an answer to most of your questions here. If it is not covered ask in [Discord](#todo).
 
 * #### What do you mean with "zero dependency"
-    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for most of it's networking requirements. Which is a native module and uses zero third party dependencies.
+    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and uses zero third party dependencies.
     
     > **SOCKS**<br>
     A module/library that is especially written to be ported with ProxyBeast, built by our maintainers.<br>

@@ -23,7 +23,7 @@ import (
 	"net/url"
 	"strconv"
 
-	socks "github.com/z3ntl3/socks/client"
+	"github.com/Z3NTL3/proxifier"
 )
 
 func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
@@ -41,28 +41,30 @@ func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
 		return
 	}
 
-	addr, err := socks.LookupHost(JUDGE)
+	addr, err := proxifier.LookupHost(AppSettings.Store.Judge.Hostname())
 	if err != nil {
 		return
 	}
 
-	targetCtx := socks.Context{
+	targetCtx := proxifier.Context{
 		Resolver: net.ParseIP(addr[0]),
-		Port:     80,
+		Port:     443,
 	}
 
-	proxyCtx := socks.Context{
+	proxyCtx := proxifier.Context{
 		Resolver: net.ParseIP(uri.Hostname()),
 		Port:     port,
 	}
 
-	client, err := socks.New(&socks.Socks5Client{}, targetCtx, proxyCtx)
+	client, err := proxifier.New(&proxifier.Socks5Client{}, targetCtx, proxyCtx)
 	if err != nil {
 		return
 	}
 
 	if uri.User != nil {
-		client.Auth.Username = uri.User.Username()
+		if username := uri.User.Username(); username != "" {
+			client.Auth.Username = username
+		}
 		if passwd, canUse := uri.User.Password(); canUse {
 			client.Auth.Password = passwd
 		}
@@ -71,7 +73,7 @@ func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), AppSettings.Store.Timeout)
 	defer cancel()
 
-	if err = socks.Connect(client, ctx); err != nil {
+	if err = proxifier.Connect(client, ctx); err != nil {
 		return
 	}
 
@@ -84,7 +86,9 @@ func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
 
 	if _, err = tlsConn.Write(
 		[]byte(
-			fmt.Sprintf("GET /judge.php HTTP/1.1\r\nHost: %s\r\nConnection: close\r\n\r\n", JUDGE),
+			fmt.Sprintf("GET /%s HTTP/1.1\r\nHost: %s\r\nConnection: close\r\n\r\n",
+			AppSettings.Store.Judge.Path,
+			AppSettings.Store.Judge.Hostname()),
 		),
 	); err != nil {
 		return

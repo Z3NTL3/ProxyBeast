@@ -25,6 +25,5 @@ var (
      
      DefaultTimeout time.Duration = time.Duration(time.Second * 8)
      DefaultPoolSize uint32 = 10_000
+     DefaultJudge string = "pool.proxyspace.pro"
 )
-
-const JUDGE = "pool.proxyspace.pro"
