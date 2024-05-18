@@ -48,7 +48,7 @@ and advanced capabilities.
 
 ### Get Started
 
-We are very happy regarding your interest in ProxyBeast. This guide is dedicated
+We are very happy regards your interest in ProxyBeast. This guide is dedicated
 to help you install Proxybeast. 
 
 Do not worry, our software is ease of use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](#todo) channel.
@@ -57,7 +57,9 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 
 - ### Installation
     
-    There are two possible ways to install our software. To build from stratch yourself, using ``Go`` tools. Or to install from a packaged installer.
+    There are two possible ways to install our software. To build from scratch, using ``Go`` tools. Or to install from a packaged installer.
+
+    #### Precompiled installers and or executables
 
     | Platform      | File | Type |
     | ----------- | ----------- | ----------- |
@@ -65,6 +67,56 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
     | Linux   | [File]()        | Executable |
     | MacOS   | [File]()        | Executable |
 
+    #### Build from scratch
+
+    We assume you already have Go and it's toolchains installed. If not, follow the steps on this article.
+    > [Install Go](https://go.dev/doc/installhttps://go.dev/doc/install)
+
+    ##### Clone this repository
+    We use GIT to clone this repo. This should download ProxyBeast in the current working folder. 
+    ```
+    git clone https://github.com/Z3NTL3/ProxyBeast
+    ```
+
+    ##### Navigate into ProxyBeast workspace
+    In the previous step we did install ProxyBeast. Now let's navigate into the workspace folder.
+    ```
+    cd ProxyBeast
+    ```
+
+    ##### Building
+    
+    For building, it is essential to first install all dependencies. To do so, execute the following.
+    > We assume that you are located in the ProxyBeast workspace, as of the previous step.
+    ```
+    go get .
+    ```
+
+    - ##### Installating required tools
+    First we need to install Wails. For this execute the following command.
+    ```
+    go install github.com/wailsapp/wails/v2/cmd/wails@latest
+    ```
+    > - **Important note**<br>
+    > You require to have NPM installed. Which fits with Node.js. To install follow given directions here
+    > [Install](https://nodejs.org/en)
+
+    - ##### Validating tools
+    To validate that you're all set, execute the following command. If everything seems OK, go further with the last procedures.
+    ```
+    wails doctor
+    ```
+    - ##### Building 
+    To build a binary (generating executables from source) execute the following:
+    ```
+    wails build
+    ```
+    > **NOTE**
+    > If you want to build an executable with GUI and a terminal for logs, execute the following command instead:
+    > ```
+    > wails build -windowsconsole
+    >```
+<br>
 > [!WARNING]
 > Currently we do only support a packaged installer for Windows. For Linux and MacOS 
 > you may adhere to install an executable, which we already have compiled for you.

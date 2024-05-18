@@ -28,10 +28,10 @@ type Settings struct {
 
 type ApplicationSettings struct {
 	Store struct {
-		Judge *url.URL `json:"judge"`
+		Judge   *url.URL      `json:"judge"`
 		Timeout time.Duration `json:"timeout"`
-		AllTime struct { 
-			Scans uint64 `json:"scans"`
+		AllTime struct {
+			Scans   uint64 `json:"scans"`
 			Proxies uint64 `json:"proxies"`
 		} `json:"all_time"`
 
@@ -41,14 +41,15 @@ type ApplicationSettings struct {
 			} `json:"workers"`
 		} `json:"pool"`
 	}
-	
 }
 
 var AppSettings *ApplicationSettings = &ApplicationSettings{}
 
 func (app *ApplicationSettings) Init() (err error) {
 	uri, err := url.Parse(DefaultJudge)
-	if err != nil { return }
+	if err != nil {
+		return
+	}
 	{
 		app.Store.Judge = uri
 		app.Store.Pool.Workers.Size = DefaultPoolSize
@@ -56,12 +57,14 @@ func (app *ApplicationSettings) Init() (err error) {
 	}
 
 	app, err = app.GetStore()
-	return 
+	return
 }
 
 func (app *ApplicationSettings) GetStore() (settings *ApplicationSettings, err error) {
 	cwd, err := os.Getwd()
-	if err != nil {return}
+	if err != nil {
+		return
+	}
 
 	fmt.Println(cwd)
 
