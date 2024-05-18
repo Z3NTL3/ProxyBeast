@@ -84,7 +84,7 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
     cd ProxyBeast
     ```
 
-    ##### Building
+    ### Building
     
     For building, it is essential to first install all dependencies. To do so, execute the following.
     > We assume that you are located in the ProxyBeast workspace, as of the previous step.
@@ -106,17 +106,20 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
     ```
     wails doctor
     ```
-    - ##### Building 
+    - ##### Final step 
     To build a binary (generating executables from source) execute the following:
     ```
     wails build
     ```
-    > **NOTE**
+    > **NOTE**<br>
     > If you want to build an executable with GUI and a terminal for logs, execute the following command instead:
     > ```
     > wails build -windowsconsole
     >```
+    > Console attached to build only wroks on Windows
+
 <br>
+
 > [!WARNING]
 > Currently we do only support a packaged installer for Windows. For Linux and MacOS 
 > you may adhere to install an executable, which we already have compiled for you.
