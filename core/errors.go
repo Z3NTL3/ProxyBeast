@@ -26,5 +26,6 @@ var (
 	ErrOngoingCheck    = errors.New("There's already an ongoing check")
 	ErrNoProxiesFound  = errors.New("There are no proxies detected in your file")
 	ErrBadProxy        = errors.New("Bad proxy")
+	ErrUnknownProtocol = errors.New("Unknown protocol")
 	ErrTimeoutString   = errors.New("Timeout can only be like a duration string like 10s/5s/1000ms etc")
 )

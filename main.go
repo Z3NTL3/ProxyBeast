@@ -17,9 +17,7 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"log"
-	"os"
 
 	"ProxyBeast/core"
 
@@ -34,10 +32,6 @@ import (
 var assets embed.FS
 
 func main() {
-
-	fmt.Println(core.AppSettings.Init())
-
-	os.Exit(-1)
 	// App configuration
 	if err := wails.Run(&options.App{
 		Title:  "ProxyBeast", // Window title

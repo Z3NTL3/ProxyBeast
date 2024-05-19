@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"time"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -199,17 +198,25 @@ func (a *App) cancel_scan(...interface{}) {
 }
 
 func (a *App) modify_default_timeout(data ...interface{}) {
+	var err error
+	
+	defer func(err_ *error){
+		if *err_ != nil {
+			runtime.EventsEmit(APP.ctx, Fire_ErrEvent, (*err_).Error())
+		}
+	}(&err)
+
 	timeout, ok := data[0].(string)
 	if !ok {
-		runtime.EventsEmit(APP.ctx, Fire_ErrEvent, ErrTimeoutString)
+		err = ErrTimeoutString
 		return
 	}
 
-	time, err := time.ParseDuration(timeout)
-	if err != nil {
-		runtime.EventsEmit(APP.ctx, Fire_ErrEvent, err.Error())
+	if err = AppSettings.SetTimeout(timeout); err != nil {
 		return
 	}
 
-	DefaultTimeout = time
+	if err = AppSettings.Patch(); err != nil {
+		return
+	}
 }

@@ -33,7 +33,7 @@ func OpenFileRDO(loc string) (*os.File, error) {
 	return os.OpenFile(loc, os.O_APPEND, os.ModeAppend)
 }
 
-func (fs *Filesystem) Validate(scheme bool) (err error) {
+func (fs *Filesystem) Validate() (err error) {
 	defer func(){
 		if err != ErrFDNil {
 			(*fs)[InputFile].Seek(0, io.SeekStart)
@@ -49,7 +49,7 @@ func (fs *Filesystem) Validate(scheme bool) (err error) {
 	load := 0
 	for buff.Scan() {
 		proxy := Proxy(buff.Text())
-		if !(&proxy).IsValid(scheme) {
+		if !(&proxy).IsValid() {
 			err = ErrInvalidProxyURI
 			return
 		}

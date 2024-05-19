@@ -23,7 +23,8 @@ var (
      RootDir CWD
      MX *Controller = &Controller{}
      
-     DefaultTimeout time.Duration = time.Duration(time.Second * 8)
+     DefaultTimeout time.Duration = time.Second * 8
      DefaultPoolSize uint32 = 10_000
-     DefaultJudge string = "pool.proxyspace.pro"
+     DefaultJudge string = "https://pool.proxyspace.pro/judge.php"
+     DefaultConfigFile string = "config.json"
 )

@@ -39,6 +39,7 @@ type Workers struct {
 // They get saved in the FD[SaveFile]	
 type FD_Pool struct {
 	Proxy     Proxy  `json:"proxy"`
+	Protocol  string `json:"protocol"`
 	Latency   string `json:"latency"`
 	Anonimity string `json:"anonimity"`
 }
@@ -154,7 +155,7 @@ func (c *Controller) Register(ctx context.Context, cancel context.CancelFunc) {
 // Resets controller state
 func (c *Controller) Reset() {
 	c.fd_pool = make(chan FD_Pool, 20)
-	c.worker_pool = make(chan Workers, DefaultPoolSize)
+	c.worker_pool = make(chan Workers, AppSettings.Store.Pool.Workers.Size)
 	c.current = 0
 	c.threads = 0
 	c.abort = 0

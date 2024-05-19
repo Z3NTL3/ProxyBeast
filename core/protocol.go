@@ -18,7 +18,6 @@ package core
 import (
 	"fmt"
 	"regexp"
-	"slices"
 	"strings"
 )
 
@@ -31,24 +30,17 @@ const (
 	SOCKS5 string = "socks5"
 	HTTP   string = "http"
 	HTTPS  string = "https"
-	NoScheme bool = false
-	Scheme bool = true
+	Multi string = "multi"
 )
 
 var (
-	IP_PORT = regexp.MustCompile(`^\b(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}\b$`)
+	PROXY_URI = regexp.MustCompile(`^(?:(\w+):\/\/)?(?:([\w%]+)(?::([\w%]+))?@)?((?:\d{1,3}\.){3}\d{1,3}:\d+)$`)
 )
 
-func(p *Proxy) IsValid(hasScheme bool) bool {
-	if !hasScheme {
-		return IP_PORT.MatchString(string(*p))
-	}
-
-	return slices.Contains(
-		[]string{SOCKS4, SOCKS5, HTTP, HTTPS}, 
-		strings.ToLower(strings.Split(string(*p), "://")[0]),
-	)
+func(p *Proxy) IsValid() bool {
+	return PROXY_URI.MatchString(string(*p))
 }
+
 
 func (p *Proxy) IsSOCKS4() bool {
 	return p.protocol(SOCKS4)

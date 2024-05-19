@@ -28,7 +28,7 @@ import (
 )
 
 func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
-	if !c.Multi || c.Scheme == SOCKS4 {
+	if !proxy.IsSOCKS4(){
 		proxy = Proxy(fmt.Sprintf("%s://%s", SOCKS4, proxy))
 	}
 
@@ -62,10 +62,14 @@ func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), AppSettings.Store.Timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), DefaultTimeout)
 	defer cancel()
 
 	if err = proxifier.Connect(client, ctx); err != nil {
+		return
+	}
+
+	if err = client.SetDeadline(time.Now().Add(DefaultTimeout)); err != nil {
 		return
 	}
 
@@ -75,8 +79,6 @@ func (c *CheckerCtx) SOCKS4(proxy Proxy) (anonimity string, err error) {
 	tlsConn := tls.Client(client, &tls.Config{
 		InsecureSkipVerify: true,
 	})
-
-	tlsConn.SetDeadline(time.Now().Add(DefaultTimeout))
 
 	if _, err = tlsConn.Write(
 		[]byte(

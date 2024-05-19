@@ -18,9 +18,7 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
-	"time"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -36,28 +34,14 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 		}
 	}(&err)
 
-	selection := Proxy(proto)
-
-	// check if given proto is known
-	if selection != "" && !(&selection).IsValid(Scheme) {
-		runtime.EventsEmit(APP.ctx, Fire_ProtoUnknown)
-		return
-	}
-
 	// determine if a scan is ongoing
 	if c.CurrentThread() != 0 {
 		err = ErrOngoingCheck
 		return
 	}
 
-	// determine if multi protocol scan
-	isMulti := Scheme
-	if proto != "" {
-		isMulti = NoScheme
-	}
-
-	// validity check
-	err = FD.Validate(isMulti)
+	// validite input file
+	err = FD.Validate()
 	if err != nil {
 		return
 	}
@@ -66,8 +50,10 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 	c.threads = int32(cap(c.fd_pool) + cap(c.worker_pool))
 
 	defer c.Reset() // reset controller
-
-	checker := &CheckerCtx{}
+	
+	checker := &CheckerCtx{
+		Scheme: proto,
+	}
 
 	// Spawn goroutines for FD pool
 	for range cap(c.fd_pool){
@@ -106,45 +92,31 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 			for {
 				select {
 					case proxy := <-c.worker_pool:
-						start := time.Now().UnixMilli()
+						if proto == Multi {
+							protocols := []string{SOCKS4, SOCKS5, HTTP, HTTPS}
+							done := make(chan int, len(protocols))
 
-						//todo
-						level, err := checker.SOCKS4(proxy.proxy)
-						if err != nil { 
-							c.Done()
-							continue
+							for _, proc := range protocols {
+								go checker.WRAP_COMPLETION(proc, proxy.proxy, done)
+							}
+
+							for range cap(done) {
+								<-done
+							}
+
+						} else {
+							checker.WRAP(proto, proxy.proxy)
 						}
 
-						latency := fmt.Sprintf("%dms", time.Now().UnixMilli() - start)
-						go func(){
-							// GODOC: If recover is called outside the deferred function it will not stop a panicking sequence.
-							// so defer recover() - doesnt work has to be wrapped around a function
-							defer func(){
-								recover()
-
-								// recover here is required, early cancellation signal
-								// will close the channel, sents to closed channel panic
-								// to perceive that state and continue from it, it is required
-								// to handle in special way
-							}()
-
-							// on shut down, sents to channels will block.
-							// on duty, sents to channel will block if the
-							// channel's buffer is full, running in goroutine
-							// ensures no blocks.
-							c.fd_pool <- FD_Pool{
-								Proxy: proxy.proxy,
-								Latency: latency,
-								Anonimity: level,
-							}
-						}()
-						
+						MX.Done()
 					case <-c.ShouldStop():
 						return // kill goroutine
 				}
 			}
 		}()
 	}
+
+	checker.fd_pool = c.fd_pool
 
 	go func(){
 		defer c.Cancel()

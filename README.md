@@ -23,6 +23,11 @@
 ProxyBeast is a powerful, complete and free proxy checker with [zero dependency](#what-do-you-mean-with-zero-dependency)
 and advanced capabilities.
 
+> [!WARNING]
+> We are at the final phase of releasing. The complete core is functional and did exceed our expectations. It's very efficient, accurate
+> and reliable in checking. The goroutine pool controller works perfect. At the final phase, we will modernize the UI a bit more before > releasing.
+
+
 > [!NOTE]
 > Start using ProxyBeast. Choose between installing from an installer or build an executable from source.<br>[Get Started](#get-started)
 
@@ -35,6 +40,7 @@ and advanced capabilities.
 
 - #### Capabilities
     - *Multi protocol checking*
+        > Can check all protocols at once
     - *Supports proxy checking for*
         > ``SOCKS/4/5 & HTTP/HTTPS`` type proxies<br>
         > - **NOTE**<br>
@@ -43,8 +49,19 @@ and advanced capabilities.
         > Results in efficient and reliable architecture
     - *Lightweight app*
         > Minimizing overhead, maximizing performance
-    - *Recognizes proxy URI patterns*
+    - *Recognizes URI patterns*
         > Essential for multi protocol checking
+
+#### File format
+Below examples of correct file format:
+```
+user:pass@host:port
+scheme://host:port
+scheme://user:pass@port
+host:port
+```
+> Scheme can only be of ``http|https|socks4|socks5``<br>
+> [Additional documentation](https://pkg.go.dev/net/url#URL)
 
 ### Get Started
 

@@ -22,12 +22,13 @@ import (
 	"net"
 	"net/url"
 	"strconv"
+	"time"
 
 	"github.com/Z3NTL3/proxifier"
 )
 
 func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
-	if !c.Multi || c.Scheme == SOCKS5 {
+	if !proxy.IsSOCKS5() {
 		proxy = Proxy(fmt.Sprintf("%s://%s", SOCKS5, proxy))
 	}
 
@@ -70,13 +71,17 @@ func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
 		}
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), AppSettings.Store.Timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), DefaultTimeout)
 	defer cancel()
 
 	if err = proxifier.Connect(client, ctx); err != nil {
 		return
 	}
 
+	if err = client.SetDeadline(time.Now().Add(DefaultTimeout)); err != nil {
+		return
+	}
+	
 	defer client.Close()
 	client.SetLinger(0)
 
