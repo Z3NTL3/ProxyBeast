@@ -1,136 +1,156 @@
-# ProxyBeast
- Proxy Beast is a high-performance proxy checker that offers precise and rapid testing for HTTP, HTTPS, SOCK4, and SOCKS5 protocols. Its advanced capabilities make it an ideal choice for those who require reliable and efficient proxy testing.
+<!-- header -->
 
-# Update
-> See <a href="https://github.com/Z3NTL3/ProxyBeast/tree/revision-v1.0.0-beta">#revision</a>
-![image](https://github.com/Z3NTL3/ProxyBeast/assets/48758770/dd33035e-adc9-43b5-9129-a5eeb644e0b8)
+<div align="center">   
+    <div>
+        <img src="https://proxy.pix4.dev/img/logo.png" width=80><br>
+         <div>
+                <img alt="GitHub License" src="https://img.shields.io/github/license/z3ntl3/ProxyBeast" >
+                <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/z3ntl3/ProxyBeast">
+                <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/z3ntl3/ProxyBeast">
+        </div>
+        <a href="">Download ProxyBeast for Windows, Linux or MacOS</a> <br>  
+    </div>
+    <img src="https://proxy.pix4.dev/img/gui.png" width="400" style="border-radius: 4px;"><br>
+    <img alt="Static Badge" src="https://img.shields.io/badge/Build-BETA-8A2BE2">
 
-This tool is getting a very huge revamp that would bring back its legacy. ProxyBeast started two years ago as a side-project and it strived to be a high-performance and reliable proxy checker.
-Since then, and now, my knowledge in computer science has been increased magnificently and for that reason I'd like to revise, which will make ProxyBeast great again.
+</div>
 
-#### Whats changing?
-ProxyBeast is getting a revamp to be fined tuned in terms of speed, reliability, accuracy and efficiency. With additional features such as latency, anominity reporting and standardized multi protocol checking and the ability of providing complete PROXY URIs.
-The core is completely changing to be very efficient and work in a parallel model, that is, lightweight and event-driven.
-##### Native protocol checking
-We built libraries that are native and have zero-dependencies, which will be ported with ProxyBeast. Meaning that ProxyBeast will be more low-level and for that reason it can improve accuracy as there is more deep-control.
+<!-- intro -->
 
-**You can read more at:**
-> https://proxy.pix4.dev
+# ProxyBeast 
+
+
+ProxyBeast is a powerful, complete and free proxy checker with [zero dependency](#what-do-you-mean-with-zero-dependency)
+and advanced capabilities.
+
+> [!WARNING]
+> We are at the final phase of releasing. The complete core is functional and did exceed our expectations. It's very efficient, accurate
+> and reliable in checking. The goroutine pool controller works perfect. At the final phase, we will modernize the UI a bit more before > releasing.
+
+
+> [!NOTE]
+> Start using ProxyBeast. Choose between installing from an installer or build an executable from source.<br>[Get Started](#get-started)
+
+### Features
+- Lightweight
+- High performance
+- Event-driven
+- Rich ecosystem
+- Swift
+
+- #### Capabilities
+    - *Multi protocol checking*
+        > Can check all protocols at once
+    - *Supports proxy checking for*
+        > ``SOCKS/4/5 & HTTP/HTTPS`` type proxies<br>
+        > - **NOTE**<br>
+        > SOCKS protocol version 4/a support comes after BETA
+    - *Powerful event-driven goroutine pools*
+        > Results in efficient and reliable architecture
+    - *Lightweight app*
+        > Minimizing overhead, maximizing performance
+    - *Recognizes URI patterns*
+        > Essential for multi protocol checking
+
+#### File format
+Below examples of correct file format:
+```
+user:pass@host:port
+scheme://host:port
+scheme://user:pass@port
+host:port
+```
+> Scheme can only be of ``http|https|socks4|socks5``<br>
+> [Additional documentation](https://pkg.go.dev/net/url#URL)
+
+### Get Started
+
+We are very happy regards your interest in ProxyBeast. This guide is dedicated
+to help you install Proxybeast. 
+
+Do not worry, our software is ease of use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](#todo) channel.
+
+
+
+- ### Installation
+    
+    There are two possible ways to install our software. To build from scratch, using ``Go`` tools. Or to install from a packaged installer.
+
+    #### Precompiled installers and or executables
+
+    | Platform      | File | Type |
+    | ----------- | ----------- | ----------- |
+    | Windows 10+      | [Installer]()       | Windows installer |
+    | Linux   | [File]()        | Executable |
+    | MacOS   | [File]()        | Executable |
+
+    #### Build from scratch
+
+    We assume you already have Go and it's toolchains installed. If not, follow the steps on this article.
+    > [Install Go](https://go.dev/doc/installhttps://go.dev/doc/install)
+
+    ##### Clone this repository
+    We use GIT to clone this repo. This should download ProxyBeast in the current working folder. 
+    ```
+    git clone https://github.com/Z3NTL3/ProxyBeast
+    ```
+
+    ##### Navigate into ProxyBeast workspace
+    In the previous step we did install ProxyBeast. Now let's navigate into the workspace folder.
+    ```
+    cd ProxyBeast
+    ```
+
+    ### Building
+    
+    For building, it is essential to first install all dependencies. To do so, execute the following.
+    > We assume that you are located in the ProxyBeast workspace, as of the previous step.
+    ```
+    go get .
+    ```
+
+    - ##### Installating required tools
+    First we need to install Wails. For this execute the following command.
+    ```
+    go install github.com/wailsapp/wails/v2/cmd/wails@latest
+    ```
+    > - **Important note**<br>
+    > You require to have NPM installed. Which fits with Node.js. To install follow given directions here
+    > [Install](https://nodejs.org/en)
+
+    - ##### Validating tools
+    To validate that you're all set, execute the following command. If everything seems OK, go further with the last procedures.
+    ```
+    wails doctor
+    ```
+    - ##### Final step 
+    To build a binary (generating executables from source) execute the following:
+    ```
+    wails build
+    ```
+    > **NOTE**<br>
+    > If you want to build an executable with GUI and a terminal for logs, execute the following command instead:
+    > ```
+    > wails build -windowsconsole
+    >```
+    > Console attached to build only wroks on Windows
+
 <br>
+
+> [!WARNING]
+> Currently we do only support a packaged installer for Windows. For Linux and MacOS 
+> you may adhere to install an executable, which we already have compiled for you.
+
 <br>
+<hr>
 
+# FAQ
+Find an answer to most of your questions here. If it is not covered ask in [Discord](#todo).
 
-```
- .-,--.                   ,-,---.             .
-  '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
-  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. |
-  `'    '   `-' ' ` `-|   `-^---' `-' `-^ `-' `'
-                     /|
-                    `-'
+* #### What do you mean with "zero dependency"
+    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and uses zero third party dependencies.
+    
+    > **SOCKS**<br>
+    A module/library that is especially written to be ported with ProxyBeast, built by our maintainers.<br>
+    [Source](https://github.com/z3ntl3/SOCKS)
 
-        Tool by: @z3ntl3
-        Studios: https://pix4.dev 
-
-Usage:
-   [flags]
-
-Flags:
-      --file string       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
-  -h, --help              help for this command
-      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy
-      --protocol string   The proxy protocol to check against (default "http")
-      --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
-      --rotating          If passed, it ill use backbone check mechanism
-      --timeout int       Sets custom timeout in seconds (default 5)
-```
-
-[Proof](https://www.youtube.com/shorts/TaDn6wtKqSk)
-<table><tr><th>Organisation</th><th>Application</th><th>Developer</th></tr><tr><td><img src="https://media.discordapp.net/attachments/956310840464773200/968964843333877830/logopix4.png" width="20">PIX4</td><td>Proxy Beast</td><td>Z3NTL3</td></tr></table>
-
-# Protocols Supported
-`HTTPS, HTTP, SOCKS4, SOCKS5`
-
-> **Update note:**<br>
-> In the previous version there were many bugs and socks4/socks5 check was dirty,
-with this new version we have enhanced these things and now it is precise and accurate in checking all protocols!
-
-# Format
-
-**Important**<br>
-Only use `ip:port` format do not include `http://`. `socks5://`,`https://`, `socks4://` etc on your proxy file!
-
-# Usage
-<a href="[https://github.com/Z3NTL3/ProxyBeast#saves](https://github.com/Z3NTL3/ProxyBeast?tab=readme-ov-file#how-to-compile)">How to compile (build) instructions</a><br>
-`chmod 755 proxy-checker.exe`<br>
-
-#### Usage:
-
-```
- .-,--.                   ,-,---.             .
-  '|__/ ,-. ,-. . , . .    '|___/ ,-. ,-. ,-. |-
-  ,|    |   | |  X  | |    ,|   \ |-' ,-| `-. |
-  `'    '   `-' ' ` `-|   `-^---' `-' `-^ `-' `'
-                     /|
-                    `-'
-
-        Tool by: @z3ntl3
-        Studios: https://pix4.dev 
-
-Usage:
-   [flags]
-
-Flags:
-      --file string       Determines your proxy file name requires to be *.txt matching (default "proxies.txt")
-  -h, --help              help for this command
-      --multi             If passed as arg, it will check for all protocols, will tear down the accuracy
-      --protocol string   The proxy protocol to check against (default "http")
-      --retry int         The amount of tries to retry to connect to a failure proxy (default 2)
-      --rotating          If passed, it ill use backbone check mechanism
-      --timeout int       Sets custom timeout in seconds (default 5)
-```
-
-`<bin> -h` to see all options
-
-#### Example
-
-`./proxy-checker.exe --timeout 15 --retry 2 --protocol socks4`<br>
-
-# Saves
-
-Good working proxies are saved in the directory `/saves`. Each time running the script it will recreate the `goods.txt` corresponding for the recently checked proxies.
-
-# How to compile
-
-One-time run:
-`go run .`
-
-After that run one-time:
-`go build` to compile everything so you can have an executable file.
-
-Now your installation is done, just run the executable and there u go
-
-### How to install Go
-
-Install Go `minimum Go version: 1.19`
-
-Navigate to `https://go.dev/dl/` install the one you need compabitle with your OS.<br>
-`If you are on Windows you do not need to follow the instructions bellow.`
-
-```
-# Installation
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.2.linux-amd64.tar.gz
-
-// you may need to run the above command as sudo, if you do change alse the $HOME/.profile of root with source $HOME/.profile
-
-export PATH=$PATH:/usr/local/go/bin
-source $HOME/.profile
-
-go version // if you get output it works. Do not forget to follow the last 2 steps on differents users on your machine
-```
-
-# Update Log
-- Small improvements
-- Enhanced and fixed many bugs. SOCKS version 4 and 5 have been fixed and the check is now very precise and accurate (28-10-2023)
-
-- Arg flags and retry option added (`23 jan 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/pull/2`
-- Multi option added (`3 feb 2023`) -> `https://github.com/Z3NTL3/ProxyBeast/issues/5` ``Preview: https://www.youtube.com/watch?v=_7J9u3EvA7k``
