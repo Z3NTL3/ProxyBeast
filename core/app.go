@@ -74,7 +74,6 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	runtime.WindowCenter(ctx)
 
-	// Obtain current working directory
 	cwd, err := os.Getwd()
 	if err != nil {
 		return
@@ -84,7 +83,7 @@ func (a *App) Startup(ctx context.Context) {
 	RootDir = cwd
 
 	// If <cwd>/saves is not resolvable, then try to mkdir.
-	if _, err := os.Stat(path.Join(cwd, "saves")); err != nil || os.IsNotExist(err) {
+	if _, err = os.Stat(path.Join(cwd, "saves")); err != nil || os.IsNotExist(err) {
 		if err = os.Mkdir(path.Join(cwd, "saves"), os.ModeDir); err != nil {
 			return // fatal
 		}
@@ -105,6 +104,7 @@ func (a *App) DomReady(ctx context.Context) {
 	if _, err := os.Stat(
 		path.Join(RootDir, "saves"),
 	); err != nil || os.IsNotExist(err) || RootDir == "" {
+		fmt.Println(err)
 		runtime.EventsEmit(a.ctx, Fire_ErrSvdirEvent)
 		return
 	}
@@ -194,6 +194,7 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 }
 
 func (a *App) cancel_scan(...interface{}) {
+	runtime.EventsEmit(a.ctx, Fire_MsgEvent, "Cancel called, killing goroutines please wait")
 	MX.Cancel()
 }
 
@@ -219,4 +220,22 @@ func (a *App) modify_default_timeout(data ...interface{}) {
 	if err = AppSettings.Patch(); err != nil {
 		return
 	}
+}
+
+func (a *App) Refresh() string {
+	get := AppSettings.Get()
+	if get != nil { return get.Error()}
+	return ""
+}
+
+func (a *App) GetJudge() string {
+	return AppSettings.Store.Judge.String()
+}
+
+func (a *App) GetPoolSize() uint32 {
+	return AppSettings.Store.Pool.Workers.Size
+}
+
+func (a *App) GetTimeoutString() string {
+	return AppSettings.Store.Timeout
 }

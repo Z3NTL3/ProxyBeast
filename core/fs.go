@@ -22,7 +22,6 @@ import (
 
 type Filesystem map[string]*os.File
 
-
 // file descriptor for associated files
 var FD Filesystem = map[string]*os.File{
 	InputFile: nil,

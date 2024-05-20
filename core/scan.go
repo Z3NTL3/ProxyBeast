@@ -23,7 +23,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-// todo nothing final here
 func (c *Controller) StartScan(ctx context.Context, proto string) {
 	var err error
 
@@ -39,6 +38,8 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 		err = ErrOngoingCheck
 		return
 	}
+
+	c.Reset()
 
 	// validite input file
 	err = FD.Validate()
@@ -122,6 +123,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 		defer c.Cancel()
 		for {
 			if c.Current() == c.GetLoad() {
+				runtime.EventsEmit(APP.ctx, Fire_MsgEvent, "Cleaning up all goroutines in the pool, please wait.")
 				return
 			}
 		}

@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/url"
 	"strconv"
+	"time"
 
 	"github.com/Z3NTL3/proxifier"
 )
@@ -48,7 +49,8 @@ func (c *CheckerCtx) HTTPS(proxy Proxy) (anonimity string, err error) {
 	if err != nil || conn == nil {
 		return
 	}
-
+	
+	if err = conn.SetDeadline(time.Now().Add(DefaultTimeout)); err != nil {return}
 	defer conn.Close()
 
 	tlsConn := tls.Client(conn, &tls.Config{

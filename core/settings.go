@@ -54,12 +54,9 @@ func (app *ApplicationSettings) Init() (err error) {
 }
 
 func (app *ApplicationSettings) Get() (err error){
-	cwd, err := os.Getwd()
-	if err != nil {return}
-
 	var raw []byte
 
-	location := path.Join(cwd, DefaultConfigFile)
+	location := path.Join(RootDir, DefaultConfigFile)
 	_, err = os.Stat(location)
 	
 	// [core.DefaultConfigFile] does not exist
