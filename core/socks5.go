@@ -104,6 +104,8 @@ func (c *CheckerCtx) SOCKS5(proxy Proxy) (anonimity string, err error) {
 		return
 	}
 
+	fmt.Println(string(data))
+
 	anon := Anonimity(string(data))
 	anonimity = (&anon).GetAnonimity()
 

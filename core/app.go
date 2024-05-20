@@ -104,7 +104,6 @@ func (a *App) DomReady(ctx context.Context) {
 	if _, err := os.Stat(
 		path.Join(RootDir, "saves"),
 	); err != nil || os.IsNotExist(err) || RootDir == "" {
-		fmt.Println(err)
 		runtime.EventsEmit(a.ctx, Fire_ErrSvdirEvent)
 		return
 	}
