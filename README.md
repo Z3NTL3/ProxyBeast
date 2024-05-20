@@ -23,11 +23,6 @@
 ProxyBeast is a powerful, complete and free proxy checker with [zero dependency](#what-do-you-mean-with-zero-dependency)
 and advanced capabilities.
 
-> [!WARNING]
-> We are at the final phase of releasing. The complete core is functional and did exceed our expectations. It's very efficient, accurate
-> and reliable in checking. The goroutine pool controller works perfect. At the final phase, we will modernize the UI a bit more before > releasing.
-
-
 > [!NOTE]
 > Start using ProxyBeast. Choose between installing from an installer or build an executable from source.<br>[Get Started](#get-started)
 
@@ -70,6 +65,8 @@ to help you install Proxybeast.
 
 Do not worry, our software is ease of use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](#todo) channel.
 
+> [!NOTE]
+> We are in the BETA phase. Currently the only way to install is from Github releases or to build from scratch.
 
 
 - ### Installation
@@ -83,6 +80,8 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
     | Windows 10+      | [Installer]()       | Windows installer |
     | Linux   | [File]()        | Executable |
     | MacOS   | [File]()        | Executable |
+
+    > We are in BETA, meaning that these above table wont work. See Github releases page.
 
     #### Build from scratch
 
