@@ -194,6 +194,7 @@ func (a *App) dialog_exec(optionalData ...interface{}) {
 }
 
 func (a *App) cancel_scan(...interface{}) {
+	runtime.EventsEmit(a.ctx, Fire_MsgEvent, "Cancel called, killing goroutines please wait")
 	MX.Cancel()
 }
 
@@ -219,4 +220,22 @@ func (a *App) modify_default_timeout(data ...interface{}) {
 	if err = AppSettings.Patch(); err != nil {
 		return
 	}
+}
+
+func (a *App) Refresh() string {
+	get := AppSettings.Get()
+	if get != nil { return get.Error()}
+	return ""
+}
+
+func (a *App) GetJudge() string {
+	return AppSettings.Store.Judge.String()
+}
+
+func (a *App) GetPoolSize() uint32 {
+	return AppSettings.Store.Pool.Workers.Size
+}
+
+func (a *App) GetTimeoutString() string {
+	return AppSettings.Store.Timeout
 }
