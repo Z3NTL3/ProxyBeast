@@ -67,8 +67,6 @@ func (c *CheckerCtx) HTTP(proxy Proxy) (anonimity string, err error) {
 	if err != nil {
 		return
 	}
-
-	fmt.Println(string(data))
 	
 	anon := Anonimity(string(data))
 	anonimity = (&anon).GetAnonimity()
