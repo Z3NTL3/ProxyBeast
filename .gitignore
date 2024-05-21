@@ -1,5 +1,2 @@
 build/bin
 node_modules
-frontend/*
-!frontend/dist
-!frontend/wailsjs
