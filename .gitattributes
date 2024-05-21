@@ -1,4 +1,4 @@
-*.min.js
-*.css
-*.js
-*.html
+*.min.js linguist-vendored
+*.css linguist-vendored
+*.js linguist-vendored
+*.html linguist-vendored
