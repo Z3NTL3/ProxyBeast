@@ -65,9 +65,6 @@ to help you install Proxybeast.
 
 Do not worry, our software is ease of use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](https://www.youtube.com/@z3ntl3wip) channel.
 
-> [!NOTE]
-> We are in the BETA phase. Currently the only way to install is from Github releases or to build from scratch.
-
 
 - ### Installation
     
@@ -77,11 +74,10 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 
     | Platform      | File | Type |
     | ----------- | ----------- | ----------- |
-    | Windows 10+      | [Installer]()       | Windows installer |
-    | Linux   | [File]()        | Executable |
-    | MacOS   | [File]()        | Executable |
+    | Windows 10/11 (windows/amd64)      | [Installer]()       | Windows installer |
 
-    > We are in BETA, meaning that these above table wont work. See Github releases page.
+    > Installers and or bins for other platforms will be available very soon.<br>
+    > For now you can follow the guide below to build from source.
 
     #### Build from scratch
 

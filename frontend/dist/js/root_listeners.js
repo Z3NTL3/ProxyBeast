@@ -2,7 +2,11 @@
 dont care about js
 */
 
-window.runtime.EventsOn("checker_end", () => {
+setInterval(async () => {
+    console.log('Alltime goods: ', await window.go.core.App.GetAllTimeGoods())
+    console.log('Alltime scans: ', await window.go.core.App.GetAllTimeScans())
+}, 2000)
+window.runtime.EventsOn("checker_end", async () => {
     Fire({
         ...STD_PROPS,
         icon: "info",
@@ -10,6 +14,7 @@ window.runtime.EventsOn("checker_end", () => {
     })
 
     document.getElementById("cancel").setAttribute("class", "flex w-full justify-end h-full invisible")
+    document.getElementById("TotalScans").innerText = await window.go.core.App.GetAllTimeScans()
 })
 
 window.runtime.EventsOn("checker_start", () => {
@@ -20,22 +25,23 @@ window.runtime.EventsOn("checker_start", () => {
     })
 
     document.getElementById("cancel").setAttribute("class", "flex items-center ml-[15px] text-white font-bold")
-    document.getElementById("results-table").innerHTML = ""
+    document.getElementById("results-table").innerHTML = "Starting... Please wait, setting up workers."
 })
 
-window.runtime.EventsOn("proxy_data", (data) => {
+window.runtime.EventsOn("proxy_data", async (data) => {
     data = JSON.parse(data)
     let current_data = document.getElementById("results-table").innerHTML
     let apndData = `
         <tr class="flex w-full text-gray-400 bg-base-300 rounded-md mb-[3px]" >
-            <td class="p-2 w-1/4 text-xs">${data.proxy}</td>
-            <td class="p-2 w-1/4 text-xs">${data.protocol}</td>
-            <td class="p-2 w-1/4 text-xs">${data.latency}</td>
-            <td class="p-2 w-1/4 text-xs">${data.anonimity}</td>
+            <td class="p-2 w-1/4 text-xs break-words">${data.proxy}</td>
+            <td class="p-2 w-1/4 text-xs break-words">${data.protocol}</td>
+            <td class="p-2 w-1/4 text-xs break-words">${data.latency}</td>
+            <td class="p-2 w-1/4 text-xs break-words">${data.anonimity}</td>
         </tr>
     `
 
     document.getElementById("results-table").innerHTML = apndData + current_data
+    document.getElementById("TotalGoods").innerText = await window.go.core.App.GetAllTimeGoods()
 })
 
 // window.runtime.EventsOn("current_thread", (th) => {
