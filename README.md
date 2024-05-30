@@ -11,8 +11,6 @@
         <a href="https://proxy.pix4.dev">Download ProxyBeast for Windows</a> <br>  
     </div>
     <img src="https://proxy.pix4.dev//img/gui.png" width="400" style="border-radius: 4px;"><br>
-    <img alt="Static Badge" src="https://img.shields.io/badge/Build-BETA-8A2BE2">
-    <a href="https://www.youtube.com/shorts/wNCj7pfaDUI"><img alt="Static Badge" src="https://img.shields.io/badge/Showcase-video-blue"></a>
 </div>
 
 <!-- intro -->
@@ -133,8 +131,8 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 <br>
 
 > [!WARNING]
-> Currently we do only support a packaged installer for Windows. For Linux and MacOS 
-> you may adhere to install an executable, which we already have compiled for you.
+> Currently we do only support a packaged installer for Windows.<br>
+> Installers for MacOS and debain based linux distributions are on the horizon!
 
 <br>
 <hr>
