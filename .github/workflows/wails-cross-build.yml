@@ -20,12 +20,15 @@ jobs:
           - name: 'App'
             platform:  'linux/amd64'
             os: 'ubuntu-latest'
+            extension: '.deb'
           - name: 'App'
             platform:  'windows/amd64'
             os: 'windows-latest'
+            extension: '.exe'
           - name: 'App'
-            platform:  'darwin/universal'
+            platform:  'darwin/amd64'
             os: 'macos-latest'
+            extension: '.pkg'
 
     runs-on: ${{ matrix.build.os }}
     steps:
@@ -38,7 +41,7 @@ jobs:
         uses: dAppServer/wails-build-action@v2.2
         id: build
         with:
-          build-name: ${{ matrix.build.name }}
+          build-name: Proxybeast-${{ matrix.build.name }}${{ matrix.build.extension }}
           build-platform: ${{ matrix.build.platform }}
           package: true
           go-version: '1.22.2'
