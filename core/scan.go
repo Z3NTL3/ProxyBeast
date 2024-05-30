@@ -76,6 +76,7 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 							return
 						}
 
+						runtime.EventsEmit(APP.ctx, Fire_ProxyData, string(raw))
 						c.Done()
 					// Stop signal
 					case <-c.ShouldStop():

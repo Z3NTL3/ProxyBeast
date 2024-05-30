@@ -16,9 +16,10 @@ module.exports = {
       {
         proxybeast: {
           "base-100": "#212024",
-          "base-200": "#2C2D30", // 2C2D30
+          "base-200": "#2C2D30",
           "primary": "#9379FF",
-          "secondary": "#5EC9FF"
+          "secondary": "#5EC9FF",
+          "base-300": "#23272F"
         }
       }
     ]

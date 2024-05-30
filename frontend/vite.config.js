@@ -1,13 +1,11 @@
 // vite.config.js
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
-
-export default defineConfig({
+export default {
   build: {
+    // Make sure to set the base if you are serving from a subdirectory
+    base: '/',
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-      },
-    },
+      external: ['/js/sweetalert2.all.min.js']
+    }
   },
-})
+  // Other configurations
+};

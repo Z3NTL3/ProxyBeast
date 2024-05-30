@@ -24,6 +24,7 @@ const (
 	Fire_CheckerEnd Operation = "checker_end"
 	Fire_CurrentThread Operation = "current_thread"
 	Fire_FatalError Operation = "fatal_error"
+	Fire_ProxyData Operation = "proxy_data"
 
 	// go runtime event listeners
 	OnStartScan Operation = "scan"

@@ -10,12 +10,6 @@ window.runtime.EventsOn("checker_end", () => {
     })
 
     document.getElementById("cancel").setAttribute("class", "flex w-full justify-end h-full invisible")
-
-    document.getElementById("started").setAttribute("style", "color: red;")
-    document.getElementById("started").innerText = "false"
-
-
-    document.getElementById("checked").innerText = `0`
 })
 
 window.runtime.EventsOn("checker_start", () => {
@@ -25,20 +19,32 @@ window.runtime.EventsOn("checker_start", () => {
         text: "Proxy checking started"
     })
 
-    document.getElementById("cancel").setAttribute("class", "flex w-full justify-end h-full visible")
-
-    document.getElementById("started").setAttribute("style", "color: green;")
-    document.getElementById("started").innerText = "true"
-
+    document.getElementById("cancel").setAttribute("class", "flex items-center ml-[15px] text-white font-bold")
+    document.getElementById("results-table").innerHTML = ""
 })
 
-window.runtime.EventsOn("current_thread", (th) => {
-    document.getElementById("checked").innerText = `${th}`
+window.runtime.EventsOn("proxy_data", (data) => {
+    data = JSON.parse(data)
+    let current_data = document.getElementById("results-table").innerHTML
+    let apndData = `
+        <tr class="flex w-full text-gray-400 bg-base-300 rounded-md mb-[3px]" >
+            <td class="p-2 w-1/4 text-xs">${data.proxy}</td>
+            <td class="p-2 w-1/4 text-xs">${data.protocol}</td>
+            <td class="p-2 w-1/4 text-xs">${data.latency}</td>
+            <td class="p-2 w-1/4 text-xs">${data.anonimity}</td>
+        </tr>
+    `
+
+    document.getElementById("results-table").innerHTML = apndData + current_data
 })
 
-window.runtime.EventsOn("checker_load", (load) => {
-    document.getElementById("load").innerText = `${load}`
-})
+// window.runtime.EventsOn("current_thread", (th) => {
+//     document.getElementById("checked").innerText = `${th}`
+// })
+
+// window.runtime.EventsOn("checker_load", (load) => {
+//     document.getElementById("load").innerText = `${load}`
+// })
 
 window.runtime.EventsOn("proto_unknown", () => Fire({
     ...STD_PROPS,
@@ -86,7 +92,7 @@ window.runtime.EventsOn("svdir_failure", function (_) {
         ...STD_PROPS,
         icon: "warning",
         title: "Warning",
-        text: "Path could not be resolved or MKDIR operation for saves dir has failed. Closing in 6 seconds, give app permissions on FS (read/write in current app folder).",
+        text: "Failing app permissions, cannot access filesystem. Try to open me as Administrator. Exiting automatically in 6 seconds.",
         timer: 6000
     })
     setTimeout(() => {
