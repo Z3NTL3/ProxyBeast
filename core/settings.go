@@ -17,6 +17,7 @@ package core
 
 import (
 	"encoding/json"
+	"io/fs"
 	"net/url"
 	"os"
 	"path"
@@ -138,6 +139,14 @@ func (app *ApplicationSettings) Patch() error {
 
 	if err != nil {return err}
 	return nil
+}
+
+func (app *ApplicationSettings) Sync() {
+	location := path.Join(RootDir, DefaultConfigFile)
+	raw, err := json.MarshalIndent(app, "", "  ")
+	if err != nil {return}
+
+	os.WriteFile(location, raw, fs.FileMode(os.O_CREATE))
 }
 
 func (app *ApplicationSettings) SetPoolSize(size uint32) {

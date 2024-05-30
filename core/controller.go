@@ -77,7 +77,7 @@ func (c *Controller) Done() {
 
 	if current + 1 <= c.GetLoad() {
 		atomic.AddUint32(&c.current, 1)
-		runtime.EventsEmit(APP.ctx, Fire_CurrentThread, c.Current())
+		AppSettings.Store.AllTime.Proxies += 1
 	}
 }
 
@@ -110,7 +110,7 @@ func (c *Controller) Abort(err error) {
 		go runtime.EventsEmit(
 			APP.ctx, 
 			Fire_ErrEvent, 
-			fmt.Sprintf("[ERROR] Aborting due: %s", err.Error()),
+			fmt.Sprintf("[ERROR] Aborting due to: %s", err.Error()),
 		)
 
 		atomic.StoreInt32(&c.abort, 1)
@@ -131,6 +131,7 @@ func (c *Controller) CanExit() {
 
 	select {
 		case <-done:
+			AppSettings.Store.AllTime.Scans += 1
 			return
 	}
 }

@@ -8,7 +8,7 @@
     !define INFO_PROJECTNAME "ProxyBeast"
 !endif
 !ifndef INFO_COMPANYNAME
-    !define INFO_COMPANYNAME "ProxyBeast"
+    !define INFO_COMPANYNAME "Pix4"
 !endif
 !ifndef INFO_PRODUCTNAME
     !define INFO_PRODUCTNAME "ProxyBeast"
@@ -17,7 +17,7 @@
     !define INFO_PRODUCTVERSION "1.0.0"
 !endif
 !ifndef INFO_COPYRIGHT
-    !define INFO_COPYRIGHT "Copyright........."
+    !define INFO_COPYRIGHT "Copyright Pix4 - All Rights Reserved"
 !endif
 !ifndef PRODUCT_EXECUTABLE
     !define PRODUCT_EXECUTABLE "${INFO_PROJECTNAME}.exe"

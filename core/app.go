@@ -19,7 +19,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"path"
+	path "path/filepath"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -60,6 +60,10 @@ func New() *App {
 
 func (a *App) GetCtx() context.Context {
 	return a.ctx
+}
+
+func (a *App) OnExit(ctx context.Context) {
+	AppSettings.Sync() // try to update appstore 
 }
 
 func (a *App) Startup(ctx context.Context) {
@@ -237,4 +241,12 @@ func (a *App) GetPoolSize() uint32 {
 
 func (a *App) GetTimeoutString() string {
 	return AppSettings.Store.Timeout
+}
+
+func (a *App) GetAllTimeGoods() uint64 {
+	return AppSettings.Store.AllTime.Proxies
+}
+
+func (a *App) GetAllTimeScans() uint64 {
+	return AppSettings.Store.AllTime.Scans
 }

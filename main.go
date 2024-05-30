@@ -52,6 +52,7 @@ func main() {
 		Mac: &mac.Options{
 			Appearance: mac.NSAppearanceNameDarkAqua,
 		},
+		OnShutdown: core.APP.OnExit,
 	}); err != nil {
 		log.Fatalf("[Error]: %s", err)
 	}

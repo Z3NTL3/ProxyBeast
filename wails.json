@@ -9,5 +9,12 @@
   "author": {
     "name": "z3ntl3",
     "email": "48758770+Z3NTL3@users.noreply.github.com"
-  }
+  },
+  "info": {
+    "productName": "ProxyBeast",
+    "productVersion": "1.0.0",
+    "companyName": "Pix4",
+    "copyright": "Copyright Pix4 - All Rights Reserved"
+  },
+  "nsisType": "single"
 }

@@ -8,7 +8,7 @@
                 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/z3ntl3/ProxyBeast">
                 <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/z3ntl3/ProxyBeast">
         </div>
-        <a href="">Download ProxyBeast for Windows, Linux or MacOS</a> <br>  
+        <a href="https://proxy.pix4.dev">Download ProxyBeast for Windows</a> <br>  
     </div>
     <img src="https://proxy.pix4.dev/img/gui.png" width="400" style="border-radius: 4px;"><br>
     <img alt="Static Badge" src="https://img.shields.io/badge/Build-BETA-8A2BE2">
@@ -39,7 +39,7 @@ and advanced capabilities.
     - *Supports proxy checking for*
         > ``SOCKS/4/5 & HTTP/HTTPS`` type proxies<br>
         > - **NOTE**<br>
-        > SOCKS protocol version 4/a support comes after BETA
+        > SOCKS protocol version 4/a can be support. Open a request issue on Github issues.
     - *Powerful event-driven goroutine pools*
         > Results in efficient and reliable architecture
     - *Lightweight app*
@@ -63,10 +63,7 @@ host:port
 We are very happy regards your interest in ProxyBeast. This guide is dedicated
 to help you install Proxybeast. 
 
-Do not worry, our software is ease of use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](#todo) channel.
-
-> [!NOTE]
-> We are in the BETA phase. Currently the only way to install is from Github releases or to build from scratch.
+Do not worry, our software is ease of use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](https://www.youtube.com/@z3ntl3wip) channel.
 
 
 - ### Installation
@@ -77,11 +74,10 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 
     | Platform      | File | Type |
     | ----------- | ----------- | ----------- |
-    | Windows 10+      | [Installer]()       | Windows installer |
-    | Linux   | [File]()        | Executable |
-    | MacOS   | [File]()        | Executable |
+    | Windows 10/11 (windows/amd64)      | [Installer]()       | Windows installer |
 
-    > We are in BETA, meaning that these above table wont work. See Github releases page.
+    > Installers and or bins for other platforms will be available very soon.<br>
+    > For now you can follow the guide below to build from source.
 
     #### Build from scratch
 
@@ -147,7 +143,7 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 Find an answer to most of your questions here. If it is not covered ask in [Discord](#todo).
 
 * #### What do you mean with "zero dependency"
-    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and uses zero third party dependencies.
+    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and uses zero third party dependency.
     
     > **Proxifier**<br>
     A module/library that is especially written to be ported with ProxyBeast, built by our maintainers.<br>
