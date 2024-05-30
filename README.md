@@ -74,7 +74,7 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 
     | Platform      | File | Type |
     | ----------- | ----------- | ----------- |
-    | Windows 10/11 (windows/amd64)      | [Installer]()       | Windows installer |
+    | Windows 10/11 (windows/amd64)      | [Installer](https://github.com/Z3NTL3/ProxyBeast/releases/download/v1.0.0/ProxyBeast-amd64-installer.exe)       | Windows installer |
 
     > Installers and or bins for other platforms will be available very soon.<br>
     > For now you can follow the guide below to build from source.
