@@ -10,7 +10,7 @@
         </div>
         <a href="https://proxy.pix4.dev">Download ProxyBeast for Windows</a> <br>  
     </div>
-    <img src="https://proxy.pix4.dev/img/gui.png" width="400" style="border-radius: 4px;"><br>
+    <img src="https://proxy.pix4.dev//img/gui.png" width="400" style="border-radius: 4px;"><br>
     <img alt="Static Badge" src="https://img.shields.io/badge/Build-BETA-8A2BE2">
     <a href="https://www.youtube.com/shorts/wNCj7pfaDUI"><img alt="Static Badge" src="https://img.shields.io/badge/Showcase-video-blue"></a>
 </div>
