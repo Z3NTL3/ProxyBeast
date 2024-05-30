@@ -1,0 +1,27 @@
+{
+  "store": {
+    "timeout": "8s",
+    "judge": {
+      "Scheme": "https",
+      "Opaque": "",
+      "User": null,
+      "Host": "httpbin.org",
+      "Path": "/headerss",
+      "RawPath": "",
+      "OmitHost": false,
+      "ForceQuery": false,
+      "RawQuery": "",
+      "Fragment": "",
+      "RawFragment": ""
+    },
+    "all_time": {
+      "scans": 3,
+      "proxies": 2821
+    },
+    "pool": {
+      "workers": {
+        "size": 10000
+      }
+    }
+  }
+}
