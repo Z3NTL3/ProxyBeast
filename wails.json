@@ -14,7 +14,13 @@
     "productName": "ProxyBeast",
     "productVersion": "1.0.0",
     "companyName": "Pix4",
-    "copyright": "Copyright Pix4 - All Rights Reserved"
+    "copyright": "Copyright Pix4 - All Rights Reserved",
+    "protocols": [
+      {
+        "scheme": "proxybeast",
+        "description": "start proxybeast"
+      }
+    ]
   },
   "nsisType": "single"
 }
