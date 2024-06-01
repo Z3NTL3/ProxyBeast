@@ -37,7 +37,7 @@ and advanced capabilities.
     - *Supports proxy checking for*
         > ``SOCKS/4/5 & HTTP/HTTPS`` type proxies<br>
         > - **NOTE**<br>
-        > SOCKS protocol version 4/a can be support. Open a request issue on Github issues.
+        > SOCKS protocol version 4/a can be supported. Request it from Github issues tab.
     - *Powerful event-driven goroutine pools*
         > Results in efficient and reliable architecture
     - *Lightweight app*
