@@ -10,9 +10,7 @@
         </div>
         <a href="https://proxy.pix4.dev">Download ProxyBeast for Windows</a> <br>  
     </div>
-    <img src="https://proxy.pix4.dev/img/gui.png" width="400" style="border-radius: 4px;"><br>
-    <img alt="Static Badge" src="https://img.shields.io/badge/Build-BETA-8A2BE2">
-    <a href="https://www.youtube.com/shorts/wNCj7pfaDUI"><img alt="Static Badge" src="https://img.shields.io/badge/Showcase-video-blue"></a>
+    <img src="https://proxy.pix4.dev//img/gui.png" width="400" style="border-radius: 4px;"><br>
 </div>
 
 <!-- intro -->
@@ -39,7 +37,7 @@ and advanced capabilities.
     - *Supports proxy checking for*
         > ``SOCKS/4/5 & HTTP/HTTPS`` type proxies<br>
         > - **NOTE**<br>
-        > SOCKS protocol version 4/a can be support. Open a request issue on Github issues.
+        > SOCKS protocol version 4/a can be supported. Request it from Github issues tab.
     - *Powerful event-driven goroutine pools*
         > Results in efficient and reliable architecture
     - *Lightweight app*
@@ -74,7 +72,7 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 
     | Platform      | File | Type |
     | ----------- | ----------- | ----------- |
-    | Windows 10/11 (windows/amd64)      | [Installer]()       | Windows installer |
+    | Windows 10/11 (windows/amd64)      | [Installer](https://github.com/Z3NTL3/ProxyBeast/releases/download/v1.0.0/ProxyBeast-amd64-installer.exe)       | Windows installer |
 
     > Installers and or bins for other platforms will be available very soon.<br>
     > For now you can follow the guide below to build from source.
@@ -133,8 +131,8 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
 <br>
 
 > [!WARNING]
-> Currently we do only support a packaged installer for Windows. For Linux and MacOS 
-> you may adhere to install an executable, which we already have compiled for you.
+> Currently we do only support a packaged installer for Windows.<br>
+> Installers for MacOS and debain based linux distributions are on the horizon!
 
 <br>
 <hr>
