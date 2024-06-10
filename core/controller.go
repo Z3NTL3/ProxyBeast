@@ -77,7 +77,7 @@ func (c *Controller) Done() {
 
 	if current + 1 <= c.GetLoad() {
 		atomic.AddUint32(&c.current, 1)
-		AppSettings.Store.AllTime.Proxies += 1
+		atomic.AddUint64(&AppSettings.Store.AllTime.Proxies, 1)
 	}
 }
 

@@ -160,12 +160,12 @@
                        <div class="flex w-full h-full">
                           <div class="flex w-full">
                             <h1 class="font-bold">
-                              Total Goods
+                              Total Checks
                             </h1>
                           </div>
-                          <span class="flex justify-end w-full" id="TotalGoods">0</span>
+                          <span class="flex justify-end w-full" id="TotalChecks">0</span>
                        </div>
-                        <p class="font-light text-xs">Amount of working proxies ever scanned.</p>
+                        <p class="font-light text-xs">Amount of proxies ever checked.</p>
                       </div>
                     </div>
                 </div>
@@ -393,7 +393,7 @@
     </div>
     <script>
       (async()=>{
-        document.getElementById("TotalGoods").innerText = await window.go.core.App.GetAllTimeGoods()
+        document.getElementById("TotalChecks").innerText = await window.go.core.App.GetAllTimeChecks()
         document.getElementById("TotalScans").innerText = await window.go.core.App.GetAllTimeScans()
       })()
     </script>

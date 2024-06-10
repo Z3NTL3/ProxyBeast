@@ -1,2 +1,4 @@
 build/bin
 node_modules
+config.json
+saves

@@ -76,8 +76,8 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 							return
 						}
 
-						runtime.EventsEmit(APP.ctx, Fire_ProxyData, string(raw))
 						c.Done()
+						runtime.EventsEmit(APP.ctx, Fire_ProxyData, string(raw))
 					// Stop signal
 					case <-c.ShouldStop():
 						return // kill goroutine
@@ -94,12 +94,20 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 			for {
 				select {
 					case proxy := <-c.worker_pool:
+						var err error
 						if proto == Multi {
 							protocols := []string{SOCKS4, SOCKS5, HTTP, HTTPS}
 							done := make(chan int, len(protocols))
 
 							for _, proc := range protocols {
-								go checker.WRAP_COMPLETION(proc, proxy.proxy, done)
+								if err != nil {
+									break
+								}
+
+								proc := proc
+								go func(){
+									err = checker.WRAP_COMPLETION(proc, proxy.proxy, done)
+								}()
 							}
 
 							for range cap(done) {
@@ -107,10 +115,13 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 							}
 
 						} else {
-							checker.WRAP(proto, proxy.proxy)
+							err = checker.WRAP(proto, proxy.proxy)
 						}
 
-						MX.Done()
+						if err != nil {
+							c.Done()
+						}
+						
 					case <-c.ShouldStop():
 						return // kill goroutine
 				}

@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 	path "path/filepath"
+	"sync/atomic"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -243,8 +244,8 @@ func (a *App) GetTimeoutString() string {
 	return AppSettings.Store.Timeout
 }
 
-func (a *App) GetAllTimeGoods() uint64 {
-	return AppSettings.Store.AllTime.Proxies
+func (a *App) GetAllTimeChecks() uint64 {
+	return atomic.LoadUint64(&AppSettings.Store.AllTime.Proxies)
 }
 
 func (a *App) GetAllTimeScans() uint64 {

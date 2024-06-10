@@ -3,9 +3,15 @@ dont care about js
 */
 
 setInterval(async () => {
-    console.log('Alltime goods: ', await window.go.core.App.GetAllTimeGoods())
-    console.log('Alltime scans: ', await window.go.core.App.GetAllTimeScans())
-}, 2000)
+    let checks = await window.go.core.App.GetAllTimeChecks()
+    let scans = await window.go.core.App.GetAllTimeScans()
+
+    console.log('Alltime checks: ', checks)
+    console.log('Alltime scans: ', scans)
+
+    document.getElementById("TotalChecks").innerText = checks
+
+}, 100)
 window.runtime.EventsOn("checker_end", async () => {
     Fire({
         ...STD_PROPS,
@@ -41,7 +47,6 @@ window.runtime.EventsOn("proxy_data", async (data) => {
     `
 
     document.getElementById("results-table").innerHTML = apndData + current_data
-    document.getElementById("TotalGoods").innerText = await window.go.core.App.GetAllTimeGoods()
 })
 
 // window.runtime.EventsOn("current_thread", (th) => {
