@@ -14,6 +14,8 @@
 </div>
 
 <!-- intro -->
+> [!IMPORTANT]
+> WASM (web) and CLI variant are coming this summer!
 
 # ProxyBeast 
 
