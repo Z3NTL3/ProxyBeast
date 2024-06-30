@@ -17,7 +17,6 @@ package core
 
 import (
 	"context"
-	"fmt"
 	"os"
 	path "path/filepath"
 	"sync/atomic"
@@ -69,12 +68,12 @@ func (a *App) OnExit(ctx context.Context) {
 
 func (a *App) Startup(ctx context.Context) {
 	var err error 
-	defer func(err_ *error) {
+	defer func() {
 		// fatal
-		if *err_ != nil {
-			runtime.EventsEmit(a.ctx, Fire_FatalError, (*err_).Error())
+		if err != nil {
+			runtime.EventsEmit(a.ctx, Fire_FatalError, err.Error())
 		}
-	}(&err)
+	}()
 	
 	a.ctx = ctx
 	runtime.WindowCenter(ctx)
@@ -134,7 +133,7 @@ func (a *App) DomReady(ctx context.Context) {
 						runtime.EventsEmit(a.ctx, Fire_ErrEvent, err.(error).Error())
 					}
 				}()
-				MX.StartScan(a.ctx, data[0].(string))
+				MX.StartScan(a.ctx, data[0].(string)) // may panic
 			},
 		},
 	}
@@ -154,12 +153,11 @@ func (g *EventGroup) register_eventListeners(ctx context.Context) {
 
 func (a *App) dialog_exec(optionalData ...interface{}) {
 	var err error
-	defer func(err_ *error) {
-		if *err_ != nil {
-			fmt.Println((*err_).Error())
-			runtime.EventsEmit(a.ctx, Fire_ErrEvent, (*err_).Error())
+	defer func() {
+		if err != nil {
+			runtime.EventsEmit(a.ctx, Fire_ErrEvent, err.Error())
 		}
-	}(&err)
+	}()
 
 	props, ok := optionalData[0].(string)
 	if !ok {
@@ -205,11 +203,11 @@ func (a *App) cancel_scan(...interface{}) {
 func (a *App) modify_default_timeout(data ...interface{}) {
 	var err error
 	
-	defer func(err_ *error){
-		if *err_ != nil {
-			runtime.EventsEmit(APP.ctx, Fire_ErrEvent, (*err_).Error())
+	defer func(){
+		if err != nil {
+			runtime.EventsEmit(APP.ctx, Fire_ErrEvent, err.Error())
 		}
-	}(&err)
+	}()
 
 	timeout, ok := data[0].(string)
 	if !ok {

@@ -137,6 +137,7 @@ func (c *Controller) CanExit() {
 }
 
 // Cancels all threads, signals shut down
+// may panic
 func (c *Controller) Cancel() {
 	defer func(){
 		recover()

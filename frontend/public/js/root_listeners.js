@@ -11,7 +11,7 @@ setInterval(async () => {
 
     document.getElementById("TotalChecks").innerText = checks
 
-}, 100)
+}, 600)
 window.runtime.EventsOn("checker_end", async () => {
     Fire({
         ...STD_PROPS,

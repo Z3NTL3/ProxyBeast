@@ -27,11 +27,11 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 	var err error
 
 	// if err fire to js runtime
-	defer func(err_ *error) {
-		if *err_ != nil {
-			runtime.EventsEmit(APP.ctx, Fire_ErrEvent, (*err_).Error())
+	defer func() {
+		if err != nil {
+			runtime.EventsEmit(APP.ctx, Fire_ErrEvent, err.Error())
 		}
-	}(&err)
+	}()
 
 	// determine if a scan is ongoing
 	if c.CurrentThread() != 0 {
@@ -104,7 +104,8 @@ func (c *Controller) StartScan(ctx context.Context, proto string) {
 									break
 								}
 
-								proc := proc
+								// https://pkg.go.dev/golang.org/x/tools/go/analysis/passes/loopclosure
+								// closure capture on iterator valid in go >1.22
 								go func(){
 									err = checker.WRAP_COMPLETION(proc, proxy.proxy, done)
 								}()

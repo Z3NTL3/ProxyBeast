@@ -24,7 +24,7 @@ var (
      MX *Controller = &Controller{}
      
      DefaultTimeout time.Duration = time.Second * 8
-     DefaultPoolSize uint32 = 10_000
+     DefaultPoolSize uint32 = 2_000
      DefaultJudge string = "https://pool.proxyspace.pro/judge.php"
      DefaultConfigFile string = "config.json"
 )
