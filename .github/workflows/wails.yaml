@@ -73,7 +73,7 @@ jobs:
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos')
               uses: softprops/action-gh-release@v2
               with:
-                files: ${{github.workspace}}/build/bin/ProxyBeast.app/Contents/MacOS/ProxyBeast/ProxyBeast.dmg
+                files: ${{github.workspace}}/build/bin/**/*.dmg
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
 
