@@ -23,8 +23,8 @@ jobs:
         continue-on-error: true
         strategy:
             matrix:
-                version: [1.22.2]
-                os: [macos-latest] # [windows-latest, macos-latest] currently only windows support for proxybeast
+                version: [1.22.2, 1.20, 1.23]
+                os: [windows-latest] 
                 architecture: 
                   - x64
 
@@ -59,35 +59,10 @@ jobs:
               run: |
                 go get .
                 go install github.com/wailsapp/wails/v2/cmd/wails@latest
-            
 
             - name: Wails Doctor
               run: wails doctor
             
-            # -----------------Macos & Linux
-            - name: Wails Build / mac-os & linux
-              if: ${{ ! contains(matrix.os, 'windows') }}
-              run: |
-               wails build
-
-            - name: Release Build / macos
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
-              uses: softprops/action-gh-release@v2
-              with:
-                files: |
-                 ${{github.workspace}}/build/bin/ProxyBeast.app # some how glob pattern like /build/bin/*.app does not work with this action
-
-                prerelease: true
-                token: ${{ secrets.MY_TOKEN }} 
-
-            - name: Release Build / linux
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'ubuntu') && github.event_name == 'push'
-              uses: softprops/action-gh-release@v2
-              with:
-                files: ${{github.workspace}}/build/bin/ProxyBeast
-                prerelease: true
-                token: ${{ secrets.MY_TOKEN }} 
-            # ------------------Macos & Linux
 
             # ----------------Windows
             - name: Download WINGET / windows
@@ -105,6 +80,11 @@ jobs:
                 files: ${{github.workspace}}\build\bin\ProxyBeast.exe
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
+                name: Built for':' ${{ matrix.os }}-${{matrix.architecture}}
+                body: |
+                  This executable is deployed automatically.
+
+                  - Ref: ${{github.ref}}
             # -----------------------------Windows
 
 
