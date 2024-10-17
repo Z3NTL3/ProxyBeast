@@ -86,8 +86,33 @@ jobs:
               if: ${{ ! contains(matrix.os, 'windows') }}
               run: wails build
             #---------------end
+
+            
             
             #---------Ubuntu
+            - name: Create package.yaml
+              run: |
+                cat <<EOF > proxybeast.yml
+                  meta:
+                    description: ProxyBeast
+                    vendor: simpaix.net
+                    maintainer: z3ntl3
+                    files:
+                      "${{github.workspace}}/build/bin":
+                        file: ${{github.workspace}}/build/bin/ProxyBeast
+                        mode: "0755"
+                        user: "root"
+                EOF
+
+            - name: Package to deb
+              uses: kentik/pkg@v1
+              with:
+                name: my-package
+                version: 0.0.1
+                arch: x86_64
+                format: rpm
+                package: package.yaml
+
             - name: Release Build / Ubuntu
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
