@@ -1,3 +1,6 @@
 {
-    "files.autoSave": "off"
+    "files.autoSave": "off",
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///Users/efdalsancak/Documents/ProxyBeast/.github/workflows/wails.yaml"
+    }
 }
