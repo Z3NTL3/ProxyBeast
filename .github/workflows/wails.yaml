@@ -15,7 +15,6 @@ on:
     push:
         branches: 
             - main
-            - test-cd
         tags: 
           - v*
 jobs:
@@ -38,16 +37,29 @@ jobs:
               with: 
                 go-version: ${{matrix.version}}
                 architecture: ${{matrix.architecture}}
-            
+              
             - name: Install Node
               uses: actions/setup-node@v4
               with: 
                 architecture: ${{ matrix.architecture }}
 
+            - name: Cache Go Dependencies
+              id: cache-godep
+              uses: actions/cache@v4
+              with:
+                path: |
+                  ~\AppData\Local\go-build
+                  ~\go\pkg\mod
+                key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+                restore-keys: |
+                  ${{ runner.os }}-go-
+
             - name: Install Go dependencies for Wails
+              if: steps.cache-godep.outputs.cache-hit != 'true'
               run: |
                 go get .
                 go install github.com/wailsapp/wails/v2/cmd/wails@latest
+            
 
             - name: Wails Doctor
               run: wails doctor
@@ -60,8 +72,6 @@ jobs:
               if: ${{ contains(matrix.os, 'windows') }}
               uses: Cyberboss/install-winget@v1
 
-            
-
             - name: Wails Build / windows
               if: ${{ contains(matrix.os, 'windows') }}
               run: wails build -nsis
@@ -70,7 +80,7 @@ jobs:
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows')
               with:
-                files: /build/bin/*.exe
+                files: /build/bin/**/*.exe
                 prerelease: true
 
 
