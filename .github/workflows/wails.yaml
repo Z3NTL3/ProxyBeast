@@ -34,8 +34,12 @@ jobs:
                   - x64
 
                 include:
-                  - version: 1.22.2
+                  - version: 1.22.3
                     minorVer: false
+                    os: windows-latest
+                    architecture: x64
+                # {os: windows-latest, version: 1.23, minorVer: false, arch: x64} 
+                #
         steps:
             - name: Clone Repo
               uses: actions/checkout@v4
