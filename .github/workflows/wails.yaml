@@ -27,15 +27,18 @@ jobs:
         continue-on-error: ${{ matrix.minorVer }}
         strategy:
             matrix:
-                version: [1.23]
                 os: [windows-latest] 
+                version: [1.23]
                 minorVer: [true]
                 architecture: 
                   - x64
 
                 include:
                   - version: 1.22.3
+                    os: windows-latest
                     minorVer: false
+                    architecture:
+                      - x64
         steps:
             - name: Clone Repo
               uses: actions/checkout@v4
