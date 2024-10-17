@@ -71,6 +71,8 @@ jobs:
             - name: Download WINGET / windows
               if: ${{ contains(matrix.os, 'windows') }}
               uses: Cyberboss/install-winget@v1
+              with:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
             - name: Wails Build / windows
