@@ -73,7 +73,7 @@ jobs:
               if: steps.cache-godep.outputs.cache-hit != 'true'
               run: |
                 go get .
-                go install github.com/wailsappd/wails/v2/cmd/wails@latest # fail it
+                go install github.com/wailsapp/wails/v2/cmd/wails@latest 
 
             - name: Wails Doctor
               run: wails doctor
