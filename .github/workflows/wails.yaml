@@ -80,19 +80,40 @@ jobs:
 
             - name: Wails Doctor
               run: wails doctor
-            
-            #---------------Macos
-            - name: Build and bundle .app / MacOS
-              if: ${{ contains(matrix.os, 'macos') }}
-              run: | 
-                wails build
-                zip -r ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}-go${{matrix.version}}.zip ${{github.workspace}}/build/bin/ProxyBeast.app
 
-            - name: Release Build / MacOS
+            #-----Build: Ubuntu & MacOS
+            - name: Build / ubuntu-macos
+              if: ${{ ! contains(matrix.os, 'windows') }}
+              run: wails build
+            #---------------end
+            
+            #---------Ubuntu
+            - name: Release Build / Ubuntu
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
               with:
                 files: ${{github.workspace}}/ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}-go${{matrix.version}}.zip
+                prerelease: true
+                token: ${{ secrets.MY_TOKEN }} 
+                name: Built for ${{':'}} ${{ matrix.os }}-${{matrix.architecture}}
+                body: |
+                  This executable is deployed automatically.
+
+                  - Ref: ${{github.ref}}
+            #---------Linux
+            
+            #---------------Macos
+            - name: Build and bundle .app / MacOS
+              if: ${{ contains(matrix.os, 'macos') }}
+              run: 
+                cd ${{github.workspace}}/build/bin
+                zip -r ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}-go${{matrix.version}}.zip ProxyBeast.app
+               
+            - name: Release Build / MacOS
+              uses: softprops/action-gh-release@v2
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
+              with:
+                files: ${{github.workspace}}/build/bin/ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}-go${{matrix.version}}.zip
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
                 name: Built for ${{':'}} ${{ matrix.os }}-${{matrix.architecture}}
