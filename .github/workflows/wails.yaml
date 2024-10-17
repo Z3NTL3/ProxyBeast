@@ -72,7 +72,7 @@ jobs:
               if: ${{ contains(matrix.os, 'windows') }}
               uses: Cyberboss/install-winget@v1
               with:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
 
             - name: Wails Build / windows
