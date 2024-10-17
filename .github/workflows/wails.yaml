@@ -23,7 +23,7 @@ jobs:
         strategy:
             matrix:
                 version: [1.22, 1.23]
-                os: [windows-latest, macos-latest] # currently only windows support for proxybeast
+                os: [windows-latest] # [windows-latest, macos-latest] currently only windows support for proxybeast
                 architecture: 
                   - x64
 
@@ -51,8 +51,6 @@ jobs:
                   ~\AppData\Local\go-build
                   ~\go\pkg\mod
                 key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-                restore-keys: |
-                  ${{ runner.os }}-go-
 
             - name: Install Go dependencies for Wails
               if: steps.cache-godep.outputs.cache-hit != 'true'
@@ -71,8 +69,7 @@ jobs:
             - name: Download WINGET / windows
               if: ${{ contains(matrix.os, 'windows') }}
               uses: Cyberboss/install-winget@v1
-              with:
-                token: ${{ secrets.TOKEN }}
+              
 
 
             - name: Wails Build / windows
@@ -80,7 +77,7 @@ jobs:
               run: wails build -nsis
             
             - name: tree
-              run: tree -F
+              run: tree 
               continue-on-error: true
 
 
@@ -90,6 +87,7 @@ jobs:
               with:
                 files: ProxyBeast.exe
                 prerelease: true
+                token: ${{ secrets.TOKEN }} 
 
 
          
