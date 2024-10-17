@@ -23,7 +23,7 @@ jobs:
         continue-on-error: true
         strategy:
             matrix:
-                version: [1.23]
+                version: [1.22.2]
                 os: [macos-latest] # [windows-latest, macos-latest] currently only windows support for proxybeast
                 architecture: 
                   - x64
@@ -75,7 +75,7 @@ jobs:
               uses: softprops/action-gh-release@v2
               with:
                 files: |
-                 ${{github.workspace}}/build/bin/ProxyBeast.app
+                 ${{github.workspace}}/build/bin/ProxyBeast.app # some how glob pattern like /build/bin/*.app does not work with this action
 
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
