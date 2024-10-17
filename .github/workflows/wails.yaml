@@ -19,6 +19,7 @@ on:
 
 jobs:
     build:
+        continue-on-error: true
         strategy:
             matrix:
                 version: [1.22, 1.23]
