@@ -1,0 +1,54 @@
+# ProxyBeast by @z3ntl3
+# 
+# This is a workflow to test CI with Wails on pushes in main and PR's
+#
+# See more of our work at simpaix.net
+#
+# Licensed under GNU
+# - You can find the license file within the root of this directory in a file named LICENSE
+
+name: Wails Build & Integrity
+
+on:
+    pull_request:
+        types: [opened, edited, reopened]
+    push:
+        branches: 
+            - main
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                version: [1.22, 1.23]
+                os: [windows-latest] # currently only windows support for proxybeast
+                architecture:
+                    - x64
+
+        runs-on: ${{ matrix.os }}
+        steps:
+            - name: Clone Repo
+              uses: actions/checkout@v4
+            
+            - name: Download Go
+              uses: actions/setup-go@v5
+              with: 
+                go-version: ${{matrix.version}}
+                architecture: ${{matrix.architecture}}
+            
+            - name: Install Node
+              uses: actions/setup-node@v4
+              with: 
+                architecture: ${{ matrix.architecture }}
+
+            - name: Install Go dependencies for Wails
+              run: |
+                go get .
+                go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+            - name: Wails Doctor
+              run: wails doctor
+            
+            - name: Wails Build
+              run: wails build
+         
