@@ -75,9 +75,7 @@ jobs:
               uses: softprops/action-gh-release@v2
               with:
                 files: |
-                 ${{github.workspace}}/build/bin/**/*.app
-                 ${{github.workspace}}/build/bin/*.app
-                 ${{github.workspace}}/build/bin/**/ProxyBeast
+                 ${{github.workspace}}/build/bin/ProxyBeast.app
 
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
