@@ -62,7 +62,7 @@ jobs:
               # those parts are not tested yet and they are not final
             - name: Download NSIS / windows
               if: ${{ contains(matrix.os, 'windows') }}
-              run: winget install NSIS.NSIS --silent
+              run: winget install NSIS.NSIS --disable-interactivity --accept-source-agreement
 
             - name: Wails Build / windows
               if: ${{ contains(matrix.os, 'windows') }}
