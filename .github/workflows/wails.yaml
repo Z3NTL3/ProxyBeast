@@ -79,7 +79,10 @@ jobs:
               if: ${{ contains(matrix.os, 'windows') }}
               run: wails build -nsis
             
-        
+            - name: tree
+              run: tree -F
+              continue-on-error: true
+
 
             - name: Wails Release Build / windows
               uses: softprops/action-gh-release@v2
