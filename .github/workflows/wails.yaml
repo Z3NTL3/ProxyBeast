@@ -133,6 +133,7 @@ jobs:
               run: 
                 cd ${{github.workspace}}/build/bin
                 zip -r ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}-go${{matrix.version}}.zip ProxyBeast.app
+                tree
                
             - name: Release Build / MacOS
               uses: softprops/action-gh-release@v2
