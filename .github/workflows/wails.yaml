@@ -55,6 +55,10 @@ jobs:
               if: ${{ ! contains(matrix.os, 'windows') }}
               run: wails build
 
+            - name: Download WINGET / windows
+              if: ${{ contains(matrix.os, 'windows') }}
+              uses: Cyberboss/install-winget@v1
+
               # those parts are not tested yet and they are not final
             - name: Download NSIS / windows
               if: ${{ contains(matrix.os, 'windows') }}
