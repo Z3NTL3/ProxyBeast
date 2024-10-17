@@ -75,24 +75,15 @@ jobs:
             - name: Wails Build / windows
               if: ${{ contains(matrix.os, 'windows') }}
               run: wails build -nsis
-            
-            - name: tree
-              shell: pwsh
-              env: 
-                SUPER_Q: ${{ secrets.TOKEN }} 
-              run: | 
-                tree
-                echo "$env:SUPER_Q"
-              continue-on-error: true
 
 
             - name: Wails Release Build / windows
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows')
               with:
-                files: ProxyBeast.exe
+                files: \build\bin\ProxyBeast.exe
                 prerelease: true
-                token: ${{ secrets.TOKEN }} 
+                token: ${{ secrets.MY_TOKEN }} 
 
 
          
