@@ -35,9 +35,8 @@ jobs:
 
                 include:
                   - os: windows-latest
-                    version: '1.22.3'
-                    architecture:
-                      - x64
+                    version: 1.22.3
+                    architecture: x64
                     minorVer: false
                     
         steps:
@@ -47,7 +46,7 @@ jobs:
             - name: Download Go
               uses: actions/setup-go@v5
               with: 
-                go-version: ${{ matrix.version }}
+                go-version: ${{matrix.version}}
                 architecture: ${{matrix.architecture}}
               
             - name: Install Node
