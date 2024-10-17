@@ -28,6 +28,7 @@ jobs:
         strategy:
             matrix:
                 os: [windows-latest] 
+                version: [1.22.2, 1.23]
                 architecture: 
                   - x64
                 include:
