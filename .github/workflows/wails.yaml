@@ -82,16 +82,19 @@ jobs:
               run: wails doctor
             
             #---------------Macos
+            - name: Ready up the .app bundle / MacOS
+              run: zip ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}.zip ${{github.workspace}}/build/bin/ProxyBeast.app
+
             - name: Release Build / MacOS
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
               with:
-                files: ${{github.workspace}}/build/bin/ProxyBeast.app
+                files: ${{github.workspace}}/ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}.zip
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
                 name: Built for ${{':'}} ${{ matrix.os }}-${{matrix.architecture}}
                 body: |
-                  This executable is deployed automatically.
+                  This is a zipped .app bundle and it is deployed automatically.
 
                   - Ref: ${{github.ref}}
             #-----------Macos
