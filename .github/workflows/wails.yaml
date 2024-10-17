@@ -11,7 +11,7 @@
 # - You can find the license file within the root of this directory in a file named LICENSE
 
 name: Wails Build & Deployment
-run-name: Build & Deployment triggered by ${{github.event_name}}
+run-name: Build & Deployment triggered by ${{ github.event_name }}
 
 on:
     pull_request:
@@ -23,12 +23,13 @@ on:
           - v*
 jobs:
     build:
-        continue-on-error: ${{matrix.minorVer}}
+        continue-on-error: ${{ matrix.minorVer }}
         strategy:
             matrix:
                 version: [1.23]
                 os: [windows-latest] 
                 minorVer: [true]
+
                 architecture: 
                   - x64
                 include:
