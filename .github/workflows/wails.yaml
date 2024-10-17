@@ -1,6 +1,9 @@
 # ProxyBeast by @z3ntl3
 # 
-# This is a workflow to test CI/CD to build and deploy to github releases
+# This is a CI/CD workflow to build and deploy to github releases
+#
+# If a PR passes the build additional reviews will be taken and it would be merged 
+# when it satisfies our desires and requirements.
 #
 # See more of our work at simpaix.net
 #
@@ -20,13 +23,17 @@ on:
           - v*
 jobs:
     build:
-        continue-on-error: true
+        continue-on-error: ${{matrix.minorVer}}
         strategy:
             matrix:
-                version: [1.22.2, 1.23]
+                version: [1.23]
                 os: [windows-latest] 
+                minorVer: [true]
                 architecture: 
                   - x64
+                include:
+                  - version: 1.22.2
+                    minorVer: false
 
         runs-on: ${{ matrix.os }}
         steps:
