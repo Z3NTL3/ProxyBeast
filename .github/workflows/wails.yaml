@@ -13,6 +13,8 @@ jobs:
             matrix:
                 version: [1.22, 1.23]
                 os: [windows-latest] # currently only windows support for proxybeast
+                architecture:
+                    - x64
 
         runs-on: ${{ matrix.os }}
         steps:
@@ -22,10 +24,13 @@ jobs:
             - name: Download Go
               uses: actions/setup-go@v5
               with: 
-                go-version: ${{matrix.os}}
+                go-version: ${{matrix.version}}
+                architecture: ${{matrix.architecture}}
             
             - name: Install Node
               uses: actions/setup-node@v4
+              with: 
+                architecture: ${{ matrix.architecture }}
 
             - name: Install Go dependencies for Wails
               run: |
