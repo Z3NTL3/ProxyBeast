@@ -23,7 +23,7 @@ jobs:
         strategy:
             matrix:
                 version: [1.22, 1.23]
-                os: [windows-latest] # [windows-latest, macos-latest] currently only windows support for proxybeast
+                os: [windows-latest, macos-latest] # [windows-latest, macos-latest] currently only windows support for proxybeast
                 architecture: 
                   - x64
 
@@ -62,28 +62,45 @@ jobs:
             - name: Wails Doctor
               run: wails doctor
             
+            # -----------------Macos & Linux
             - name: Wails Build / mac-os & linux
               if: ${{ ! contains(matrix.os, 'windows') }}
               run: wails build
 
+            - name: Release Build / macos
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name != 'push'
+              uses: softprops/action-gh-release@v2
+              with:
+                files: ${{github.workspace}}\build\bin\ProxyBeast.dmg
+                prerelease: true
+                token: ${{ secrets.MY_TOKEN }} 
+
+            - name: Release Build / macos
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'ubuntu') && github.event_name != 'push'
+              uses: softprops/action-gh-release@v2
+              with:
+                files: ${{github.workspace}}\build\bin\ProxyBeast
+                prerelease: true
+                token: ${{ secrets.MY_TOKEN }} 
+            # ------------------Macos & Linux
+
+            # ----------------Windows
             - name: Download WINGET / windows
               if: ${{ contains(matrix.os, 'windows') }}
               uses: Cyberboss/install-winget@v1
               
-
-
             - name: Wails Build / windows
               if: ${{ contains(matrix.os, 'windows') }}
               run: wails build -nsis
 
-
-            - name: Wails Release Build / windows
+            - name: Release Build / windows
               uses: softprops/action-gh-release@v2
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows')
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows') && github.event_name != 'push' 
               with:
                 files: ${{github.workspace}}\build\bin\ProxyBeast.exe
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
+            # -----------------------------Windows
 
 
          
