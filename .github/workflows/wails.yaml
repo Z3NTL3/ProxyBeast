@@ -12,6 +12,8 @@
 #
 # TODOS:
 # - Add more dependency and assets caching
+# - Support for Linux and deb packager
+# - NSIS packager Windows
 
 name: Wails Build & Deployment
 run-name: Build & Deployment triggered by ${{ github.event_name }}
@@ -100,7 +102,7 @@ jobs:
                
             - name: Release Build / MacOS
               uses: softprops/action-gh-release@v2
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push' && matrix.version == vars.VER
               with:
                 files: ${{github.workspace}}/build/bin/ProxyBeast-${{ runner.os }}-${{runner.arch}}-go${{matrix.version}}.zip
                 prerelease: true
@@ -117,13 +119,13 @@ jobs:
               if: ${{ contains(matrix.os, 'windows') }}
               uses: Cyberboss/install-winget@v1
               
-            - name: Wails Build / windows
+            - name: Wails Build / windows 
               if: ${{ contains(matrix.os, 'windows') }}
               run: wails build -nsis
 
             - name: Release Build / windows
               uses: softprops/action-gh-release@v2
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows') && github.event_name == 'push'
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows') && github.event_name == 'push' && matrix.version == vars.VER
               with:
                 files: ${{github.workspace}}\build\bin\ProxyBeast.exe
                 prerelease: true
