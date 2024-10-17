@@ -27,7 +27,7 @@ jobs:
         continue-on-error: ${{ matrix.minorVer }}
         strategy:
             matrix:
-                os: [windows-latest] 
+                os: [windows-latest, macos-latest] 
                 version: [1.23]
                 architecture: 
                   - x64
@@ -35,6 +35,11 @@ jobs:
 
                 include:
                   - os: windows-latest
+                    version: 1.22.3
+                    architecture: x64
+                    minorVer: false
+
+                  - os: macos-latest
                     version: 1.22.3
                     architecture: x64
                     minorVer: false
@@ -56,7 +61,7 @@ jobs:
 
             - name: Cache Go Dependencies / win
               id: cache-godep
-              if: runner.os
+              if: ${{ contains(matrix.os, 'windows') }}
               uses: actions/cache@v4
               with:
                 path: |
@@ -73,6 +78,20 @@ jobs:
             - name: Wails Doctor
               run: wails doctor
             
+            #---------------Macos
+            - name: Release Build / MacOS
+              uses: softprops/action-gh-release@v2
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
+              with:
+                files: ${{github.workspace}}\build\bin\ProxyBeast.app
+                prerelease: true
+                token: ${{ secrets.MY_TOKEN }} 
+                name: Built for ${{':'}} ${{ matrix.os }}-${{matrix.architecture}}
+                body: |
+                  This executable is deployed automatically.
+
+                  - Ref: ${{github.ref}}
+            #-----------Macos
 
             # ----------------Windows
             - name: Download WINGET / windows
