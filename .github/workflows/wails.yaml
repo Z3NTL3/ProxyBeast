@@ -16,7 +16,8 @@ on:
         branches: 
             - main
             - test-cd
-
+        tags: 
+          - v*
 jobs:
     build:
         continue-on-error: true
@@ -71,6 +72,6 @@ jobs:
               with:
                 files: /build/bin/*.exe
                 prerelease: true
-                
+
 
          
