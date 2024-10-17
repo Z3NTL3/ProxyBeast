@@ -23,7 +23,7 @@ jobs:
         continue-on-error: true
         strategy:
             matrix:
-                version: [1.22.2, 1.20, 1.23]
+                version: [1.22.2, 1.23]
                 os: [windows-latest] 
                 architecture: 
                   - x64
@@ -80,7 +80,7 @@ jobs:
                 files: ${{github.workspace}}\build\bin\ProxyBeast.exe
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
-                name: Built for':' ${{ matrix.os }}-${{matrix.architecture}}
+                name: Built for ${{':'}} ${{ matrix.os }}-${{matrix.architecture}}
                 body: |
                   This executable is deployed automatically.
 
