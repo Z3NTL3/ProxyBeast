@@ -60,6 +60,7 @@ jobs:
             - name: Install Node
               uses: actions/setup-node@v4
               with: 
+                node-version: v20.18.0
                 architecture: ${{ matrix.architecture }}
 
             - name: Cache Go Dependencies / win
@@ -91,11 +92,11 @@ jobs:
         
             #---------------Macos
             - name: Build and bundle .app / MacOS
-              if: ${{ contains(matrix.os, 'macos') }}
+              if: ${{ contains(matrix.os, 'macos') }} 
               run: |
                 cd ${{github.workspace}}/build/bin
                 zip -r ProxyBeast-${{ runner.os }}-${{runner.arch}}-go${{matrix.version}}.zip ProxyBeast.app
-                tree
+                ls -R .
                
             - name: Release Build / MacOS
               uses: softprops/action-gh-release@v2
