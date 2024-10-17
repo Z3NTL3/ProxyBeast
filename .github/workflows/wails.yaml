@@ -52,7 +52,7 @@ jobs:
                 path: |
                   ~\AppData\Local\go-build
                   ~\go\pkg\mod
-                key: ${{ matrix.os }}-${{matrix.version}}-${{matrix.architecture}}-go-${{ hashFiles('**/go.sum') }}
+                key: ${{runner.os}}-go-${{runner.arch}}
 
             - name: Install Go dependencies for Wails
               if: steps.cache-godep.outputs.cache-hit != 'true'
