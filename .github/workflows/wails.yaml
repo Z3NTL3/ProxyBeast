@@ -106,7 +106,6 @@ jobs:
               with:
                 files: ${{github.workspace}}/build/bin/ProxyBeast-${{ runner.os }}-${{runner.arch}}-go${{matrix.version}}.zip
                 prerelease: true
-                token: ${{ secrets.MY_TOKEN }} 
                 name: ProxyBeast Deployment for ${{ github.ref_name }}
                 body: |
                   Automatically build and deployed app binaries and bundles
@@ -129,5 +128,4 @@ jobs:
               with:
                 files: ${{github.workspace}}\build\bin\ProxyBeast.exe
                 prerelease: true
-                token: ${{ secrets.MY_TOKEN }} 
             # -----------------------------Windows
