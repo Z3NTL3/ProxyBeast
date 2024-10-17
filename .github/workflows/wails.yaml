@@ -23,6 +23,7 @@ on:
           - v*
 jobs:
     build:
+        runs-on: ${{ matrix.os }}
         continue-on-error: ${{ matrix.minorVer }}
         strategy:
             matrix:
@@ -35,8 +36,6 @@ jobs:
                 include:
                   - version: 1.22.2
                     minorVer: false
-
-        runs-on: ${{ matrix.os }}
         steps:
             - name: Clone Repo
               uses: actions/checkout@v4
