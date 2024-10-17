@@ -24,7 +24,8 @@ jobs:
             matrix:
                 version: [1.22, 1.23]
                 os: [windows-latest, macos-latest] # currently only windows support for proxybeast
-                architecture: [x64, x86]
+                architecture: 
+                  - x64
 
         runs-on: ${{ matrix.os }}
         steps:
@@ -56,11 +57,11 @@ jobs:
 
               # those parts are not tested yet and they are not final
             - name: Download NSIS / windows
-              if: ${{ ! contains(matrix.os, 'windows') }}
+              if: ${{ contains(matrix.os, 'windows') }}
               run: winget install NSIS.NSIS --silent
 
             - name: Wails Build / windows
-              if: ${{ ! contains(matrix.os, 'windows') }}
+              if: ${{ contains(matrix.os, 'windows') }}
               run: wails build -nsis
             
             - name: Wails Release Build / windows
