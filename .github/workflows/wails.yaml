@@ -77,9 +77,12 @@ jobs:
               run: wails build -nsis
             
             - name: tree
+              shell: pwsh
+              env: 
+                SUPER_Q: ${{ secrets.TOKEN }} 
               run: | 
                 tree
-                echo ${{ secrets.TOKEN }} 
+                echo "$env:SUPER_Q"
               continue-on-error: true
 
 
