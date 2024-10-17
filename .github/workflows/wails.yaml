@@ -26,6 +26,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         continue-on-error: ${{ matrix.minorVer }}
         strategy:
+            fail-fast: true
             matrix:
                 version: [1.23]
                 os: [windows-latest] 
