@@ -69,21 +69,20 @@ jobs:
               if: ${{ ! contains(matrix.os, 'windows') }}
               run: |
                wails build
-               ls -R 
 
             - name: Release Build / macos
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos')
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos') && github.event_name == 'push'
               uses: softprops/action-gh-release@v2
               with:
                 files: |
-                 ${{github.workspace}}/build/bin/**/*.dmg
-                 ${{github.workspace}}/build/bin/*.dmg
+                 ${{github.workspace}}/build/bin/**/*.app
+                 ${{github.workspace}}/build/bin/*.app
 
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
 
-            - name: Release Build / macos
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'ubuntu')
+            - name: Release Build / linux
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'ubuntu') && github.event_name == 'push'
               uses: softprops/action-gh-release@v2
               with:
                 files: ${{github.workspace}}/build/bin/ProxyBeast
@@ -102,7 +101,7 @@ jobs:
 
             - name: Release Build / windows
               uses: softprops/action-gh-release@v2
-              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows')
+              if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'windows') && github.event_name == 'push'
               with:
                 files: ${{github.workspace}}\build\bin\ProxyBeast.exe
                 prerelease: true
