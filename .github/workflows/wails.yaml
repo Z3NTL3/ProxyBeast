@@ -65,8 +65,10 @@ jobs:
             # -----------------Macos & Linux
             - name: Wails Build / mac-os & linux
               if: ${{ ! contains(matrix.os, 'windows') }}
-              run: wails build
-
+              run: |
+               wails build
+               ls -l /build/bin
+               
             - name: Release Build / macos
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos')
               uses: softprops/action-gh-release@v2
