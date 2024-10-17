@@ -22,8 +22,8 @@ jobs:
         continue-on-error: true
         strategy:
             matrix:
-                version: [1.22, 1.23]
-                os: [windows-latest, macos-latest] # [windows-latest, macos-latest] currently only windows support for proxybeast
+                version: [1.23]
+                os: [macos-latest] # [windows-latest, macos-latest] currently only windows support for proxybeast
                 architecture: 
                   - x64
 
@@ -68,12 +68,16 @@ jobs:
               if: ${{ ! contains(matrix.os, 'windows') }}
               run: |
                wails build
+               tree
 
             - name: Release Build / macos
               if: startsWith(github.ref, 'refs/tags/') && contains(matrix.os, 'macos')
               uses: softprops/action-gh-release@v2
               with:
-                files: ${{github.workspace}}/build/bin/**/*.dmg
+                files: |
+                 ${{github.workspace}}/build/bin/**/*.dmg
+                 ${{github.workspace}}/build/bin/*.dmg
+
                 prerelease: true
                 token: ${{ secrets.MY_TOKEN }} 
 
