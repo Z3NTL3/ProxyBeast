@@ -35,7 +35,7 @@ jobs:
 
                 include:
                   - os: windows-latest
-                    version: [1.22.3]
+                    version: '1.22.3'
                     architecture:
                       - x64
                     minorVer: false
