@@ -1,3 +1,12 @@
+# ProxyBeast by @z3ntl3
+# 
+# This is a workflow to test CI with Wails on pushes in main and PR's
+#
+# See more of our work at simpaix.net
+#
+# Licensed under GNU
+# - You can find the license file within the root of this directory in a file named LICENSE
+
 name: Wails Build & Integrity
 
 on:
