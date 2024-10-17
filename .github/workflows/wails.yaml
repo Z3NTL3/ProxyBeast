@@ -83,6 +83,7 @@ jobs:
             
             #---------------Macos
             - name: Build and bundle .app / MacOS
+              if: ${{ contains(matrix.os, 'macos') }}
               run: | 
                 wails build
                 zip ProxyBeast-${{ matrix.os }}-${{matrix.architecture}}.zip ${{github.workspace}}/build/bin/ProxyBeast.app
