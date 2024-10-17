@@ -26,17 +26,15 @@ jobs:
         runs-on: ${{ matrix.os }}
         continue-on-error: ${{ matrix.minorVer }}
         strategy:
-            fail-fast: true
             matrix:
-                version: [1.23]
                 os: [windows-latest] 
-                minorVer: [true]
-
                 architecture: 
                   - x64
                 include:
                   - version: 1.22.2
                     minorVer: false
+                  - version: 1.23
+                    minorVer: true
         steps:
             - name: Clone Repo
               uses: actions/checkout@v4
