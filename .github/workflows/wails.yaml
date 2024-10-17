@@ -28,14 +28,14 @@ jobs:
         strategy:
             matrix:
                 os: [windows-latest] 
-                version: [1.22.2, 1.23]
+                version: [1.23]
+                minorVer: [true]
                 architecture: 
                   - x64
+
                 include:
                   - version: 1.22.2
                     minorVer: false
-                  - version: 1.23
-                    minorVer: true
         steps:
             - name: Clone Repo
               uses: actions/checkout@v4
