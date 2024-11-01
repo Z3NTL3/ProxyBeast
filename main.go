@@ -19,7 +19,7 @@ import (
 	"embed"
 	"log"
 
-	"ProxyBeast/core"
+	"github.com/Z3NTL3/ProxyBeast/core"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"

@@ -15,7 +15,7 @@
 
 <!-- intro -->
 > [!IMPORTANT]
-> WASM (web) and CLI variant are coming this summer!
+> WASM (web) variant is coming soon!
 
 # ProxyBeast 
 
@@ -60,10 +60,10 @@ host:port
 
 ### Get Started
 
-We are very happy regards your interest in ProxyBeast. This guide is dedicated
-to help you install Proxybeast. 
+We are very happy because of your interest in ProxyBeast. This guide is dedicated
+to help you setup Proxybeast. 
 
-Do not worry, our software is ease of use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](https://www.youtube.com/@z3ntl3wip) channel.
+Do not worry, our software is easy to use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](https://www.youtube.com/@z3ntl3wip) channel.
 
 
 - ### Installation
@@ -76,8 +76,8 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
     | ----------- | ----------- | ----------- |
     | Windows 10/11 (windows/amd64)      | [Installer](https://github.com/Z3NTL3/ProxyBeast/releases/download/v1.0.0/ProxyBeast-amd64-installer.exe)       | Windows installer |
 
-    > Installers and or bins for other platforms will be available very soon.<br>
-    > For now you can follow the guide below to build from source.
+    > Installers and or bins for other platforms aren't available, you can build from scratch
+    > or await upon completion of the WASM (web) variant of ProxyBeast
 
     #### Build from scratch
 
@@ -128,13 +128,13 @@ Do not worry, our software is ease of use, so we won't be covering usage tutoria
     > ```
     > wails build -windowsconsole
     >```
-    > Console attached to build only wroks on Windows
+    > Console attached to build is only available on Windows
 
 <br>
 
 > [!WARNING]
 > Currently we do only support a packaged installer for Windows.<br>
-> Installers for MacOS and debain based linux distributions are on the horizon!
+> Currently installers for MacOS and debain based linux distributions aren't supported.
 
 <br>
 <hr>
@@ -146,6 +146,6 @@ Find an answer to most of your questions here. If it is not covered ask in [Disc
     With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and uses zero third party dependency.
     
     > **Proxifier**<br>
-    A module/library that is especially written to be ported with ProxyBeast, built by our maintainers.<br>
+    A module/library that is especially written to be ported with ProxyBeast, built by our the ProxyBeast authors.<br>
     [Source](https://github.com/z3ntl3/Proxifier)
 
