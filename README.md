@@ -69,6 +69,9 @@ Do not worry, our software is easy to use, so we won't be covering usage tutoria
 - ### Installation
     
     There are two possible ways to install our software. To build from scratch, using ``Go`` tools. Or to install from a packaged installer.
+  
+    > We have a CI/CD to automatically deploy changes made to Github packages.
+    > Additonal information can be found on the packages page.
 
     #### Precompiled installers and or executables
 
@@ -81,25 +84,26 @@ Do not worry, our software is easy to use, so we won't be covering usage tutoria
 
     #### Build from scratch
 
-    We assume you already have Go and it's toolchains installed. If not, follow the steps on this article.
+    We assume you already have Go and it's toolchains installed. If not, follow the steps on this page.
     > [Install Go](https://go.dev/doc/installhttps://go.dev/doc/install)
 
     ##### Clone this repository
-    We use GIT to clone this repo. This should download ProxyBeast in the current working folder. 
+    We use ``git`` to clone this repo. This should download ProxyBeast in the current folder location.
+  
     ```
     git clone https://github.com/Z3NTL3/ProxyBeast
     ```
 
     ##### Navigate into ProxyBeast workspace
-    In the previous step we did install ProxyBeast. Now let's navigate into the workspace folder.
+    In the previous step we did install ProxyBeast. Execute the following to navigate into the folder.
     ```
     cd ProxyBeast
     ```
 
     ### Building
     
-    For building, it is essential to first install all dependencies. To do so, execute the following.
-    > We assume that you are located in the ProxyBeast workspace, as of the previous step.
+    For building, it's important to first, install all the dependencies of ProxyBeast. Execute the snippet below to continue.
+    > We assume that you are located in the ProxyBeast workspace (better said, projects folder), as of the previous step.
     ```
     go get .
     ```
@@ -128,13 +132,13 @@ Do not worry, our software is easy to use, so we won't be covering usage tutoria
     > ```
     > wails build -windowsconsole
     >```
-    > Console attached to build is only available on Windows
+    > Attaching console to the GUI is only possible on Windows
 
 <br>
 
 > [!WARNING]
 > Currently we do only support a packaged installer for Windows.<br>
-> Currently installers for MacOS and debain based linux distributions aren't supported.
+> Installers for MacOS and debain based linux distributions aren't supported. It's essential noting there's no plan for this, as you can just build from scratch using our instructions guide. Which should be relatively easy to follow.
 
 <br>
 <hr>
@@ -143,9 +147,9 @@ Do not worry, our software is easy to use, so we won't be covering usage tutoria
 Find an answer to most of your questions here. If it is not covered ask in [Discord](#todo).
 
 * #### What do you mean with "zero dependency"
-    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and uses zero third party dependency.
+    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and is built without any additional dependency.
     
     > **Proxifier**<br>
-    A module/library that is especially written to be ported with ProxyBeast, built by our the ProxyBeast authors.<br>
+    A module/library that is especially written to be ported with ProxyBeast, built by the author of ProxyBeast.<br>
     [Source](https://github.com/z3ntl3/Proxifier)
 
