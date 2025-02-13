@@ -65,15 +65,15 @@ jobs:
                 node-version: v20.18.0
                 architecture: ${{ matrix.architecture }}
 
-            - name: Cache Go Dependencies / win
-              id: cache-godep
-              if: ${{ contains(matrix.os, 'windows') }}
-              uses: actions/cache@v4
-              with:
-                path: |
-                  ~\AppData\Local\go-build
-                  ~\go\pkg\mod
-                key: ${{runner.os}}-go-${{runner.arch}}-${{hashFiles('**/go.sum')}}
+            # - name: Cache Go Dependencies / win
+            #   id: cache-godep
+            #   if: ${{ contains(matrix.os, 'windows') }}
+            #   uses: actions/cache@v4
+            #   with:
+            #     path: |
+            #       ~\AppData\Local\go-build
+            #       ~\go\pkg\mod
+            #     key: ${{runner.os}}-go-${{runner.arch}}-${{hashFiles('**/go.sum')}}
 
             - name: Install Go dependencies for Wails
               if: steps.cache-godep.outputs.cache-hit != 'true'
