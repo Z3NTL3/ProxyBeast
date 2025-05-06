@@ -16,7 +16,7 @@
 
 <!-- intro -->
 > [!IMPORTANT]
-> WASM (web) variant is coming when WASM has threading support. So that the unique threadpool controller we architected for ProxyBeast can be translated into WASM, otherwise it would run on one thread which is not what we seek for. 
+> WASM (web) variant is coming when WASM introduces threading support. In need for our unique threadpool controller that we've been architected specifically for ProxyBeast so that it can be translated into WASM, otherwise it would run on one thread which is not exactly what we aim for. 
 
 # ProxyBeast 
 
