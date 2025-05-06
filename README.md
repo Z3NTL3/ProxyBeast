@@ -9,7 +9,7 @@
                 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/z3ntl3/ProxyBeast">
                 <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/z3ntl3/ProxyBeast">
         </div>
-        <a href="https://proxy.pix4.dev">Download ProxyBeast for Windows</a> <br>  
+        <a href="https://github.com/Z3NTL3/ProxyBeast/releases/latest">Download ProxyBeast for Windows</a> <br>  
     </div>
     <img src="https://z3ntl3.com/img/proxybeast.png" width="400" style="border-radius: 4px;"><br>
 </div>
