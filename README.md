@@ -2,7 +2,8 @@
 
 <div align="center">   
     <div>
-        <img src="https://proxy.pix4.dev/img/logo.png" width=80><br>
+        <img src="https://simpaix.net/img/logo.png" width=80><br>
+        <span>A project by SimpaiX</span> <br><br>
          <div>
                 <img alt="GitHub License" src="https://img.shields.io/github/license/z3ntl3/ProxyBeast" >
                 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/z3ntl3/ProxyBeast">
@@ -10,7 +11,7 @@
         </div>
         <a href="https://proxy.pix4.dev">Download ProxyBeast for Windows</a> <br>  
     </div>
-    <img src="https://proxy.pix4.dev//img/gui.png" width="400" style="border-radius: 4px;"><br>
+    <img src="https://z3ntl3.com/img/proxybeast.png" width="400" style="border-radius: 4px;"><br>
 </div>
 
 <!-- intro -->
