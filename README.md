@@ -2,7 +2,7 @@
 
 <div align="center">   
     <div>
-        <img src="https://simpaix.net/img/logo.png" width=80><br>
+        <img src="https://avatars.githubusercontent.com/u/154520699?s=200&v=4" width=80><br>
         <span>A project by SimpaiX</span> <br><br>
          <div>
                 <img alt="GitHub License" src="https://img.shields.io/github/license/z3ntl3/ProxyBeast" >
@@ -16,13 +16,15 @@
 
 <!-- intro -->
 > [!IMPORTANT]
-> WASM (web) variant is coming when WASM introduces threading support. In need for our unique threadpool controller that we've been architected specifically for ProxyBeast so that it can be translated into WASM, otherwise it would run on one thread which is not exactly what we aim for. 
+> Planned revamp in Rust, why not? 😂 Even better performance and a revamped UI
 
 # ProxyBeast 
 
 
 ProxyBeast is a powerful, complete and free proxy checker with [zero dependency](#what-do-you-mean-with-zero-dependency)
 and advanced capabilities.
+
+It's makes use of the beautiful message passing, context signals and goroutines in Go (Golang) to elevate high concurrency and performant proxy checking. Even the underlying ``proxifier`` package is our own work and written with zero-dependency and performance in mind.
 
 > [!NOTE]
 > Start using ProxyBeast. Choose between installing from an installer or build an executable from source.<br>[Get Started](#get-started)
@@ -139,7 +141,7 @@ Do not worry, our software is easy to use, so we won't be covering usage tutoria
 
 > [!WARNING]
 > Currently we do only support a packaged installer for Windows.<br>
-> Installers for MacOS and debain based linux distributions aren't supported. It's essential noting there's no plan for this, as you can just build from scratch using our instructions guide. Which should be relatively easy to follow.
+> Installers for MacOS and debain based linux distributions aren't supported. It's essential noting there's no plan for this, as you can just build from scratch using our guide. Which should be relatively easy to follow.
 
 <br>
 <hr>
