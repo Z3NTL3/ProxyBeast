@@ -17,6 +17,7 @@
 <!-- intro -->
 > [!IMPORTANT]
 > Planned revamp in Rust, why not? 😂 Even better performance and a revamped UI
+> [Watch the crazy trailer](https://www.youtube.com/watch?v=DVBoA1p_nYI)
 
 # ProxyBeast 
 
