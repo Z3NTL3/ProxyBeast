@@ -17,7 +17,9 @@
 <!-- intro -->
 > [!IMPORTANT]
 > Planned revamp in Rust, why not? 😂 Even better performance and a revamped UI
-> [Watch the crazy trailer](https://www.youtube.com/watch?v=DVBoA1p_nYI)
+> [Watch the crazy trailer](https://www.youtube.com/watch?v=GOW_JKMfr9U)
+>
+> Upon release the upstream repo ``ProxyBeast-v2`` will merge with the current one
 
 # ProxyBeast 
 
