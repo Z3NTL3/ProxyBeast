@@ -7,7 +7,6 @@
 
 ProxyBeast is a powerful, complete and free proxy checker with advanced capabilities.
 
-> This branch will be merged with the upstream repo on release
 
 - [Trailer](https://www.youtube.com/watch?v=GOW_JKMfr9U)
 
