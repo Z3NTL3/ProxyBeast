@@ -11,7 +11,7 @@ ProxyBeast is a powerful, complete and free proxy checker with advanced capabili
 - [Trailer](https://www.youtube.com/watch?v=GOW_JKMfr9U)
 
 > [!NOTE]  
-> PROUDLY ENGINEERED BY HUMANS - [NO-AI LABEL](https://en.wikipedia.org/wiki/No-AI_label)
+> Proudly engineered by Humans - [No-AI label](https://en.wikipedia.org/wiki/No-AI_label)
 
 #### Features
 - High-performance
