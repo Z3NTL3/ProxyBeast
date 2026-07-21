@@ -1,4 +1,5 @@
-*.min.js linguist-vendored
-*.css linguist-vendored
-*.js linguist-vendored
+*.css  linguist-vendored
 *.html linguist-vendored
+*.ts linguist-vendored
+*.js linguist-vendored
+*.tsx linguist-vendored

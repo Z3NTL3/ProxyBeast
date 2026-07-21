@@ -1,0 +1,34 @@
+name: List open user PRs
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  list-prs:
+    name: List open user PRs
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AUTHOR: ${{ github.event.pull_request.user.id }}
+      NAME: ${{ github.event.pull_request.user.login }}
+      PR_NUMBER: ${{ github.event.number }}
+      REPO: ${{ github.repository }}
+    steps:
+      - run: |
+          LIST=$(gh pr ls -A $AUTHOR -R $REPO)
+
+          cat << EOF > body.txt
+          Current PR list for @$NAME:
+            $(
+            if [ ${#LIST} -gt 0 ]; then
+              echo $LIST
+            else
+              echo "- No open PRs"
+            fi
+            )
+          EOF
+
+          gh pr comment $PR_NUMBER -R $REPO -F body.txt

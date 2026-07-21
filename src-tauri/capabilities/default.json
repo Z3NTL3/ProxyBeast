@@ -1,0 +1,38 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": ["main", "bootstrapper"],
+  "permissions": [
+    "opener:default",
+    "core:default",
+    "core:window:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-minimize",
+    "core:window:allow-close",
+    "dialog:default",
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        {
+          "path": "$APPLOG"
+        }
+      ]
+    },
+    "os:default",
+    "process:default",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://github.com/z3ntl3/**"
+        },
+        {
+          "url": "https://x.com/terzicdsgn"
+        }
+      ]
+    },
+    "fs:default",
+    "fs:write-all"
+  ]
+}

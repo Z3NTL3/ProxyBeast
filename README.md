@@ -1,161 +1,45 @@
-<!-- header -->
+<div align="center">
+  <img width="400" alt="proxybeast gif" src="https://github.com/user-attachments/assets/3bd8a58e-958c-42ac-b0ae-6f7149d495e2" />
 
-<div align="center">   
-    <div>
-        <img src="https://avatars.githubusercontent.com/u/154520699?s=200&v=4" width=80><br>
-        <span>A project by SimpaiX</span> <br><br>
-         <div>
-                <img alt="GitHub License" src="https://img.shields.io/github/license/z3ntl3/ProxyBeast" >
-                <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/z3ntl3/ProxyBeast">
-                <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/z3ntl3/ProxyBeast">
-        </div>
-        <a href="https://github.com/Z3NTL3/ProxyBeast/releases/latest">Download ProxyBeast for Windows</a> <br>  
-    </div>
-    <img src="https://z3ntl3.com/img/proxybeast.png" width="400" style="border-radius: 4px;"><br>
 </div>
 
-<!-- intro -->
-> [!IMPORTANT]
-> Planned revamp in Rust, why not? 😂 Even better performance and a revamped UI
-> [Watch the crazy trailer](https://www.youtube.com/watch?v=GOW_JKMfr9U)
->
-> ``v2`` branch is currently still in works but close to release.
+# Proxybeast
 
-# ProxyBeast 
+ProxyBeast is a powerful, complete and free proxy checker with advanced capabilities.
 
+> This branch will be merged with the upstream repo on release
 
-ProxyBeast is a powerful, complete and free proxy checker with [zero dependency](#what-do-you-mean-with-zero-dependency)
-and advanced capabilities.
+- [Trailer](https://www.youtube.com/watch?v=GOW_JKMfr9U)
 
-It's makes use of the beautiful message passing, context signals and goroutines in Go (Golang) to elevate high concurrency and performant proxy checking. Even the underlying ``proxifier`` package is our own work and written with zero-dependency and performance in mind.
+> [!NOTE]  
+> WRITTEN BY REAL HUMAN BEINGS
 
-> [!NOTE]
-> Start using ProxyBeast. Choose between installing from an installer or build an executable from source.<br>[Get Started](#get-started)
-
-### Features
-- Lightweight
-- High performance
-- Event-driven
-- Rich ecosystem
-- Swift
-
-- #### Capabilities
-    - *Multi protocol checking*
-        > Can check all protocols at once
-    - *Supports proxy checking for*
-        > ``SOCKS/4/5 & HTTP/HTTPS`` type proxies<br>
-        > - **NOTE**<br>
-        > SOCKS protocol version 4/a can be supported. Request it from Github issues tab.
-    - *Powerful event-driven goroutine pools*
-        > Results in efficient and reliable architecture
-    - *Lightweight app*
-        > Minimizing overhead, maximizing performance
-    - *Recognizes URI patterns*
-        > Essential for multi protocol checking
-
-#### File format
-Below examples of correct file format:
-```
-user:pass@host:port
-scheme://host:port
-scheme://user:pass@port
-host:port
-```
-> Scheme can only be of ``http|https|socks4|socks5``<br>
-> [Additional documentation](https://pkg.go.dev/net/url#URL)
-
-### Get Started
-
-We are very happy because of your interest in ProxyBeast. This guide is dedicated
-to help you setup Proxybeast. 
-
-Do not worry, our software is easy to use, so we won't be covering usage tutorials here. You may find tutorials on our [YouTube](https://www.youtube.com/@z3ntl3wip) channel.
-
-
-- ### Installation
-    
-    There are two possible ways to install our software. To build from scratch, using ``Go`` tools. Or to install from a packaged installer.
+#### Features
+- High-performance
+- Reliable
+- Rapid scanning
+- Support for all proxy protocols (HTTP/HTTPS, SOCKS4/SOCKS5)
+- Proxy Statistics
+  - Latency
+- Authentication Methods
+  - ``User/Pass`` and ``NoAuth`` negotiations supported
+- Easy to use
+- Small & minimal app size
   
-    > We have a CI/CD to automatically deploy changes made to Github packages.
-    > Additonal information can be found on the packages page.
 
-    #### Precompiled installers and or executables
+> Check out our propietrary proxy client crate we made for production use with ProxyBeast-v2 <br>
+> [proxifier-rs crate](https://github.com/z3ntl3/proxifier-rs)
 
-    | Platform      | File | Type |
-    | ----------- | ----------- | ----------- |
-    | Windows 10/11 (windows/amd64)      | [Installer](https://github.com/Z3NTL3/ProxyBeast/releases/download/v1.0.0/ProxyBeast-amd64-installer.exe)       | Windows installer |
 
-    > Installers and or bins for other platforms aren't available, you can build from scratch
-    > or await upon completion of the WASM (web) variant of ProxyBeast
+#### Awesome ProxyBeast-v2
 
-    #### Build from scratch
+##### Did you know?
+- ProxyBeast has a ``LiveLog`` pane in the GUI, which shows all the neccessary logs. This was realised using ``Tokio-Tracing``. Specifically by composing multiple [Layer](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/layer/index.html)'s together. One [Layer](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/layer/index.html)'s responsibility is to watch log event data and send it efficiently to the GUI.
 
-    We assume you already have Go and it's toolchains installed. If not, follow the steps on this page.
-    > [Install Go](https://go.dev/doc/installhttps://go.dev/doc/install)
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/5dd2861a-fd6f-4b95-adbe-c2f5f1a90e4d" />
 
-    ##### Clone this repository
-    We use ``git`` to clone this repo. This should download ProxyBeast in the current folder location.
-  
-    ```
-    git clone https://github.com/Z3NTL3/ProxyBeast
-    ```
 
-    ##### Navigate into ProxyBeast workspace
-    In the previous step we did install ProxyBeast. Execute the following to navigate into the folder.
-    ```
-    cd ProxyBeast
-    ```
+- ProxyBeast has it's own proxy client library implementation. It's based on ``CONNECT`` methods and allows for proxy relay to a destination target. Read more about it [here](https://github.com/z3ntl3/proxifier-rs)
 
-    ### Building
-    
-    For building, it's important to first, install all the dependencies of ProxyBeast. Execute the snippet below to continue.
-    > We assume that you are located in the ProxyBeast workspace (better said, projects folder), as of the previous step.
-    ```
-    go get .
-    ```
 
-    - ##### Installating required tools
-    First we need to install Wails. For this execute the following command.
-    ```
-    go install github.com/wailsapp/wails/v2/cmd/wails@latest
-    ```
-    > - **Important note**<br>
-    > You require to have NPM installed. Which fits with Node.js. To install follow given directions here
-    > [Install](https://nodejs.org/en)
-
-    - ##### Validating tools
-    To validate that you're all set, execute the following command. If everything seems OK, go further with the last procedures.
-    ```
-    wails doctor
-    ```
-    - ##### Final step 
-    To build a binary (generating executables from source) execute the following:
-    ```
-    wails build
-    ```
-    > **NOTE**<br>
-    > If you want to build an executable with GUI and a terminal for logs, execute the following command instead:
-    > ```
-    > wails build -windowsconsole
-    >```
-    > Attaching console to the GUI is only possible on Windows
-
-<br>
-
-> [!WARNING]
-> Currently we do only support a packaged installer for Windows.<br>
-> Installers for MacOS and debain based linux distributions aren't supported. It's essential noting there's no plan for this, as you can just build from scratch using our guide. Which should be relatively easy to follow.
-
-<br>
-<hr>
-
-# FAQ
-Find an answer to most of your questions here. If it is not covered ask in [Discord](#todo).
-
-* #### What do you mean with "zero dependency"
-    With zero-dependency, we mean that ProxyBeast is ported together with a low level module for all of it's networking requirements. Which is a native module and is built without any additional dependency.
-    
-    > **Proxifier**<br>
-    A module/library that is especially written to be ported with ProxyBeast, built by the author of ProxyBeast.<br>
-    [Source](https://github.com/z3ntl3/Proxifier)
-
+- ProxyBeast preserves all application diagnostics, which roll daily to make it easier to identify problems. You can access those logs by pressing on the Diagnostics pane via the Settings application screen. We plan on making a bug tracker so we can patch bugs quicker, whereby you would attach the log file.
