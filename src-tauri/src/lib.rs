@@ -23,7 +23,7 @@ struct AppState {
     tls_config: Arc<ClientConfig>,
     app_config: RwLock<models::AppConfig>,
     #[allow(unused)]
-    log_guard: WorkerGuard,
+    retain_log_guard: WorkerGuard,
 }
 
 struct ProxyChecker {
@@ -177,7 +177,7 @@ pub fn run() {
             };
 
             app.manage(AppState {
-                log_guard: _guard,
+                retain_log_guard: _guard,
                 proxy_checker: checker,
                 tls_config: config,
                 app_config: RwLock::new(app_config),
