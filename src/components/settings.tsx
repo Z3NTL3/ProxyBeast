@@ -385,7 +385,7 @@ export default function Settings() {
               </p>
             </div>
             <div className="flex grow  justify-end items-center">
-              <Switch disabled onCheckedChange={((checked) => {
+              <Switch onCheckedChange={((checked) => {
                 setSettings((settings) => {
                   return {
                     ...settings,

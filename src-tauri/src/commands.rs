@@ -185,7 +185,8 @@ pub async fn check_proxy_list(
 
                 't1: while !receiver.is_empty() && !token.is_cancelled() {
                     let proxy = receiver.try_recv();
-                    if let Ok(mut proxy) = proxy {
+                    if let Ok(proxy) = proxy {
+                        let mut proxy: String = proxy.to_owned();
                         let scheme = config.enforce_scheme;
                         // select the partitions after the protocol scheme
                         let re = Regex::new(
