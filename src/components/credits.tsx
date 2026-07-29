@@ -138,7 +138,7 @@ export default function Credits() {
       </div>
 
       <motion.div
-        onClick={() => openUrl("https://github.com/z3ntl3/ProxyBeast-v2")}
+        onClick={() => openUrl("https://github.com/z3ntl3/ProxyBeast")}
         layout
         transition={{
           repeat: Infinity,
