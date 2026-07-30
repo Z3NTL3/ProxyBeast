@@ -81,7 +81,7 @@ export default function Settings() {
     judge: "google.com",
     scheme: "uri",
     use_tls: true,
-    retry: true
+    retry: 1
   });
   let [poolSet, setPoolSet] = useState(false);
   console.log(settings)
@@ -145,7 +145,7 @@ export default function Settings() {
         judge: "google.com",
         scheme: "URI",
         use_tls: true,
-        retry: true
+        retry: 1
       };
     });
     saveSettings(true);
@@ -180,10 +180,10 @@ export default function Settings() {
                 setSettings((settings) => {
                   return {
                     ...settings,
-                    retry: checked
+                    retry: checked ? 2 : 1
                   }
                 })
-              })} checked={settings.retry} />
+              })} checked={settings.retry === 2 ? true : false} />
             </div>
           </div>
           {/* end */}

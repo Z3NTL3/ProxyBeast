@@ -70,8 +70,7 @@ pub struct AppConfig {
 
     #[serde(default = "default_tls")]
     pub use_tls: bool,
-    #[serde(default = "default_retry")]
-    pub retry: bool,
+    pub retry: u8,
 }
 
 fn default_judge() -> String {
@@ -83,9 +82,5 @@ fn default_scheme() -> Scheme {
 }
 
 fn default_tls() -> bool {
-    true
-}
-
-fn default_retry() -> bool {
     true
 }

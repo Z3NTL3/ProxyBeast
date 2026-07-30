@@ -238,7 +238,9 @@ const App = function () {
                 if (typeof path === "string" && path.length > 1) {
                   invoke("read_file", { path })
                     .then((v) => {
-                      setLoad(settings?.scheme === "MULTI" ? v as number * 4: v as number);
+                      let n = settings?.scheme === "MULTI" ? v as number * 4 : v as number;
+
+                      setLoad(settings?.retry === 1 ? n : n*2);
                       filePath.current = path;
                       toast.info("Selected proxy file");
                     })
@@ -278,7 +280,7 @@ const App = function () {
             <ContextMenuItem onClick={async () => {
               await invoke("stop_check")
               filePath.current = "";
-              toast.info("Deleted attached proxy list file")
+              toast.info("Detached proxy list file")
               }} className={"text-red-500"}><MdDeleteForever /> Delete</ContextMenuItem>
           </ContextMenuContent>
         </ContextMenu>

@@ -4,5 +4,5 @@ export interface AppSettings {
   judge: string;
   scheme: string;
   use_tls: boolean;
-  retry: boolean;
+  retry: number;
 }

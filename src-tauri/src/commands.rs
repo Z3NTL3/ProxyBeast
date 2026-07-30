@@ -236,193 +236,194 @@ pub async fn check_proxy_list(
                         let tls_config = state.tls_config.clone();
                         debug!("combined proxy: {:?}", combine_scan);
                         for proxy in combine_scan {
-                            let task = timeout(d, async {
-                                let result: anyhow::Result<Ack> = async {
-                                    let uri = proxy.parse::<Url>()?;
-                                    let proxy_addr: SocketAddrV4 = format!("{}:{}",
-                                        uri.host_str().ok_or_else(|| anyhow!("couldn't retrieve host portion"))?,
-                                        uri.port().ok_or_else(|| anyhow!("couldn't retrieve port portion"))?
-                                    ).parse()?;
-                                    info!("proxy recv: {:?} addr: {proxy_addr}", proxy);
+                            let retry = &config.retry;
+                            for _ in 1..=*retry {
+                                let task = timeout(d, async {
+                                    let result: anyhow::Result<Ack> = async {
+                                        let uri = proxy.parse::<Url>()?;
+                                        let proxy_addr: SocketAddrV4 = format!("{}:{}",
+                                            uri.host_str().ok_or_else(|| anyhow!("couldn't retrieve host portion"))?,
+                                            uri.port().ok_or_else(|| anyhow!("couldn't retrieve port portion"))?
+                                        ).parse()?;
+                                        info!("proxy recv: {:?} addr: {proxy_addr}", proxy);
 
-                                    let mut auth = Auth::NoAuth;
-                                    let judge = &config.judge;
-                                    #[allow(unused)]
-                                    let retry = &config.retry;
-                                    let tls = &config.use_tls;
+                                        let mut auth = Auth::NoAuth;
+                                        let judge = &config.judge;
+                                        let tls = &config.use_tls;
 
-                                    let mut host = {
-                                        let judge = if *tls {
-                                            judge.to_owned() + ":443"
-                                        } else {
-                                            judge.to_owned() + ":80"
+                                        let mut host = {
+                                            let judge = if *tls {
+                                                judge.to_owned() + ":443"
+                                            } else {
+                                                judge.to_owned() + ":80"
+                                            };
+
+                                            lookup_host(judge)
+                                                .await?
+                                                .find_map(|addr| match addr {
+                                                    SocketAddr::V4(v4) => Some(v4),
+                                                    _ => None,
+                                                })
+                                                .ok_or_else(|| anyhow!("dns res didn't resolve to ipv4"))?
                                         };
 
-                                        lookup_host(judge)
-                                            .await?
-                                            .find_map(|addr| match addr {
-                                                SocketAddr::V4(v4) => Some(v4),
-                                                _ => None,
-                                            })
-                                            .ok_or_else(|| anyhow!("dns res didn't resolve to ipv4"))?
-                                    };
+                                        info!("host: {host}");
+                                        info!("judge: {judge}");
 
-                                    info!("host: {host}");
-                                    info!("judge: {judge}");
-
-                                    let now = Instant::now();
-                                    match uri.scheme() {
-                                        "http" => {
-                                            if let Some(pass) = uri.password() {
-                                                auth = Auth::HTTPAuthorizationHeader(format!("Proxy-Authorization: Basic {}", BASE64_STANDARD.encode(uri.username().to_owned() + ":" + pass)));
-                                            }
-
-                                            let dest = format!("http://{}:80", judge).parse::<Uri>()?;
-                                            let mut conn = http(&dest, proxy_addr, auth).await?;
-
-                                            conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:80\r\nConnection: close\r\n\r\n").as_bytes())
-                                                .await?;
-
-                                            info!("net ack")
-                                        },
-                                        "https" => {
-                                            if let Some(pass) = uri.password() {
-                                                auth = Auth::HTTPAuthorizationHeader(format!("Proxy-Authorization: Basic {}", BASE64_STANDARD.encode(uri.username().to_owned() + ":" + pass)));
-                                            }
-
-                                            let proxy = HttpsProxy::with_client_config(tls_config.clone());
-                                            let mut conn = proxy.tunnel(&format!("https://{}:443", judge).parse()?, proxy_addr, auth).await?;
-
-                                            conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:443\r\nConnection: close\r\n\r\n").as_bytes())
-                                                .await?;
-
-                                            info!("net ack")
-                                        },
-                                        "socks4" => {
-                                            let conn: models::MaybeTLS = if *tls {
-                                                host.set_port(443);
-                                                MaybeTLS::Tls(Box::new(socks_with_tls(
-                                                    socks4(
-                                                        Context {
-                                                            proxy: proxy_addr,
-                                                            destination: host,
-                                                        }
-                                                    ).await?,
-                                                    tls_config.clone(),
-                                                    ServerName::try_from(judge.to_string())?
-                                                ).await?))
-                                            } else {
-                                                host.set_port(80);
-                                                MaybeTLS::Plain(
-                                                    socks4(
-                                                        Context {
-                                                            proxy: proxy_addr,
-                                                            destination: host,
-                                                        }
-                                                    ).await?
-                                                )
-                                            };
-
-                                            match conn {
-                                                MaybeTLS::Plain(mut conn) => {
-                                                    conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:80\r\nConnection: close\r\n\r\n").as_bytes())
-                                                        .await?;
-
-                                                    info!("net ack")
+                                        let now = Instant::now();
+                                        match uri.scheme() {
+                                            "http" => {
+                                                if let Some(pass) = uri.password() {
+                                                    auth = Auth::HTTPAuthorizationHeader(format!("Proxy-Authorization: Basic {}", BASE64_STANDARD.encode(uri.username().to_owned() + ":" + pass)));
                                                 }
-                                                MaybeTLS::Tls(mut conn) => {
-                                                    conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:443\r\nConnection: close\r\n\r\n").as_bytes())
-                                                        .await?;
 
-                                                    info!("net ack")
+                                                let dest = format!("http://{}:80", judge).parse::<Uri>()?;
+                                                let mut conn = http(&dest, proxy_addr, auth).await?;
+
+                                                conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:80\r\nConnection: close\r\n\r\n").as_bytes())
+                                                    .await?;
+
+                                                info!("net ack")
+                                            },
+                                            "https" => {
+                                                if let Some(pass) = uri.password() {
+                                                    auth = Auth::HTTPAuthorizationHeader(format!("Proxy-Authorization: Basic {}", BASE64_STANDARD.encode(uri.username().to_owned() + ":" + pass)));
+                                                }
+
+                                                let proxy = HttpsProxy::with_client_config(tls_config.clone());
+                                                let mut conn = proxy.tunnel(&format!("https://{}:443", judge).parse()?, proxy_addr, auth).await?;
+
+                                                conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:443\r\nConnection: close\r\n\r\n").as_bytes())
+                                                    .await?;
+
+                                                info!("net ack")
+                                            },
+                                            "socks4" => {
+                                                let conn: models::MaybeTLS = if *tls {
+                                                    host.set_port(443);
+                                                    MaybeTLS::Tls(Box::new(socks_with_tls(
+                                                        socks4(
+                                                            Context {
+                                                                proxy: proxy_addr,
+                                                                destination: host,
+                                                            }
+                                                        ).await?,
+                                                        tls_config.clone(),
+                                                        ServerName::try_from(judge.to_string())?
+                                                    ).await?))
+                                                } else {
+                                                    host.set_port(80);
+                                                    MaybeTLS::Plain(
+                                                        socks4(
+                                                            Context {
+                                                                proxy: proxy_addr,
+                                                                destination: host,
+                                                            }
+                                                        ).await?
+                                                    )
+                                                };
+
+                                                match conn {
+                                                    MaybeTLS::Plain(mut conn) => {
+                                                        conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:80\r\nConnection: close\r\n\r\n").as_bytes())
+                                                            .await?;
+
+                                                        info!("net ack")
+                                                    }
+                                                    MaybeTLS::Tls(mut conn) => {
+                                                        conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:443\r\nConnection: close\r\n\r\n").as_bytes())
+                                                            .await?;
+
+                                                        info!("net ack")
+                                                    }
+                                                }
+                                            },
+                                            "socks5" => {
+                                                if let Some(pass) = uri.password() {
+                                                    auth = Auth::UserPass(uri.username().into(), pass.into())
+                                                }
+
+                                                let conn: models::MaybeTLS = if *tls {
+                                                    MaybeTLS::Tls(Box::new(socks_with_tls(
+                                                        socks5(
+                                                            Context {
+                                                                proxy: proxy_addr,
+                                                                destination: NetworkTarget::Domain(judge.parse()?, Port(443)),
+                                                            },
+                                                            auth,
+                                                        ).await?,
+                                                        tls_config.clone(),
+                                                        ServerName::try_from(judge.to_string())?
+                                                    ).await?))
+                                                } else {
+                                                    MaybeTLS::Plain(
+                                                        socks5(
+                                                            Context {
+                                                                proxy: proxy_addr,
+                                                                destination: NetworkTarget::Domain(judge.parse()?, Port(80)),
+                                                            },
+                                                            auth,
+                                                        ).await?
+                                                    )
+                                                };
+
+                                                match conn {
+                                                    MaybeTLS::Plain(mut conn) => {
+                                                        conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:80\r\nConnection: close\r\n\r\n").as_bytes())
+                                                            .await?;
+
+                                                        info!("net ack")
+                                                    }
+                                                    MaybeTLS::Tls(mut conn) => {
+                                                        conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:443\r\nConnection: close\r\n\r\n").as_bytes())
+                                                            .await?;
+
+                                                        info!("net ack")
+                                                    }
                                                 }
                                             }
-                                        },
-                                        "socks5" => {
-                                            if let Some(pass) = uri.password() {
-                                                auth = Auth::UserPass(uri.username().into(), pass.into())
-                                            }
-
-                                            let conn: models::MaybeTLS = if *tls {
-                                                MaybeTLS::Tls(Box::new(socks_with_tls(
-                                                    socks5(
-                                                        Context {
-                                                            proxy: proxy_addr,
-                                                            destination: NetworkTarget::Domain(judge.parse()?, Port(443)),
-                                                        },
-                                                        auth,
-                                                    ).await?,
-                                                    tls_config.clone(),
-                                                    ServerName::try_from(judge.to_string())?
-                                                ).await?))
-                                            } else {
-                                                MaybeTLS::Plain(
-                                                    socks5(
-                                                        Context {
-                                                            proxy: proxy_addr,
-                                                            destination: NetworkTarget::Domain(judge.parse()?, Port(80)),
-                                                        },
-                                                        auth,
-                                                    ).await?
-                                                )
-                                            };
-
-                                            match conn {
-                                                MaybeTLS::Plain(mut conn) => {
-                                                    conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:80\r\nConnection: close\r\n\r\n").as_bytes())
-                                                        .await?;
-
-                                                    info!("net ack")
-                                                }
-                                                MaybeTLS::Tls(mut conn) => {
-                                                    conn.write_all(format!("GET / HTTP/1.1\r\nHost: {judge}:443\r\nConnection: close\r\n\r\n").as_bytes())
-                                                        .await?;
-
-                                                    info!("net ack")
-                                                }
+                                            _  => {
+                                                error!("skipping unknown proxy scheme '{:?}' in {:?}", uri.scheme(), uri);
                                             }
                                         }
-                                        _  => {
-                                            error!("skipping unknown proxy scheme '{:?}' in {:?}", uri.scheme(), uri);
-                                        }
+
+                                        Ok(Ack { proxy: uri.to_string(), latency: now.elapsed().as_millis() })
+                                    }.await;
+                                    result
+                                });
+                                select! {
+                                    // prioritize cancellation
+                                    biased;
+                                    _ = token.cancelled() => {
+                                        info!("task was cancelled");
+                                        break 't1;
                                     }
-
-                                    Ok(Ack { proxy: uri.to_string(), latency: now.elapsed().as_millis() })
-                                }.await;
-                                result
-                            });
-                            select! {
-                                // prioritize cancellation
-                                biased;
-                                _ = token.cancelled() => {
-                                     info!("task was cancelled");
-                                     break 't1;
-                                }
-                                res = task => {
-                                    match res {
-                                        Ok(res) => {
-                                            match res {
-                                                Ok(ack) => {
-                                                    info!("proxy:good:{}:latency:{}", ack.proxy, ack.latency);
-                                                    let _ = chan.send(format!("proxy|good|{}|latency|{}", ack.proxy, ack.latency));
-                                                }
-                                                Err(err) => {
-                                                    error!("proxy connection error: {err}");
-                                                    info!("proxy:bad:{}", proxy);
-                                                    let _ = chan.send(format!("proxy|bad|{}", proxy));
+                                    res = task => {
+                                        match res {
+                                            Ok(res) => {
+                                                match res {
+                                                    Ok(ack) => {
+                                                        info!("proxy:good:{}:latency:{}", ack.proxy, ack.latency);
+                                                        let _ = chan.send(format!("proxy|good|{}|latency|{}", ack.proxy, ack.latency));
+                                                    }
+                                                    Err(err) => {
+                                                        error!("proxy connection error: {err}");
+                                                        info!("proxy:bad:{}", proxy);
+                                                        let _ = chan.send(format!("proxy|bad|{}", proxy));
+                                                    }
                                                 }
                                             }
+                                            Err(err) => {
+                                                error!("task aborted because it timed out: {:?}", err);
+                                                let _ = chan.send(format!("proxy|bad|{}", proxy));
+                                            }
                                         }
-                                        Err(err) => {
-                                            error!("task aborted because it timed out: {:?}", err);
-                                            let _ = chan.send(format!("proxy|bad|{}", proxy));
-                                        }
-                                    }
 
-                                    count.fetch_add(1, SeqCst);
-                                    info!("task finished");
-                                }
-                            };
+                                        count.fetch_add(1, SeqCst);
+                                        info!("task finished");
+                                    }
+                                };
+                            }
                         }
                     }
                 }

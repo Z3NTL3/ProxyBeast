@@ -140,7 +140,7 @@ pub fn run() {
                 judge: "google.com".into(),
                 enforce_scheme: crate::models::Scheme::Uri,
                 use_tls: true,
-                retry: true,
+                retry: 1,
             };
 
             match fs::exists(config_file.clone()) {
