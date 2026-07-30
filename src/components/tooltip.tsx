@@ -1,11 +1,11 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-export default function URI_Tooltip() {
+export default function HelpfulTooltip({title, content} : { title: String, content: String}) {
   return (
     <Tooltip>
-      <TooltipTrigger className="text-blue-400 underline">URI</TooltipTrigger>
+      <TooltipTrigger className="text-blue-400 underline">{title}</TooltipTrigger>
       <TooltipContent className="text-[12px] font-semibold text-gray-800">
-        socks5://user:pass@192.168.1.1:9000
+        {content}
       </TooltipContent>
     </Tooltip>
   )

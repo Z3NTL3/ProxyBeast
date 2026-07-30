@@ -15,6 +15,8 @@ import { Badge } from "./ui/badge";
 import { RxFile } from "react-icons/rx";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { AppSettings } from "@/@types/app";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "./ui/context-menu";
+import { MdDeleteForever } from "react-icons/md";
 
 const App = function () {
   let [logs, setLogs] = useState<
@@ -105,6 +107,7 @@ const App = function () {
     channel.onmessage = (message) => {
       switch (true) {
         case message === "proxy-checker:end": {
+          filePath.current = "";
           setLoad(0);
           setDidStart((_) => false);
           setLogs((logs) => [
@@ -218,55 +221,67 @@ const App = function () {
   return (
     <div className="w-full h-full overflow-hidden" ref={scope}>
       <div className="flex p-4 w-full h-fit">
-        <div
-          onClick={() => {
-            open({
-              multiple: false,
-              directory: false,
-              filters: [
-                {
-                  name: "(txt) Proxy file",
-                  extensions: ["txt"],
-                },
-              ],
-            }).then((path) => {
-              if (typeof path === "string" && path.length > 1) {
-                invoke("read_file", { path })
-                  .then((v) => {
-                    setLoad(settings?.scheme === "MULTI" ? v as number * 4: v as number);
-                    filePath.current = path;
-                    toast.info("Selected proxy file");
-                  })
-                  .catch((err) => {
-                    toast.error(String(err));
-                  });
-              }
-            });
-          }}
-          className="cursor-pointer rounded-md flex flex-col justify-center items-center border-white/20  border-2 border-dotted w-[78%] h-120"
-        >
-          <div className="p-3 bg-[#DBDBFD] rounded-full mb-5">
-            <AiOutlineCloudUpload color="#4D6AF0" size={30} />
+
+        <ContextMenu>
+          <div
+            onClick={() => {
+              open({
+                multiple: false,
+                directory: false,
+                filters: [
+                  {
+                    name: "(txt) Proxy file",
+                    extensions: ["txt"],
+                  },
+                ],
+              }).then((path) => {
+                if (typeof path === "string" && path.length > 1) {
+                  invoke("read_file", { path })
+                    .then((v) => {
+                      setLoad(settings?.scheme === "MULTI" ? v as number * 4: v as number);
+                      filePath.current = path;
+                      toast.info("Selected proxy file");
+                    })
+                    .catch((err) => {
+                      toast.error(String(err));
+                    });
+                }
+              });
+            }}
+            className="cursor-pointer rounded-md flex flex-col justify-center items-center border-white/20  border-2 border-dotted w-[78%] h-120"
+          >
+            <div className="p-3 bg-[#DBDBFD] rounded-full mb-5">
+              <AiOutlineCloudUpload color="#4D6AF0" size={30} />
+            </div>
+
+            <h3>Drop your proxy list here</h3>
+            <p className="text-[13px] text-white/50">
+              Press inside to select your proxy list file
+            </p>
+            {filePath.current !== "" ? (
+              <ContextMenuTrigger>
+                <motion.div
+                  className="z-50"
+                  whileInView={{
+                    opacity: [0, 1],
+                  }}
+                >
+                  <Badge className="mt-5 hover:text-white/60 bg-transparent text-white/40 border-white/10 px-5 h-fit py-1">
+                    <RxFile size={20} className="text-white" /> Selected:{" "}
+                    {filePath.current}
+                  </Badge>
+                </motion.div>
+              </ContextMenuTrigger>
+            ) : null}
           </div>
-
-          <h3>Drop your proxy list here</h3>
-          <p className="text-[13px] text-white/50">
-            Press inside to select your proxy list file
-          </p>
-          {filePath.current !== "" ? (
-            <motion.div
-              whileInView={{
-                opacity: [0, 1],
-              }}
-            >
-              <Badge className="mt-5 bg-transparent text-white/40 border-white/10 px-5 h-fit py-1">
-                <RxFile size={20} className="text-white" /> Selected:{" "}
-                {filePath.current}
-              </Badge>
-            </motion.div>
-          ) : null}
-        </div>
-
+          <ContextMenuContent>
+            <ContextMenuItem onClick={async () => {
+              await invoke("stop_check")
+              filePath.current = "";
+              toast.info("Deleted attached proxy list file")
+              }} className={"text-red-500"}><MdDeleteForever /> Delete</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
         <div className="flex flex-col">
           <div className="flex flex-col items-start justify-start bg-[#2A2A45] p-2 w-50 h-50 ml-2 rounded-md border border-white/10">
             <div className="flex items-center w-full text-white/40 text-xs">

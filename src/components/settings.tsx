@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { AppSettings } from "@/@types/app";
+import HelpfulTooltip from "./tooltip";
 
 const APPLOG_DIR = await path.appLogDir();
 const JUDGES: Array<{ label: string; value: string }> = [
@@ -278,7 +279,8 @@ export default function Settings() {
           <div className="flex flex-col mt-5">
             <div className="flex flex-col mb-2">
               <h3 className="text-[14px] text-gray-300">Protocol Scheme</h3>
-              <p className="text-[12px] text-gray-400">Enforce certain schemes over your proxy list.</p>
+              <p className="text-[12px] text-gray-400">Enforce certain schemes over your proxy list. <br/><a className="text-blue-400 mt-1 cursor-pointer" onClick={() => null}>Read the docs</a>
+              </p>
             </div>
 
             <Select
