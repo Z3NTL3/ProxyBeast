@@ -22,7 +22,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import { AppSettings } from "@/@types/app";
-import HelpfulTooltip from "./tooltip";
 
 const APPLOG_DIR = await path.appLogDir();
 const JUDGES: Array<{ label: string; value: string }> = [
