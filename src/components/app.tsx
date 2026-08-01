@@ -207,7 +207,7 @@ const App = function () {
     if (path !== null)
       writeTextFile(path, proxies.join("\n"))
         .then(console.log)
-        .catch((err) =>
+        .catch((_) =>
           toast.error("Failed exporting proxies to given location"),
         );
   };
