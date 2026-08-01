@@ -70,7 +70,7 @@ pub struct AppConfig {
 
     #[serde(default = "default_tls")]
     pub use_tls: bool,
-    #[serde(default = "retry")]
+    #[serde(default = "default_retry")]
     pub retry: u8,
 }
 
