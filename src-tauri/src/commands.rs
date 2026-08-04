@@ -237,7 +237,7 @@ pub async fn check_proxy_list(
                         debug!("combined proxy: {:?}", combine_scan);
                         for proxy in combine_scan {
                             let retry = &config.retry;
-                            for _ in 1..=*retry {
+                            'retry: for _ in 1..=*retry {
                                 let task = timeout(d, async {
                                     let result: anyhow::Result<Ack> = async {
                                         let uri = proxy.parse::<Url>()?;
@@ -405,6 +405,7 @@ pub async fn check_proxy_list(
                                                     Ok(ack) => {
                                                         info!("proxy:good:{}:latency:{}", ack.proxy, ack.latency);
                                                         let _ = chan.send(format!("proxy|good|{}|latency|{}", ack.proxy, ack.latency));
+                                                        break 'retry;
                                                     }
                                                     Err(err) => {
                                                         error!("proxy connection error: {err}");

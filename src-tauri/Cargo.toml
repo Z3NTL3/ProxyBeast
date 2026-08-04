@@ -1,6 +1,6 @@
 [package]
 name = "proxybeast-v2"
-version = "0.1.5"
+version = "2.0.0"
 description = "The ultimate proxy checker"
 authors = ["z3ntl3"]
 edition = "2024"
