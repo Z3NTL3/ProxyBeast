@@ -1,0 +1,44 @@
+[package]
+name = "proxybeast-v2"
+version = "0.1.5"
+description = "The ultimate proxy checker"
+authors = ["z3ntl3"]
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "proxybeast_v2_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt"] }
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1.52.3", features = ["full"] }
+rand = "0.10.1"
+tauri-plugin-dialog = "2"
+chrono = "0.4.45"
+proxifier-rs = "0.1.113"
+tokio-util = "0.7.18"
+http = "1.4.2"
+webpki-roots = "1.0.8"
+serde_with = { version = "3.21.0", features = ["macros"] }
+url = "2.5.8"
+anyhow = "1.0.102"
+async-channel = "2.5.0"
+tauri-plugin-os = "2"
+tauri-plugin-process = "2"
+tracing-appender = "0.2"
+tauri-plugin-fs = "2"
+fancy-regex = "0.18.0"
+base64 = "0.22.1"

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "identifier": "com.z3ntl3.proxybeast",
+  "app": {
+    "windows": [
+      {
+        "hiddenTitle": true,
+        "title": "ProxyBeast",
+        "width": 1100,
+        "height": 700,
+        "visible": false,
+        "maximizable": false,
+        "resizable": false,
+        "decorations": true,
+        "center": true,
+        "backgroundColor": "#1E1E2E",
+        "backgroundThrottling": "throttle",
+        "titleBarStyle": "Overlay",
+        "dragDropEnabled": false
+      }
+    ]
+  }
+}
