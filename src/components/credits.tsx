@@ -123,7 +123,7 @@ export default function Credits() {
 
               <motion.div
                 onClick={() =>
-                  openUrl("https://www.linkedin.com/in/wisdom-moore-a2741126b")
+                  openUrl("https://www.linkedin.com/in/wisdommoore/")
                 }
                 whileHover={{
                   scaleX: 1.04,
