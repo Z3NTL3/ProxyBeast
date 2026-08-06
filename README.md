@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="400" alt="proxybeast gif" src="https://github.com/user-attachments/assets/3bd8a58e-958c-42ac-b0ae-6f7149d495e2" />
+  <img width="800" alt="proxybeast" src="https://proxybeast.app/feats/1.png" />
 
 </div>
 
