@@ -26,7 +26,7 @@ ProxyBeast is a powerful, complete and free proxy checker with advanced capabili
 - Small & minimal app size
   
 
-> Check out our propietrary proxy client crate we made for production use with ProxyBeast-v2 <br>
+> Check out our own proxy client crate we made for production use with ProxyBeast-v2 <br>
 > [proxifier-rs crate](https://github.com/z3ntl3/proxifier-rs)
 
 
